@@ -27,8 +27,7 @@ coverage/
 # Dependency directories
 node_modules/
 jspm_packages/
-package.json
-package-lock.json
+
 
 # Build output
 dist/
