@@ -12,6 +12,8 @@
       <div class="hero-image">
         <img src="@/assets/logo1.png" alt="Entrenamiento" />
       </div>
+     <!-- Aquí se cargará el chatbot -->
+    <div id="chatbot-container"></div> 
     </section>
 
     <!-- Galería -->
@@ -19,8 +21,11 @@
       <h2>Nuestra Galería</h2>
       <CarouselWrapper />
     </section>
+
+    
   </div>
 </template>
+
 
 <script>
 import CarouselWrapper from "@/components/CarouselWrapper.vue";
@@ -28,12 +33,32 @@ import CarouselWrapper from "@/components/CarouselWrapper.vue";
 export default {
   components: {
     CarouselWrapper
+  },
+  mounted() {
+    this.loadChatbot();
+  },
+  methods: {
+    loadChatbot() {
+      if (!document.getElementById("chatbase-script")) {
+        const script = document.createElement("script");
+        script.src = "https://www.chatbase.co/embed.min.js";
+        script.id = "chatbase-script"; // Evita cargarlo varias veces
+        script.setAttribute("domain", "www.chatbase.co");
+        document.body.appendChild(script);
+      }
+    }
   }
 };
 </script>
 
 <style scoped>
 /* Estilos generales */
+.hero-image img {
+  width: 300%; /* Ajusta este valor según el tamaño que prefieras */
+  max-width: 500px; /* Opcional: Establece un límite máximo */
+  height: auto; /* Mantiene la proporción */
+}
+
 .home-container {
   font-family: "Arial", sans-serif;
   color: white;
