@@ -1,14 +1,12 @@
 <template>
-  <router-view></router-view>  <!-- Aquí se renderizarán las vistas según la ruta -->
+  <HeaderComponent />
+  <router-view></router-view>
 </template>
 
 <script>
-// No es necesario crear la app en este archivo
+import HeaderComponent from "@/components/Header.vue";
+
 export default {
-  name: 'App'
+  components: { HeaderComponent }
 };
 </script>
-
-<style>
-/* Estilos de tu aplicación */
-</style>
