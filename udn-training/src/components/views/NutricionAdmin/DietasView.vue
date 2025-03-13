@@ -1,10 +1,13 @@
 <template>
   <div>
     <h1>Bienvenido a Dietas</h1>
+    <button @click="$router.push('/dietas/nueva')">Agregar Nueva Dieta</button>
     <form id="search">
       <p>Buscar</p>
       <input v-model="searchInput" />
     </form>
+
+    
     
     <DietasTable 
       :entries="dataset" 
@@ -26,7 +29,7 @@ export default {
   data() {
     return {
       searchInput: "",
-      dataColumns: ["ID", "Nombre", "Detalle", "Descripcion", "Objetivo", "Estatus", "Fecha_Registro", "Fecha_Actualizacion"],
+      dataColumns: ["ID", "Nombre", "Genero", "Altura", "Peso", "Objetivo","Tipo_Ejercicios_Recomendados", "Dias_Ejercicio", "Calorias_Diarias", "Observaciones"],
       dataset: []
     };
   },
