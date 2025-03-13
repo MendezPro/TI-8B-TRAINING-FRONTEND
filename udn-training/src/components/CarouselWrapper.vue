@@ -58,7 +58,7 @@ export default {
     // Cargar las imágenes desde la API
     onMounted(async () => {
       try {
-        const response = await fetch("http://localhost:5000/images");
+        const response = await fetch("http://localhost:3000/images");
         const data = await response.json();
         images.value = data;
       } catch (error) {
