@@ -35,7 +35,7 @@
 
     if (response.data.success) {
      console.log('Redirigiendo al dashboard');
-      this.$router.push('/dashboard');
+      this.$router.push('/');
     } else {
       this.error = 'Usuario o contraseña incorrectos';
     }
