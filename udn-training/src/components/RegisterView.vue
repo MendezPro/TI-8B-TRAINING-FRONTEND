@@ -97,14 +97,24 @@
   
   /* Contenedor del formulario */
   .register-container {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    width: 400px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(50, 50, 50, 0.6));
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  width: 400px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease-in-out;
   }
+
+  .register-container:hover {
+  transform: translateY(-5px); /* Mueve la card en vez de escalarla */
+  box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.3);
+}
   
   h2 {
     color: white;
