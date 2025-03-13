@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-
+    <!-- Sección Hero -->
     <section class="hero">
       <div class="hero-text">
         <h1>Fortalece tu cuerpo con profesionales</h1>
@@ -14,84 +14,30 @@
       </div>
     </section>
 
-    <section class="stats">
-      <div class="stat">
-        <h2>5+</h2>
-        <p>Años de servicio</p>
-      </div>
-      <div class="stat">
-        <h2>10+</h2>
-        <p>Certificados</p>
-      </div>
-      <div class="stat">
-        <h2>786+</h2>
-        <p>Miembros fieles</p>
-      </div>
-      <div class="stat">
-        <h2>95%</h2>
-        <p>De resultados</p>
-      </div>
+    <!-- Galería -->
+    <section class="gallery">
+      <h2>Nuestra Galería</h2>
+      <CarouselWrapper />
     </section>
   </div>
-  
 </template>
 
+<script>
+import CarouselWrapper from "@/components/CarouselWrapper.vue";
+
+export default {
+  components: {
+    CarouselWrapper
+  }
+};
+</script>
 
 <style scoped>
 /* Estilos generales */
 .home-container {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   color: white;
   background-color: #000;
-}
-
-/* Barra de navegación */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background-color: black;
-}
-
-.navbar .logo img {
-  width: 120px;
-}
-
-.navbar nav ul {
-  display: flex;
-  list-style: none;
-  gap: 20px;
-}
-
-.navbar nav ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-}
-
-.auth-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.auth-buttons button {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.login-btn {
-  background: none;
-  border: 1px solid white;
-  color: white;
-}
-
-.register-btn {
-  background: red;
-  color: white;
 }
 
 /* Sección Hero */
@@ -102,10 +48,6 @@
   padding: 50px;
   background: url("@/assets/fondo.jpg") no-repeat center center;
   background-size: cover;
-}
-
-.hero-text {
-  max-width: 50%;
 }
 
 .hero-text h1 {
@@ -136,10 +78,6 @@
   background-color: #111;
 }
 
-.stat {
-  text-align: center;
-}
-
 .stat h2 {
   font-size: 2rem;
   color: red;
@@ -148,5 +86,60 @@
 .stat p {
   font-size: 1rem;
   color: white;
+}
+
+/* Galería */
+.gallery {
+  margin-top: 40px;
+  padding: 30px;
+  background-color: #000;
+  color: white;
+}
+
+.gallery h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: red;
+}
+
+.carousel {
+  margin-top: 20px;
+  width: 100%;
+  height: 400px;
+}
+
+.slide-info {
+  width: 100%;
+  height: 100%;
+}
+
+.slide-info img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Botones de navegación */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.prev-btn,
+.next-btn {
+  padding: 10px 20px;
+  background-color: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.prev-btn:hover,
+.next-btn:hover {
+  background-color: #ff4d4d;
 }
 </style>
