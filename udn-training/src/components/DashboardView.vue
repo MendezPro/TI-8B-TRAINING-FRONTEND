@@ -23,6 +23,11 @@
         <h2>Perfil</h2>
         <p>Gestiona tu información personal y preferencias.</p>
       </div>
+      <div class="card error-card" @click="$router.push('/error')">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Usuarios</h2>
+        <p>Accede a la gestión de usuarios (prueba de error).</p>
+      </div>
     </div>
   </div>
 </template>
@@ -48,7 +53,7 @@ export default {
 
       const script = document.createElement("script");
       script.src = "https://www.chatbase.co/embed.min.js";
-      script.id = "TBKXBmpzMfuXHiMXs3nIG"; // Reemplaza con tu ID real de Chatbase
+      script.id = "TBKXBmpzMfuXHiMXs3nIG";
       script.domain = "www.chatbase.co";
       document.body.appendChild(script);
     }
@@ -124,6 +129,16 @@ export default {
 .card p {
   font-size: 1rem;
   opacity: 0.8;
+}
+
+/* Estilos específicos para la card de error */
+.error-card {
+  background: rgba(255, 0, 0, 0.2);
+  color: white;
+}
+
+.error-card:hover {
+  box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.5);
 }
 
 @media (max-width: 768px) {
