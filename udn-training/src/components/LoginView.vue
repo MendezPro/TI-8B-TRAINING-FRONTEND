@@ -17,12 +17,22 @@
       <form @submit.prevent="login">
         <div class="input-group">
           <label>Correo o Usuario</label>
-          <input type="text" v-model="usuario" placeholder="Ingresa tu usuario o correo" required />
+          <input
+            type="text"
+            v-model="usuario"
+            placeholder="Ingresa tu usuario o correo"
+            required
+          />
         </div>
 
         <div class="input-group">
           <label>Contraseña <span class="forgot-password">¿Olvidaste?</span></label>
-          <input type="password" v-model="password" placeholder="Ingresa tu contraseña" required />
+          <input
+            type="password"
+            v-model="password"
+            placeholder="Ingresa tu contraseña"
+            required
+          />
         </div>
 
         <button type="submit" class="login-btn">Iniciar sesión</button>
@@ -44,7 +54,7 @@ export default {
   name: "LoginView",
   data() {
     return {
-      usuario: "", // Se usa "usuario" en vez de "username"
+      usuario: "",
       password: "",
       error: "",
     };
@@ -55,24 +65,22 @@ export default {
         this.error = "Por favor, ingresa tus credenciales.";
         return;
       }
-
       try {
-        console.log("📌 Enviando datos al servidor:", this.usuario, this.password);
-        const response = await axios.post("http://localhost:3000/login", {
-          usuario: this.usuario, // Enviamos "usuario" en vez de "Nombre_Usuario"
-          Contrasena: this.password,
+        console.log("Enviando datos al servidor:", this.usuario, this.password);
+        const response = await axios.post("http://localhost:8000/api/usuarios/login", {
+          correo_electronico: this.usuario,
+          contrasena: this.password,
         });
-
-        console.log("📌 Respuesta del servidor:", response.data);
-
-        if (response.data.success) {
-          console.log("✅ Redirigiendo al dashboard");
-          this.$router.push("/");
+        console.log("Respuesta del servidor:", response.data);
+        if (response.data.access_token) {
+          localStorage.setItem("access_token", response.data.access_token);
+          console.log("Redirigiendo al dashboard");
+          this.$router.push("/dashboard");
         } else {
           this.error = "Usuario o contraseña incorrectos";
         }
       } catch (err) {
-        console.error("❌ Error en la conexión con el servidor:", err);
+        console.error("Error en la conexión con el servidor:", err);
         this.error = "Error al conectar con el servidor";
       }
     },
