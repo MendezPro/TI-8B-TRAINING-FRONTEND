@@ -1,89 +1,86 @@
 <template>
-    <div class="register-page">
-      <div class="register-container">
-        <h2>Sign Up</h2>
-  
-        <p class="or-divider">Completa tus datos</p>
-  
-        <form @submit.prevent="register">
-          <div class="input-group">
-            <label>Nombre de Usuario</label>
-            <input type="text" v-model="nombreUsuario" placeholder="Ingresa tu nombre de usuario" required />
-          </div>
-  
-          <div class="input-group">
-            <label>Email</label>
-            <input type="email" v-model="correo" placeholder="Ingresa tu correo electrónico" required />
-          </div>
-  
-          <div class="input-group">
-            <label>Número Telefónico</label>
-            <input type="tel" v-model="telefono" placeholder="Ingresa tu número móvil" />
-          </div>
-  
-          <div class="input-group">
-            <label>Contraseña</label>
-            <input type="password" v-model="password" placeholder="Ingresa tu contraseña" required />
-          </div>
-  
-          <button type="submit" class="register-btn">Sign Up</button>
-          <button type="button" class="cancel-btn" @click="$router.push('/login')">Cancel</button>
-  
-          <p v-if="error" class="error-message">{{ error }}</p>
-        </form>
-      </div>
+  <div class="register-page">
+    <div class="register-container">
+      <h2>Regístrate</h2>
+
+      <p class="or-divider">Completa tus datos</p>
+
+      <form @submit.prevent="register">
+        <div class="input-group">
+          <label>Nombre de Usuario</label>
+          <input type="text" v-model="nombreUsuario" placeholder="Ingresa tu nombre de usuario" required />
+        </div>
+
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" v-model="correo" placeholder="Ingresa tu correo electrónico" required />
+        </div>
+
+        <div class="input-group">
+          <label>Número Telefónico</label>
+          <input type="tel" v-model="telefono" placeholder="Ingresa tu número móvil" />
+        </div>
+
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input type="password" v-model="password" placeholder="Ingresa tu contraseña" required />
+        </div>
+
+        <button type="submit" class="register-btn">Regístrate</button>
+        <button type="button" class="cancel-btn" @click="$router.push('/login')">Cancelar</button>
+
+        <p v-if="error" class="error-message">{{ error }}</p>
+      </form>
     </div>
-  </template>
-  
-  <script>
-  import axios from "axios";
-  
-  export default {
-    name: "RegisterView",
-    data() {
-      return {
-        nombreUsuario: "",
-        correo: "",
-        telefono: "",
-        password: "",
-        error: "",
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  name: "RegisterView",
+  data() {
+    return {
+      nombreUsuario: "",
+      correo: "",
+      telefono: "",
+      password: "",
+      error: "",
+    };
+  },
+  methods: {
+    async register() {
+      if (!this.nombreUsuario || !this.correo || !this.password) {
+        this.error = "Todos los campos son obligatorios.";
+        return;
+      }
+
+      const userData = {
+        nombre_usuario: this.nombreUsuario,
+        correo_electronico: this.correo,
+        contrasena: this.password,
+        numero_telefonico_movil: this.telefono || null,
+        estatus: "Activo", // Puedes ajustar el valor de estatus si es necesario
+        fecha_registro: new Date().toISOString(),
+        fecha_actualizacion: new Date().toISOString(),
       };
-    },
-    methods: {
-      async register() {
-        if (!this.nombreUsuario || !this.correo || !this.password) {
-          this.error = "Todos los campos son obligatorios.";
-          return;
+
+      try {
+        const response = await axios.post("http://localhost:8000/api/usuario/", userData);
+
+        if (response.data) {
+          this.$router.push("/login");
+        } else {
+          this.error = "Error al registrar el usuario.";
         }
-  
-        const userData = {
-          nombreUsuario: this.nombreUsuario,
-          correo: this.correo,
-          telefono: this.telefono || null, // Si no tiene teléfono, se envía NULL
-          password: this.password,
-        };
-  
-        try {
-          console.log("📌 Enviando datos al servidor:", userData);
-          const response = await axios.post("http://localhost:3000/register", userData);
-  
-          console.log("📌 Respuesta del servidor:", response.data);
-  
-          if (response.data.success) {
-            console.log("✅ Registro exitoso, redirigiendo...");
-            this.$router.push("/login");
-          } else {
-            this.error = response.data.message;
-          }
-        } catch (err) {
-          console.error("❌ Error en la conexión con el servidor:", err);
-          this.error = "No se pudo conectar con el servidor. Asegúrate de que esté corriendo.";
-        }
-      },
+      } catch (err) {
+        this.error = "No se pudo conectar con el servidor.";
+      }
     },
-  };
-  </script>
-  
+  },
+};
+</script>
   <style scoped>
   /* Fondo de la página */
   .register-page {
