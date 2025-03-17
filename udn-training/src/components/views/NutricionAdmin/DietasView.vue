@@ -29,15 +29,28 @@ export default {
   data() {
     return {
       searchInput: "",
-      dataColumns: ["ID", "Nombre", "Genero", "Altura", "Peso", "Objetivo","Tipo_Ejercicios_Recomendados", "Dias_Ejercicio", "Calorias_Diarias", "Observaciones"],
+      dataColumns: ["ID", "Nombre", "Genero", "Altura", "Peso", "Objetivo","Tipo_Ejercicios_Recomendados", "Dias_Ejercicio", "Calorias_Diarias", "Observaciones","Estatus", "Fecha_Registro"],
       dataset: []
     };
   },
   mounted() {
-    axios.get('http://localhost:3000/api/dietas')
-      .then(response => {
-        this.dataset = response.data;
-      })
+    axios.get('http://localhost:8000/api/dietas')
+    .then(response => {
+      this.dataset = response.data.map(dieta => ({
+        ID: dieta.id,
+        Nombre: dieta.nombre,
+        Genero: dieta.genero,
+        Altura: dieta.altura,
+        Peso: dieta.peso,
+        Objetivo: dieta.objetivo,
+        Tipo_Ejercicios_Recomendados: dieta.tipo_ejercicios_recomendados,
+        Dias_Ejercicio: dieta.dias_ejercicio,
+        Calorias_Diarias: dieta.calorias_diarias,
+        Observaciones: dieta.observaciones,
+        Estatus: dieta.estatus ? 'Activo' : 'Inactivo',
+        Fecha_Registro: dieta.fecha_registro,
+      }));
+    })
       .catch(error => {
         console.error("Error al cargar dietas:", error);
       });
