@@ -8,26 +8,51 @@
       <form @submit.prevent="register">
         <div class="input-group">
           <label>Nombre de Usuario</label>
-          <input type="text" v-model="nombreUsuario" placeholder="Ingresa tu nombre de usuario" required />
+          <input
+            type="text"
+            v-model="nombreUsuario"
+            placeholder="Ingresa tu nombre de usuario"
+            required
+          />
         </div>
 
         <div class="input-group">
           <label>Email</label>
-          <input type="email" v-model="correo" placeholder="Ingresa tu correo electrónico" required />
+          <input
+            type="email"
+            v-model="correo"
+            placeholder="Ingresa tu correo electrónico"
+            required
+          />
         </div>
 
         <div class="input-group">
           <label>Número Telefónico</label>
-          <input type="tel" v-model="telefono" placeholder="Ingresa tu número móvil" />
+          <input
+            type="tel"
+            v-model="telefono"
+            placeholder="Ingresa tu número móvil"
+          />
         </div>
 
         <div class="input-group">
           <label>Contraseña</label>
-          <input type="password" v-model="password" placeholder="Ingresa tu contraseña" required />
+          <input
+            type="password"
+            v-model="password"
+            placeholder="Ingresa tu contraseña"
+            required
+          />
         </div>
 
         <button type="submit" class="register-btn">Regístrate</button>
-        <button type="button" class="cancel-btn" @click="$router.push('/login')">Cancelar</button>
+        <button
+          type="button"
+          class="cancel-btn"
+          @click="$router.push('/login')"
+        >
+          Cancelar
+        </button>
 
         <p v-if="error" class="error-message">{{ error }}</p>
       </form>
@@ -61,21 +86,24 @@ export default {
         correo_electronico: this.correo,
         contrasena: this.password,
         numero_telefonico_movil: this.telefono || null,
-        estatus: "Activo", // Puedes ajustar el valor de estatus si es necesario
-        fecha_registro: new Date().toISOString(),
-        fecha_actualizacion: new Date().toISOString(),
+        estatus: "Activo",
       };
 
       try {
-        const response = await axios.post("http://localhost:8000/api/usuario/", userData);
+        const response = await axios.post("http://localhost:8000/api/usuarios/", userData);
 
-        if (response.data) {
+        if (response.status === 201 || response.status === 200) {
+          // Registro exitoso, redirigimos al login
           this.$router.push("/login");
         } else {
-          this.error = "Error al registrar el usuario.";
+          this.error = response.data?.detail || "Error al registrar el usuario.";
         }
       } catch (err) {
-        this.error = "No se pudo conectar con el servidor.";
+        if (err.response) {
+          this.error = err.response.data?.detail || "Error en el servidor al registrar.";
+        } else {
+          this.error = "No se pudo conectar con el servidor.";
+        }
       }
     },
   },
