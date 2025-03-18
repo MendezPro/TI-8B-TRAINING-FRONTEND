@@ -74,7 +74,7 @@ export default {
         console.log("Respuesta del servidor:", response.data);
         if (response.data.access_token) {
           localStorage.setItem("access_token", response.data.access_token);
-          console.log("Redirigiendo al dashboard");
+          localStorage.setItem("rol", response.data.rol);
           this.$router.push("/dashboard");
         } else {
           this.error = "Usuario o contraseña incorrectos";
