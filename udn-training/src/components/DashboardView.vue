@@ -3,12 +3,12 @@
     <div class="overlay"></div>
     <h1 class="title">Bienvenido al Dashboard</h1>
     <div class="cards-container">
-      <div class="card" @click="$router.push('/dietas')">
+      <div v-if="esAdmin" class="card" @click="$router.push('/dietas')">
         <i class="fas fa-apple-alt"></i>
         <h2>Nutrición</h2>
-        <p>Planifica tus dietas y mejora tu alimentación.</p>
+        <p>Planif ica tus dietas y mejora tu alimentación.</p>
       </div>
-      <div class="card" @click="$router.push('/ejercicios')">
+      <div v-if="esAdmin" class="card" @click="$router.push('/ejercicios')">
         <i class="fas fa-dumbbell"></i>
         <h2>Training</h2>
         <p>Descubre rutinas de ejercicios personalizadas.</p>
@@ -23,7 +23,7 @@
         <h2>Perfil</h2>
         <p>Gestiona tu información personal y preferencias.</p>
       </div>
-      <div class="card error-card" @click="$router.push('/error')">
+      <div v-if="esAdmin" class="card error-card" @click="$router.push('/error')">
         <i class="fas fa-exclamation-triangle"></i>
         <h2>Usuarios</h2>
         <p>Accede a la gestión de usuarios (prueba de error).</p>
@@ -35,6 +35,17 @@
 <script>
 export default {
   name: "DashboardView",
+  data() {
+    return {
+      esAdmin: false, // 👈 Inicializa la variable
+    };
+  },
+  created() {
+    const rol = localStorage.getItem("rol"); // Retrieve role from localStorage
+    if (rol === "Administrador") {
+      this.esAdmin = true; // Set to true if the user is an admin
+    } // 👈 Si el rol es 'admin', mostrará las cards de admin
+  },
   mounted() {
     // Insertar el script de Chatbase al cargar el componente
     if (!window.chatbase || window.chatbase("getState") !== "initialized") {
@@ -59,6 +70,7 @@ export default {
     }
   },
 };
+
 </script>
 
 <style scoped>

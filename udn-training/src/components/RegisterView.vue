@@ -87,6 +87,7 @@ export default {
         contrasena: this.password,
         numero_telefonico_movil: this.telefono || null,
         estatus: "Activo",
+        rol: "Usuario", 
       };
 
       try {
