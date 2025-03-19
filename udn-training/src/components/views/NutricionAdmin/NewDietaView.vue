@@ -2,6 +2,17 @@
   <div>
     <h1>Agregar Nueva Dieta</h1>
     <form @submit.prevent="submitForm">
+      <!-- Seleccionar Usuario -->
+      <div>
+        <label>Selecciona Usuario:</label>
+        <select v-model="dieta.user_id" required>
+          <option value="" disabled>Selecciona un usuario</option>
+          <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+            {{ usuario.nombre_usuario }}
+          </option>
+        </select>
+      </div>
+
       <div>
         <label>Nombre:</label>
         <input type="text" v-model="dieta.nombre" required />
@@ -91,9 +102,20 @@ export default {
         dias_ejercicio: '',
         calorias_diarias: '',
         observaciones: '',
-        estatus: true
-      }
+        estatus: true,
+        user_id: null,  // Este campo es para almacenar el id del usuario seleccionado
+      },
+      usuarios: []  // Lista de usuarios que se llenará desde la API
     };
+  },
+  async created() {
+    // Obtener la lista de usuarios al cargar el componente
+    try {
+      const response = await axios.get('http://localhost:8000/api/usuarios');
+      this.usuarios = response.data;
+    } catch (error) {
+      console.error('Error al obtener los usuarios:', error);
+    }
   },
   methods: {
     async submitForm() {
