@@ -91,57 +91,67 @@
   </script>
   
   <style scoped>
-  h1 {
-    color: #2c3e50;
-  }
-  
-  form div {
-    margin-bottom: 12px;
-  }
-  
-  input, select, button {
-    display: block;
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-  }
-  
-  label {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 15px;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #2980b9;
-  }
-  
-  form {
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  input, select {
-    background-color: #e0e0e0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  input:focus, select:focus {
-    border-color: #3498db;
-    outline: none;
-  }
-  </style>
-  
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #e53935;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #e53935;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #d32f2f;
+}
+</style>

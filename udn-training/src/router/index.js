@@ -8,6 +8,8 @@ import EjerciciosAdminView from '../components/views/TrainingAdmin/EjerciciosAdm
 import ErrorView from "../components/ErrorView.vue"; // 🔹 Nueva vista
 import NewDietaView from '../components/views/NutricionAdmin/NewDietaView.vue';
 import NewEjercicioView from '@/components/TrainingAdmin/NewEjercicioView.vue';
+import ExpedienteMedico from '@/components/TrainingAdmin/ExpedienteMedico.vue';
+import NewExpediente from '@/components/TrainingAdmin/NewExpediente.vue';
 
 const routes = [
   { path: '/dietas', name: 'Dietas', component: DietasView }, // Ruta para dietas
@@ -18,7 +20,9 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: DashboardView },
   { path: '/register', name: 'Register', component: RegisterView }, // Ruta para registro
   { path: '/dietas/nueva', name: 'NuevaDieta', component: NewDietaView },
-  { path: '/ejercicios/nuevo', name: 'NuevoEjercicio', component: NewEjercicioView }
+  { path: '/ejercicios/nuevo', name: 'NuevoEjercicio', component: NewEjercicioView },
+  { path: '/expediente', name: 'Expediente', component: ExpedienteMedico },
+  { path: '/expedientes/nuevo', name: 'NuevoExpediente', component: NewExpediente },
 ];
 
 const router = createRouter({

@@ -28,6 +28,11 @@
         <h2>Usuarios</h2>
         <p>Accede a la gestión de usuarios (prueba de error).</p>
       </div>
+      <div v-if="esAdmin" class="card" @click="$router.push('/expediente')">
+        <i class="fas fa-notes-medical"></i>
+        <h2>Expediente Médico</h2>
+        <p>Consulta y administra los expedientes médicos.</p>
+      </div>
     </div>
   </div>
 </template>

@@ -1,52 +1,52 @@
 <template>
-  <div>
+  <div class="form-container">
     <h1>Agregar Nueva Dieta</h1>
     <form @submit.prevent="submitForm">
-      <div>
-        <label>Nombre:</label>
-        <input type="text" v-model="dieta.nombre" required />
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" v-model="dieta.nombre" required />
       </div>
 
-      <div>
-        <label>Género:</label>
-        <select v-model="dieta.genero" required>
+      <div class="form-group">
+        <label for="genero">Género:</label>
+        <select id="genero" v-model="dieta.genero" required>
           <option value="M">Masculino</option>
           <option value="H">Femenino</option>
           <option value="N/B">No Binario</option>
         </select>
       </div>
 
-      <div>
-        <label>Altura:</label>
-        <input type="number" v-model="dieta.altura" required />
+      <div class="form-group">
+        <label for="altura">Altura:</label>
+        <input type="number" id="altura" v-model="dieta.altura" required />
       </div>
 
-      <div>
-        <label>Peso:</label>
-        <input type="number" v-model="dieta.peso" required />
+      <div class="form-group">
+        <label for="peso">Peso:</label>
+        <input type="number" id="peso" v-model="dieta.peso" required />
       </div>
 
-      <div>
-        <label>Objetivo:</label>
-        <select v-model="dieta.objetivo" required>
+      <div class="form-group">
+        <label for="objetivo">Objetivo:</label>
+        <select id="objetivo" v-model="dieta.objetivo" required>
           <option value="Perdida de Peso">Perdida de Peso</option>
           <option value="Aumento de masa muscular">Aumento de masa muscular</option>
           <option value="Mantenimiento">Mantenimiento</option>
         </select>
       </div>
 
-      <div>
-        <label>Tipo de Ejercicio:</label>
-        <select v-model="dieta.tipo_ejercicios_recomendados" required>
+      <div class="form-group">
+        <label for="tipo_ejercicio">Tipo de Ejercicio:</label>
+        <select id="tipo_ejercicio" v-model="dieta.tipo_ejercicios_recomendados" required>
           <option value="Cardio">Cardio</option>
           <option value="Levantamiento de pesas">Levantamiento de pesas</option>
           <option value="Ejercicios Técnicos">Ejercicios Técnicos</option>
         </select>
       </div>
 
-      <div>
-        <label>Días de Ejercicio:</label>
-        <select v-model="dieta.dias_ejercicio" required>
+      <div class="form-group">
+        <label for="dias_ejercicio">Días de Ejercicio:</label>
+        <select id="dias_ejercicio" v-model="dieta.dias_ejercicio" required>
           <option value="1 dia a la semana">1 día a la semana</option>
           <option value="2 dias a la semana">2 días a la semana</option>
           <option value="3 dias a la semana">3 días a la semana</option>
@@ -55,26 +55,25 @@
         </select>
       </div>
 
-      <div>
-        <label>Calorías Diarias:</label>
-        <input type="number" v-model="dieta.calorias_diarias" required />
+      <div class="form-group">
+        <label for="calorias_diarias">Calorías Diarias:</label>
+        <input type="number" id="calorias_diarias" v-model="dieta.calorias_diarias" required />
       </div>
 
-      <div>
-        <label>Observaciones:</label>
-        <textarea v-model="dieta.observaciones"></textarea>
+      <div class="form-group">
+        <label for="observaciones">Observaciones:</label>
+        <textarea id="observaciones" v-model="dieta.observaciones"></textarea>
       </div>
 
-      <div>
-        <label>Estatus:</label>
-        <input type="checkbox" v-model="dieta.estatus" />
+      <div class="form-group">
+        <label for="estatus">Estatus:</label>
+        <input type="checkbox" id="estatus" v-model="dieta.estatus" />
       </div>
 
       <button type="submit">Guardar Dieta</button>
     </form>
-  </div><br><br>
+  </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -116,57 +115,67 @@ export default {
 </script>
 
 <style scoped>
-form div {
-  margin-bottom: 12px;
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-input, select, textarea, button {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
 }
 
 label {
+  font-size: 16px;
   font-weight: bold;
   color: #333;
 }
 
-button {
-  background-color: #d32f2f;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 15px;
-  font-size: 16px;
-}
-
-button:hover {
-  background-color: #b71c1c;
-}
-
-form {
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 input, select, textarea {
-  background-color: #e0e0e0;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  font-size: 14px;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: #d32f2f;
+  border-color: #e53935;
   outline: none;
 }
 
 textarea {
   resize: vertical;
   min-height: 100px;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #e53935;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #d32f2f;
 }
 </style>
