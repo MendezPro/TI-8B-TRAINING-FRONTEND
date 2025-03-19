@@ -77,30 +77,33 @@
   </script>
   
   <style scoped>
+  /* Estilo para la tabla */
   table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
   }
   
   th, td {
-    padding: 12px;
+    padding: 8px;  /* Reducido para mejor ajuste */
     border: 1px solid #ddd;
     text-align: left;
     font-family: 'Arial', sans-serif;
+    font-size: 12px; /* Reducido para más ajuste en pantallas pequeñas */
   }
   
   th {
     cursor: pointer;
-    background-color: #3498db;
+    background-color: #e74c3c; /* Rojo */
     color: white;
     font-weight: bold;
-    border-bottom: 2px solid #2980b9;
+    border-bottom: 2px solid #c0392b; /* Rojo oscuro */
   }
   
   th.active {
-    background-color: #2980b9;
+    background-color: #c0392b;
   }
   
   tr:nth-child(even) {
@@ -126,8 +129,24 @@
   }
   
   tbody td {
-    font-size: 14px;
+    font-size: 12px; /* Reducido para mejor ajuste */
     color: #555;
+  }
+  
+  /* Responsividad para pantallas pequeñas */
+  @media (max-width: 768px) {
+    th, td {
+      padding: 16px; /* Aún más reducido */
+      font-size: 10px; /* Ajustado para pantallas pequeñas */
+    }
+  
+    .arrow {
+      font-size: 10px; /* Tamaño reducido para el icono de flecha */
+    }
+  
+    table {
+      font-size: 10px; /* Ajuste de fuente general */
+    }
   }
   </style>
   
