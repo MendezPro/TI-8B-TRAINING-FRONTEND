@@ -23,7 +23,7 @@
         <h2>Perfil</h2>
         <p>Gestiona tu información personal y preferencias.</p>
       </div>
-      <div v-if="esAdmin" class="card error-card" @click="$router.push('/error')">
+      <div v-if="esAdmin" class="card error-card" @click="$router.push('/usuarios')">
         <i class="fas fa-exclamation-triangle"></i>
         <h2>Usuarios</h2>
         <p>Accede a la gestión de usuarios (prueba de error).</p>

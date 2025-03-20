@@ -7,8 +7,6 @@
       <input v-model="searchInput" />
     </form>
 
-    
-    
     <DietasTable 
       :entries="dataset" 
       :columns="dataColumns" 
