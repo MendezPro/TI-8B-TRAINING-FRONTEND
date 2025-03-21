@@ -4,19 +4,19 @@
         <form @submit.prevent="updateEjercicio">
             <div>
                 <label for="nombre">Nombre</label>
-                <input v-model="ejercicio.nombre" id="nombre" type="text" required />
+                <input v-model="ejercicio.Nombre" id="nombre" type="text" required />
             </div>
             <div>
                 <label for="descripcion">Descripción</label>
-                <textarea v-model="ejercicio.descripcion" id="descripcion" required></textarea>
+                <textarea v-model="ejercicio.Descripcion" id="descripcion" required></textarea>
             </div>
             <div>
                 <label for="video">Video</label>
-                <input v-model="ejercicio.video" id="video" type="text" />
+                <input v-model="ejercicio.Video" id="video" type="text" />
             </div>
             <div>
                 <label for="tipo">Tipo</label>
-                <select v-model="ejercicio.tipo" id="tipo">
+                <select v-model="ejercicio.Tipo" id="tipo">
                     <option value="Aerobico">Aeróbico</option>
                     <option value="Resistencia">Resistencia</option>
                     <option value="Flexibilidad">Flexibilidad</option>
@@ -25,14 +25,14 @@
             </div>
             <div>
                 <label for="estatus">Estatus</label>
-                <select v-model="ejercicio.estatus" id="estatus">
+                <select v-model="ejercicio.Estatus" id="estatus">
                     <option :value="true">Activo</option>
                     <option :value="false">Inactivo</option>
                 </select>
             </div>
             <div>
                 <label for="dificultad">Dificultad</label>
-                <select v-model="ejercicio.dificultad" id="dificultad">
+                <select v-model="ejercicio.Dificultad" id="dificultad">
                     <option value="Basico">Básico</option>
                     <option value="Intermedio">Intermedio</option>
                     <option value="Avanzado">Avanzado</option>
@@ -40,11 +40,11 @@
             </div>
             <div>
                 <label for="recomendaciones">Recomendaciones</label>
-                <textarea v-model="ejercicio.recomendaciones" id="recomendaciones"></textarea>
+                <textarea v-model="ejercicio.Recomendaciones" id="recomendaciones"></textarea>
             </div>
             <div>
                 <label for="restricciones">Restricciones</label>
-                <textarea v-model="ejercicio.restricciones" id="restricciones"></textarea>
+                <textarea v-model="ejercicio.Restricciones" id="restricciones"></textarea>
             </div>
             <button type="submit">Actualizar Ejercicio</button>
         </form>
@@ -60,14 +60,14 @@ export default {
     data() {
         return {
             ejercicio: {
-                nombre: '',
-                descripcion: '',
-                video: '',
+                nombre: '',         
+                descripcion: '',    
+                video: '',          
                 tipo: 'Aerobico',
-                estatus: true,
-                dificultad: 'Basico',
-                recomendaciones: '',
-                restricciones: ''
+                estatus: true,      
+                dificultad: 'Basico', 
+                recomendaciones: '', 
+                restricciones: ''  
             }
         };
     },
@@ -78,7 +78,16 @@ export default {
                 const data = response.data;
                 console.log(data); // Verifica la respuesta de la API
                 // Asigna los valores recibidos a la propiedad 'ejercicio'
-                this.ejercicio = { ...data };
+                this.ejercicio = {
+                    nombre: data.nombre,
+                    descripcion: data.descripcion,
+                    video: data.video,
+                    tipo: data.tipo,
+                    estatus: data.estatus,
+                    dificultad: data.dificultad,
+                    recomendaciones: data.recomendaciones,
+                    restricciones: data.restricciones
+                };
             })
             .catch(() => {
                 Swal.fire('Error', 'No se pudo cargar el ejercicio.', 'error');
@@ -112,7 +121,6 @@ export default {
 
 
 <style scoped>
-/* Estilos para el formulario de edición */
 form {
     max-width: 500px;
     margin: 0 auto;
@@ -123,18 +131,13 @@ form {
 }
 
 h1 {
-    color: #34495e;
+    color: #e74c3c;
     font-size: 28px;
     text-align: center;
     margin-bottom: 20px;
 }
 
-label {
-    font-weight: bold;
-}
-
-input,
-select {
+input, textarea, select {
     width: 100%;
     padding: 10px;
     margin: 8px 0;
@@ -143,18 +146,18 @@ select {
 }
 
 button {
-    background-color: #34495e;
+    background-color: #e74c3c;
     color: white;
-    border: none;
-    padding: 12px 20px;
+    padding: 12px;
     font-size: 16px;
-    cursor: pointer;
+    border: none;
     border-radius: 5px;
     width: 100%;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 button:hover {
-    background-color: #2c3e50;
+    background-color: #c0392b;
 }
 </style>

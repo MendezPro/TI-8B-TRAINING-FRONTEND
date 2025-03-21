@@ -29,7 +29,7 @@
 
 <script>
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 export default {
     name: 'UsuariosTable',
     props: {
@@ -86,19 +86,47 @@ export default {
         },
         async deleteUser(id) {
             const token = localStorage.getItem('access_token'); // Obtener el token del almacenamiento local
-            if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            // Usar SweetAlert2 para la confirmación
+            const result = await Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás recuperar este usuario después de eliminarlo!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
                 try {
+                    // Realizar la solicitud de eliminación
                     await axios.delete(`http://localhost:8000/api/usuarios/${id}`, {
                         headers: {
                             Authorization: `Bearer ${token}` // Incluir el token en el header
                         }
                     });
-                    this.$emit('userDeleted', id); // Notifica que se ha eliminado un usuario
+
+                    // Notificar que el usuario fue eliminado
+                    this.$emit('userDeleted', id); 
+
+                    // Mostrar confirmación
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'El usuario ha sido eliminado con éxito.',
+                        'success'
+                    );
                 } catch (error) {
                     console.error("Error al eliminar el usuario:", error.response?.data || error);
+                    Swal.fire(
+                        'Error',
+                        'Hubo un problema al eliminar el usuario.',
+                        'error'
+                    );
                 }
             }
         }
+
     }
 };
 </script>
