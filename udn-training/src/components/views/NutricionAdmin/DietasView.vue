@@ -47,6 +47,8 @@ export default {
         Observaciones: dieta.observaciones,
         Estatus: dieta.estatus ? 'Activo' : 'Inactivo',
         Fecha_Registro: dieta.fecha_registro,
+        usuario: dieta.usuario // Pasa el objeto usuario directamente
+        
       }));
     })
       .catch(error => {
