@@ -1,52 +1,36 @@
 <template>
     <div>
-        <h1>Editar Ejercicio</h1>
-        <form @submit.prevent="updateEjercicio">
+        <h1>Editar Usuario</h1>
+        <form @submit.prevent="updateUser">
             <div>
-                <label for="nombre">Nombre</label>
-                <input v-model="ejercicio.nombre" id="nombre" type="text" required />
+                <label for="nombre_usuario">Nombre de Usuario</label>
+                <input v-model="user.Nombre_Usuario" id="nombre_usuario" type="text" required />
             </div>
             <div>
-                <label for="descripcion">Descripción</label>
-                <textarea v-model="ejercicio.descripcion" id="descripcion" required></textarea>
+                <label for="correo_electronico">Correo Electrónico</label>
+                <input v-model="user.Correo_Electronico" id="correo_electronico" type="email" required />
             </div>
             <div>
-                <label for="video">Video</label>
-                <input v-model="ejercicio.video" id="video" type="text" />
-            </div>
-            <div>
-                <label for="tipo">Tipo</label>
-                <select v-model="ejercicio.tipo" id="tipo">
-                    <option value="Aerobico">Aeróbico</option>
-                    <option value="Resistencia">Resistencia</option>
-                    <option value="Flexibilidad">Flexibilidad</option>
-                    <option value="Fuerza">Fuerza</option>
-                </select>
+                <label for="numero_telefonico_movil">Número Telefónico</label>
+                <input v-model="user.Numero_Telefonico_Movil" id="numero_telefonico_movil" type="tel" required />
             </div>
             <div>
                 <label for="estatus">Estatus</label>
-                <select v-model="ejercicio.estatus" id="estatus">
-                    <option :value="true">Activo</option>
-                    <option :value="false">Inactivo</option>
+                <select v-model="user.Estatus" id="estatus">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    <option value="Bloqueado">Bloqueado</option>
+                    <option value="Suspendido">Suspendido</option>
                 </select>
             </div>
             <div>
-                <label for="dificultad">Dificultad</label>
-                <select v-model="ejercicio.dificultad" id="dificultad">
-                    <option value="Basico">Básico</option>
-                    <option value="Intermedio">Intermedio</option>
-                    <option value="Avanzado">Avanzado</option>
+                <label for="rol">Rol</label>
+                <select v-model="user.Rol" id="rol">
+                    <option value="Usuario">Usuario</option>
+                    <option value="Administrador">Administrador</option>
                 </select>
             </div>
-            <div>
-                <label for="recomendaciones">Recomendaciones</label>
-                <textarea v-model="ejercicio.recomendaciones" id="recomendaciones"></textarea>
-            </div>
-            <div>
-                <label for="restricciones">Restricciones</label>
-                <textarea v-model="ejercicio.restricciones" id="restricciones"></textarea>
-            </div>
-            <button type="submit">Actualizar Ejercicio</button>
+            <button type="submit">Actualizar Usuario</button>
         </form>
     </div>
 </template>
@@ -54,62 +38,83 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
 export default {
-    name: 'EditarEjercicio',
+    name: 'EditarUsuarioView',
     data() {
         return {
-            ejercicio: {
-                nombre: '',
-                descripcion: '',
-                video: '',
-                tipo: 'Aerobico',
-                estatus: true,
-                dificultad: 'Basico',
-                recomendaciones: '',
-                restricciones: ''
-            }
+            user: {
+                Nombre_Usuario: '',
+                Correo_Electronico: '',
+                Numero_Telefonico_Movil: '',
+                Estatus: 'Activo',
+                Rol: 'Usuario',
+            },
         };
     },
     mounted() {
-        const ejercicioId = this.$route.params.id;
-        axios.get(`http://localhost:8000/api/ejercicios/${ejercicioId}`)
+        const userId = this.$route.params.id;
+        const token = localStorage.getItem('access_token'); // Guarda el token en localStorage al hacer login
+
+        axios.get(`http://localhost:8000/api/usuarios/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}` // Añadir el token en el header
+            }
+        })
             .then(response => {
                 const data = response.data;
-                console.log(data); // Verifica la respuesta de la API
-                // Asigna los valores recibidos a la propiedad 'ejercicio'
-                this.ejercicio = { ...data };
+                this.user = {
+                    Nombre_Usuario: data.nombre_usuario,
+                    Correo_Electronico: data.correo_electronico,
+                    Numero_Telefonico_Movil: data.numero_telefonico_movil,
+                    Estatus: data.estatus, // Usar directamente el valor del backend (que es uno de los valores 'Activo', 'Inactivo', 'Bloqueado', 'Suspendido')
+                    Rol: data.rol === 'Administrador' ? 'Administrador' : 'Usuario', // Asignar correctamente el rol
+                };
             })
-            .catch(() => {
-                Swal.fire('Error', 'No se pudo cargar el ejercicio.', 'error');
+            .catch(error => {
+                console.error("Error al cargar el usuario:", error);
+                Swal.fire('Error', 'No se pudo cargar el usuario.', 'error');
             });
     },
     methods: {
-        updateEjercicio() {
-            const ejercicioId = this.$route.params.id;
-            axios.put(`http://localhost:8000/api/ejercicios/${ejercicioId}`, this.ejercicio)
+        updateUser() {
+            const userId = this.$route.params.id;
+            const token = localStorage.getItem('access_token'); // Añadir el token para la actualización también
+
+            axios.put(`http://localhost:8000/api/usuarios/${userId}`, {
+                nombre_usuario: this.user.Nombre_Usuario,
+                correo_electronico: this.user.Correo_Electronico,
+                numero_telefonico_movil: this.user.Numero_Telefonico_Movil,
+                estatus: this.user.Estatus, // No hacer la conversión, enviar el valor tal cual como 'Activo', 'Inactivo', etc.
+                fecha_actualizacion: new Date().toISOString(),
+                rol: this.user.Rol
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
                 .then(() => {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Ejercicio actualizado',
-                        text: 'El ejercicio se actualizó correctamente',
+                        title: 'Usuario actualizado',
+                        text: 'El usuario se actualizó correctamente',
                         timer: 2000,
                         showConfirmButton: false
                     });
-                    this.$router.push('/ejercicios'); // Redirige al listado de ejercicios
+                    this.$router.push('/usuarios');
                 })
-                .catch(() => {
+                .catch(error => {
+                    console.error("Error al actualizar el usuario:", error.response?.data || error);
+                     // ❌ Alerta de error
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'No se pudo actualizar el ejercicio'
+                        text: 'No se pudo actualizar el usuario'
                     });
                 });
         }
     }
-}
+};
 </script>
-
 
 <style scoped>
 /* Estilos para el formulario de edición */

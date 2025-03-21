@@ -97,6 +97,7 @@ export default {
           await axios.delete(`http://localhost:8000/api/ejercicios/${id}`);
           this.$emit('entryDeleted', id);
           Swal.fire('¡Eliminado!', 'El ejercicio ha sido eliminado con éxito.', 'success');
+          this.$router.push(`/ejercicios`);
         } catch (error) {
           Swal.fire('Error', 'Hubo un problema al eliminar el ejercicio.', 'error');
         }
@@ -116,6 +117,15 @@ table {
   overflow-x: auto;
   /* Permite desplazamiento horizontal en pantallas pequeñas */
 }
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 5px;
+    padding: 5px 10px;
+}
+
 button i {
     margin-right: 5px;
 }
