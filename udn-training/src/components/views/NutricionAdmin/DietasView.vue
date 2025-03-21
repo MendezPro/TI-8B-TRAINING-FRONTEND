@@ -129,7 +129,7 @@ input:focus {
 
 /* Contenedor principal */
 div {
-  max-width: 1000px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;

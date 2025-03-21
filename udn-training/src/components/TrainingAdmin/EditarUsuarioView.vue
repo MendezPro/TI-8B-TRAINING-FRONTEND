@@ -37,7 +37,7 @@
 
 <script>
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 export default {
     name: 'EditarUsuarioView',
     data() {
@@ -72,6 +72,7 @@ export default {
             })
             .catch(error => {
                 console.error("Error al cargar el usuario:", error);
+                Swal.fire('Error', 'No se pudo cargar el usuario.', 'error');
             });
     },
     methods: {
@@ -92,10 +93,23 @@ export default {
                 }
             })
                 .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Usuario actualizado',
+                        text: 'El usuario se actualizó correctamente',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                     this.$router.push('/usuarios');
                 })
                 .catch(error => {
                     console.error("Error al actualizar el usuario:", error.response?.data || error);
+                     // ❌ Alerta de error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo actualizar el usuario'
+                    });
                 });
         }
     }

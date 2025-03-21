@@ -35,7 +35,6 @@ export default {
         "Estatus", 
         "Dificultad", 
         "Fecha_Registro", 
-        "Fecha_Actualizacion", 
         "Recomendaciones", 
         "Restricciones"
       ],
@@ -54,7 +53,6 @@ export default {
           Estatus: ejercicio.estatus ? 'Activo' : 'Inactivo',
           Dificultad: ejercicio.dificultad,
           Fecha_Registro: ejercicio.fecha_registro,
-          Fecha_Actualizacion: ejercicio.fecha_actualizacion,
           Recomendaciones: ejercicio.recomendaciones,
           Restricciones: ejercicio.restricciones,
         }));
