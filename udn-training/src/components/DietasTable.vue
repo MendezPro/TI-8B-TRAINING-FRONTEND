@@ -6,6 +6,7 @@
           {{ capitalize(key) }}
           <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
         </th>
+        <th>Usuario Asignado</th> <!-- Nueva columna de usuario asignado -->
         <th>Operaciones</th>
       </tr>
     </thead>
@@ -14,6 +15,7 @@
         <td v-for="key in columns" :key="key">
           {{ entry[key] }}
         </td>
+        <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td> <!-- Mostrar nombre de usuario asignado -->
         <td>
           <button @click="editDieta(entry.ID)">
             <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar

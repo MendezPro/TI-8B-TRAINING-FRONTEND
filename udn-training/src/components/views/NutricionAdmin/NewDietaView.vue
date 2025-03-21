@@ -103,7 +103,8 @@ export default {
         calorias_diarias: '',
         observaciones: '',
         estatus: true,
-        user_id: null,  // Este campo es para almacenar el id del usuario seleccionado
+        user_id: this.selectedUserId   // Este campo es para almacenar el id del usuario seleccionado
+        
       },
       usuarios: []  // Lista de usuarios que se llenará desde la API
     };
