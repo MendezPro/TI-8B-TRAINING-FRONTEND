@@ -29,29 +29,35 @@
       return {
         searchInput: "",
         dataColumns: [
-          "ID", "Fecha_Nacimiento", "Sexo", "Curp", "Fecha_Registro", 
-          "Direccion", "Telefono", "Correo_Electronico", 
-          "Fecha_Ultima_De_Evaluacion", "Antecedentes_Medicos","Lesiones_Previas", "Presion_Arterial",
+          "nombre", "apellido",
+          "fecha_nacimiento", "sexo", "curp", "fecha_registro", 
+          "direccion", "telefono", "correo_electronico", 
+          "fecha_ultima_de_evaluacion", "antecedentes_medicos","lesiones_previas", "presion_arterial",
+          "estatura", "peso"
         ],
         dataset: []
       };
     },
     mounted() {
-      axios.get('http://localhost:8000/api/expediente_medico')
+      axios.get('http://localhost:8000/api/expedientes')
         .then(response => {
           this.dataset = response.data.map(exp => ({
-            ID: exp.id,
-            Fecha_Nacimiento: exp.fecha_nacimiento,
-            Sexo: exp.sexo,
-            Curp: exp.curp,
-            Fecha_Registro: exp.fecha_registro,
-            Direccion: exp.direccion || "N/A",
-            Telefono: exp.telefono || "N/A",
-            Correo_Electronico: exp.correo_electronico || "N/A",
-            Fecha_Ultima_De_Evaluacion: exp.fecha_ultima_de_evaluacion,
-            Antecedentes_Medicos: exp.antecedentes_medicos || "N/A",
-            Lesiones_Previas: exp.lesiones_previas || "N/A",
-            Presion_Arterial: exp.presion_arterial || "N/A",
+            _id: exp._id,
+            nombre: exp.nombre,
+            apellido: exp.apellido, 
+            fecha_nacimiento: exp.fecha_nacimiento,
+            sexo: exp.sexo,
+            curp: exp.curp,
+            fecha_registro: exp.fecha_registro,
+            direccion: exp.direccion || "N/A",
+            telefono: exp.telefono || "N/A",
+            correo_electronico: exp.correo_electronico || "N/A",
+            fecha_ultima_de_evaluacion: exp.fecha_ultima_de_evaluacion,
+            antecedentes_medicos: exp.antecedentes_medicos || "N/A",
+            lesiones_previas: exp.lesiones_previas || "N/A",
+            presion_arterial: exp.presion_arterial || "N/A",
+            estatura: exp.estatura || "N/A",
+            peso: exp.peso || "N/A"
           }));
         })
         .catch(error => {
