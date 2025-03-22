@@ -132,12 +132,10 @@ span.active {
   transition: transform 0.5s ease;
 }
 
-
-
 .slide img {
   width: 100%;
   height: 100%;
-  margin-left: 200px;
+  margin-left: 135px;
   object-fit: cover;
 }
 </style>
