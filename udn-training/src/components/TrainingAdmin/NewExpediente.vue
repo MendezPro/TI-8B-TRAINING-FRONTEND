@@ -116,9 +116,10 @@ export default {
         fecha_ultima_de_evaluacion: new Date(this.expediente.fecha_ultima_de_evaluacion).toISOString().split('T')[0]
       };
 
-      axios.post('http://localhost:8000/api/expediente_medico', expedienteData)
+      axios.post('http://localhost:8000/api/expedientes', expedienteData)
         .then(response => {
           console.log('Expediente agregado:', response.data);
+          this.$router.push('/expediente');
         })
         .catch(error => {
           console.error('Error al agregar expediente:', error);

@@ -14,7 +14,7 @@ import UsuariosView from '@/components/TrainingAdmin/UsuariosView.vue';
 import EditarUsuarioView from '@/components/TrainingAdmin/EditarUsuarioView.vue';
 import EditarDietas from '@/components/views/NutricionAdmin/EditarDietas.vue';
 import EditarEjercicios from '@/components/views/TrainingAdmin/EditarEjercicios.vue';
-
+import EditarExpediente from '@/components/TrainingAdmin/EditarExpediente.vue';
 
 const routes = [
   { path: '/dietas', name: 'Dietas', component: DietasView }, // Ruta para dietas
@@ -32,6 +32,7 @@ const routes = [
   { path: '/usuarios/editar/:id', name: 'EditarUsuario', component: EditarUsuarioView },
   { path: '/dietas/editar/:id', name: 'EditarDieta', component: EditarDietas },
   { path: '/ejercicios/editar/:id', name: 'EditarEjercicio', component: EditarEjercicios },
+  { path: '/expedientes/editar/:curp', name: 'EditarExpediente', component: EditarExpediente },
 ];
 
 const router = createRouter({
