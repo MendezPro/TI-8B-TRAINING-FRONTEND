@@ -77,6 +77,14 @@
         <input type="number" v-model="expediente.estatura" min="0" />
       </div>
 
+      <div>
+        <label for="usuario_id">Usuario</label>
+        <select v-model="expediente.usuario_id" id="usuario_id" required>
+          <option v-for="user in usuarios" :key="user.id" :value="user.id">
+            {{ user.nombre_usuario }}
+          </option>
+        </select>
+      </div>
       <button type="submit">Guardar Expediente</button>
     </form>
   </div>
@@ -103,9 +111,20 @@ export default {
         presion_arterial: '',
         peso: '',
         estatura: '',
-        fecha_registro: new Date().toISOString()
-      }
+        fecha_registro: new Date().toISOString(),
+        usuario_id: ''
+      },
+      usuarios: []
     };
+  }, mounted() {
+    // Cargar los usuarios desde la API
+    axios.get('http://localhost:8000/api/usuarios')
+      .then(response => {
+        this.usuarios = response.data;
+      })
+      .catch(error => {
+        console.error('Error al cargar usuarios:', error);
+      });
   },
   methods: {
     submitForm() {
