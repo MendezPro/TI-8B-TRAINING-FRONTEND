@@ -55,6 +55,9 @@ export default {
           Fecha_Registro: ejercicio.fecha_registro,
           Recomendaciones: ejercicio.recomendaciones,
           Restricciones: ejercicio.restricciones,
+          usuario: ejercicio.usuario // Pasa el objeto usuario directamente
+
+
         }));
       })
       .catch(error => {

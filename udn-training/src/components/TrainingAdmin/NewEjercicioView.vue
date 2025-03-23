@@ -1,96 +1,117 @@
 <template>
-    <div>
-      <h1>Agregar Nuevo Ejercicio</h1>
-      <form @submit.prevent="submitForm">
-        <div>
-          <label>Nombre:</label>
-          <input type="text" v-model="ejercicio.nombre" required />
-        </div>
-  
-        <div>
-          <label>Descripción:</label>
-          <input type="text" v-model="ejercicio.descripcion" required />
-        </div>
-  
-        <div>
-          <label>Video URL:</label>
-          <input type="text" v-model="ejercicio.video" />
-        </div>
-  
-        <div>
-          <label>Tipo:</label>
-          <select v-model="ejercicio.tipo" required>
-            <option value="Aerobico">Aeróbico</option>
-            <option value="Resistencia">Resistencia</option>
-            <option value="Flexibilidad">Flexibilidad</option>
-            <option value="Fuerza">Fuerza</option>
-          </select>
-        </div>
-  
-        <div>
-          <label>Dificultad:</label>
-          <select v-model="ejercicio.dificultad" required>
-            <option value="Basico">Básico</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-          </select>
-        </div>
-  
-        <div>
-          <label>Recomendaciones:</label>
-          <input type="text" v-model="ejercicio.recomendaciones" />
-        </div>
-  
-        <div>
-          <label>Restricciones:</label>
-          <input type="text" v-model="ejercicio.restricciones" />
-        </div>
-  
-        <div>
-          <label>Estatus:</label>
-          <input type="checkbox" v-model="ejercicio.estatus" />
-        </div>
-  
-        <button type="submit">Guardar Ejercicio</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    name: 'NewEjercicio',
-    data() {
-      return {
-        ejercicio: {
-          nombre: '',
-          descripcion: '',
-          video: '',
-          tipo: 'Aerobico', // Valor por defecto
-          estatus: true,
-          dificultad: 'Basico', // Valor por defecto
-          recomendaciones: '',
-          restricciones: ''
-        }
-      };
-    },
-    methods: {
-      async submitForm() {
-        try {
-          await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio);
-          console.log('Ejercicio guardado correctamente');
-          this.$router.push('/ejercicios'); // Redirige a la vista de administración
-        } catch (error) {
-          console.error('Error al guardar ejercicio:', error);
-          alert('Error al guardar ejercicio');
-        }
+  <div>
+    <h1>Agregar Nuevo Ejercicio</h1>
+    <form @submit.prevent="submitForm">
+      <div>
+        <label>Nombre:</label>
+        <input type="text" v-model="ejercicio.nombre" required />
+      </div>
+
+      <div>
+        <label>Descripción:</label>
+        <input type="text" v-model="ejercicio.descripcion" required />
+      </div>
+
+      <div>
+        <label>Video URL:</label>
+        <input type="text" v-model="ejercicio.video" />
+      </div>
+
+      <div>
+        <label>Tipo:</label>
+        <select v-model="ejercicio.tipo" required>
+          <option value="Aerobico">Aeróbico</option>
+          <option value="Resistencia">Resistencia</option>
+          <option value="Flexibilidad">Flexibilidad</option>
+          <option value="Fuerza">Fuerza</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Dificultad:</label>
+        <select v-model="ejercicio.dificultad" required>
+          <option value="Basico">Básico</option>
+          <option value="Intermedio">Intermedio</option>
+          <option value="Avanzado">Avanzado</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Recomendaciones:</label>
+        <input type="text" v-model="ejercicio.recomendaciones" />
+      </div>
+
+      <div>
+        <label>Restricciones:</label>
+        <input type="text" v-model="ejercicio.restricciones" />
+      </div>
+
+      <div>
+        <label>Estatus:</label>
+        <input type="checkbox" v-model="ejercicio.estatus" />
+      </div>
+
+      <!-- Seleccionar Usuario -->
+      <div>
+        <label>Selecciona Usuario:</label>
+        <select v-model="ejercicio.user_id" required>
+          <option value="" disabled>Selecciona un usuario</option>
+          <option v-for="usuario in usuarios" :key="usuario.id" :value="usuario.id">
+            {{ usuario.nombre_usuario }}
+          </option>
+        </select>
+      </div>
+
+      <button type="submit">Guardar Ejercicio</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'NewEjercicio',
+  data() {
+    return {
+      ejercicio: {
+        nombre: '',
+        descripcion: '',
+        video: '',
+        tipo: 'Aerobico', // Valor por defecto
+        estatus: true,
+        dificultad: 'Basico', // Valor por defecto
+        recomendaciones: '',
+        restricciones: '',
+        user_id: this.selectedUserId
+      },
+      usuarios: []  // Lista de usuarios que se llenará desde la API
+    };
+  }, async created() {
+    // Obtener la lista de usuarios al cargar el componente
+    try {
+      const response = await axios.get('http://localhost:8000/api/usuarios');
+      this.usuarios = response.data;
+    } catch (error) {
+      console.error('Error al obtener los usuarios:', error);
+    }
+  },
+  methods: {
+    async submitForm() {
+      try {
+        await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio);
+        console.log('Ejercicio guardado correctamente');
+        this.$router.push('/ejercicios'); // Redirige a la vista de administración
+      } catch (error) {
+        console.error('Error al guardar ejercicio:', error);
+        alert('Error al guardar ejercicio');
       }
     }
-  };
-  </script>
-  
-  <style scoped>
+  }
+};
+</script>
+
+<style scoped>
 .form-container {
   max-width: 600px;
   margin: 0 auto;
@@ -120,7 +141,9 @@ label {
   color: #333;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -130,7 +153,9 @@ input, select, textarea {
   font-size: 14px;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   border-color: #e53935;
   outline: none;
 }
