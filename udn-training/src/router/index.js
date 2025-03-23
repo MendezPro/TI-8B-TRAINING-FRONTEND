@@ -15,6 +15,11 @@ import EditarUsuarioView from '@/components/TrainingAdmin/EditarUsuarioView.vue'
 import EditarDietas from '@/components/views/NutricionAdmin/EditarDietas.vue';
 import EditarEjercicios from '@/components/views/TrainingAdmin/EditarEjercicios.vue';
 import EditarExpediente from '@/components/TrainingAdmin/EditarExpediente.vue';
+import PerfilView from '@/components/PerfilView.vue';
+import MisDietas from '@/components/views/NutricionAdmin/MisDietas.vue';
+import MisEjercicios from '@/components/TrainingAdmin/MisEjercicios.vue';
+import MisDatos from '@/components/TrainingCliente/MisDatos.vue';
+import MiExpediente from '@/components/TrainingCliente/MiExpediente.vue';
 
 const routes = [
   { path: '/dietas', name: 'Dietas', component: DietasView }, // Ruta para dietas
@@ -33,6 +38,11 @@ const routes = [
   { path: '/dietas/editar/:id', name: 'EditarDieta', component: EditarDietas },
   { path: '/ejercicios/editar/:id', name: 'EditarEjercicio', component: EditarEjercicios },
   { path: '/expedientes/editar/:curp', name: 'EditarExpediente', component: EditarExpediente },
+  { path: '/perfil', name: 'Perfil', component: PerfilView },
+  { path: '/perfil/misdietas', name: 'MisDietas', component: MisDietas },
+  { path: '/perfil/misejercicios', name: 'MisEjercicios', component: MisEjercicios },
+  { path: '/perfil/misdatos', name: 'MisDatos', component: MisDatos },
+  {path: '/perfil/miexpediente', name: 'MiExpediente', component: MiExpediente },
 ];
 
 const router = createRouter({
