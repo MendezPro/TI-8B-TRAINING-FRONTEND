@@ -103,7 +103,13 @@ export default {
             })
             .catch(error => {
                 console.error("Error al cargar la dieta:", error);
-                this.showAlert('Error al cargar la dieta', 'error');
+                console.error("Error al cargar la dieta:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Error al cargar la dieta',
+                    confirmButtonText: 'OK'
+                });
             });
     },
     methods: {
@@ -116,25 +122,25 @@ export default {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 // ✅ Alerta de éxito con SweetAlert2
-            Swal.fire({
-                icon: 'success',
-                title: '¡Éxito!',
-                text: 'Dieta actualizada correctamente',
-                timer: 2000, // Duración de la alerta (opcional)
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: 'Dieta actualizada correctamente',
+                    timer: 2000, // Duración de la alerta (opcional)
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
                 this.$router.push('/dietas');
             } catch (error) {
                 console.error("Error al actualizar la dieta:", error);
-                
-            // ❌ Alerta de error con SweetAlert2
-            Swal.fire({
-                icon: 'error',
-                title: '¡Error!',
-                text: 'Error al actualizar la dieta',
-                confirmButtonText: 'OK'
-            });
+
+                // ❌ Alerta de error con SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Error al actualizar la dieta',
+                    confirmButtonText: 'OK'
+                });
             }
         },
     }
