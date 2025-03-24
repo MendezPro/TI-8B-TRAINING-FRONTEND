@@ -1,34 +1,37 @@
 <template>
-  <div class="carousel">
-    <!-- Navegación -->
-    <div class="navigate">
-      <div class="toggle-page left">
-        <i @click="prevSlide" class="fas fa-chevron-left"></i>
+  <div class="carousel-container">
+    <div class="carousel">
+      <!-- Navegación -->
+      <div class="navigate">
+        <div class="toggle-page left">
+          <i @click="prevSlide" class="fas fa-chevron-left"></i>
+        </div>
+
+        <div class="toggle-page right">
+          <i @click="nextSlide" class="fas fa-chevron-right"></i>
+        </div>
       </div>
 
-      <div class="toggle-page right">
-        <i @click="nextSlide" class="fas fa-chevron-right"></i>
+      <!-- Paginación -->
+      <div class="pagination">
+        <span
+          v-for="(slide, index) in images"
+          :key="index"
+          :class="{ active: index + 1 === currentSlide }"
+          @click="currentSlide = index + 1"
+        ></span>
       </div>
-    </div>
 
-    <!-- Paginación -->
-    <div class="pagination">
-      <span
-        v-for="(slide, index) in images"
-        :key="index"
-        :class="{ active: index + 1 === currentSlide }"
-        @click="currentSlide = index + 1"
-      ></span>
-    </div>
-
-    <!-- Mostrar imágenes -->
-    <div class="slides">
-      <div v-for="(image, index) in images" :key="index" class="slide">
-        <img v-show="currentSlide === index + 1" :src="'data:image/jpeg;base64,' + image.imageBase64" />
+      <!-- Mostrar imágenes -->
+      <div class="slides">
+        <div v-for="(image, index) in images" :key="index" class="slide">
+          <img v-show="currentSlide === index + 1" :src="'data:image/jpeg;base64,' + image.imageBase64" />
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import { ref, onMounted } from 'vue';
@@ -77,9 +80,16 @@ export default {
 </script>
 
 <style scoped>
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Esto hace que el contenedor ocupe toda la altura de la pantalla */
+}
+
 .carousel {
   position: relative;
-  width: 100%;
+  width: 90%; /* Ajusta el ancho según el tamaño que desees */
   height: 400px;
   overflow: hidden;
 }
