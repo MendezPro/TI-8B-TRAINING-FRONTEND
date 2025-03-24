@@ -28,6 +28,13 @@
             <td>{{ ejercicio.restricciones }}</td>
           </tr>
         </tbody>
+        <tbody v-if="ejercicios.length === 0">
+          <tr>
+            <td colspan="9" style="text-align: center; color: #e74c3c; font-weight: bold;">
+              🚨 Aún no tienes ejercicios asignados.
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </template>
