@@ -14,7 +14,6 @@
 </template>
 
 <script>
-
 import {
   Chart,
   CategoryScale,
@@ -56,31 +55,43 @@ export default {
     this.fetchUsuarios();
   },
   methods: {
-    async fetchUsuarios() {
-      try {
-        const response = await axios.get("http://localhost:8000/api/usuarios");
-        this.usuarios = response.data;
-      } catch (error) {
-        console.error("Error al obtener usuarios:", error);
-      }
-    },
-    async fetchProgress() {
-  if (!this.selectedUser) {
-    this.updateChart(Array(31).fill(0)); // Mostrar gráfica vacía si no hay usuario seleccionado
-    return;
-  }
-  try {
-    const response = await axios.get(
-      `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}`
-    );
-    const progressData = response.data.data || Array(31).fill(0); // Asegurarse de que siempre haya datos
-    this.hasData = progressData.some((value) => value > 0); // Verifica si hay datos
-    this.updateChart(progressData);
-  } catch (error) {
-    console.error("Error al obtener progreso:", error);
-    this.updateChart(Array(31).fill(0)); // Mostrar gráfica vacía en caso de error
-  }
-},
+  async fetchUsuarios() {
+    try {
+      const token = localStorage.getItem('access_token'); // Obtener el token
+      const response = await axios.get("http://localhost:8000/api/usuarios", {
+        headers: {
+          Authorization: `Bearer ${token}` // Incluir el token en los encabezados
+        }
+      });
+      this.usuarios = response.data;
+    } catch (error) {
+      console.error("Error al obtener usuarios:", error);
+    }
+  },
+
+  async fetchProgress() {
+    if (!this.selectedUser) {
+      this.updateChart(Array(31).fill(0)); // Mostrar gráfica vacía si no hay usuario seleccionado
+      return;
+    }
+    try {
+      const token = localStorage.getItem('access_token'); // Obtener el token
+      const response = await axios.get(
+        `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Incluir el token en los encabezados
+          }
+        }
+      );
+      const progressData = response.data.data || Array(31).fill(0); // Asegurarse de que siempre haya datos
+      this.hasData = progressData.some((value) => value > 0); // Verifica si hay datos
+      this.updateChart(progressData);
+    } catch (error) {
+      console.error("Error al obtener progreso:", error);
+      this.updateChart(Array(31).fill(0)); // Mostrar gráfica vacía en caso de error
+    }
+  },
     processData(data) {
       const days = Array(31).fill(0);
       if (Array.isArray(data)) {
@@ -131,22 +142,30 @@ export default {
 </script>
 
 <style scoped>
+/* Cambié la tipografía a 'Montserrat' */
+body, div {
+  font-family: 'Montserrat', sans-serif;
+}
+
 h1 {
   text-align: center;
   font-size: 24px;
   margin-bottom: 20px;
 }
+
 label {
   display: block;
   margin-bottom: 10px;
   font-weight: bold;
 }
+
 select {
   display: block;
   margin: 0 auto 20px;
   padding: 10px;
   font-size: 16px;
 }
+
 canvas {
   max-width: 100%;
   width: 400px;
@@ -154,6 +173,7 @@ canvas {
   margin: 0 auto;
   border: 1px solid red;
 }
+
 p {
   text-align: center;
   font-size: 14px;

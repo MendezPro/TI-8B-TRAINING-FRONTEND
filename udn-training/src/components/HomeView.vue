@@ -26,7 +26,6 @@
   </div>
 </template>
 
-
 <script>
 import CarouselWrapper from "@/components/CarouselWrapper.vue";
 
@@ -52,6 +51,9 @@ export default {
 </script>
 
 <style scoped>
+/* Importando la fuente Roboto desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
 /* Estilos generales */
 .hero-image img {
   width: 300%; /* Ajusta este valor según el tamaño que prefieras */
@@ -60,7 +62,7 @@ export default {
 }
 
 .home-container {
-  font-family: "Arial", sans-serif;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente a Roboto */
   color: white;
   background-color: #000;
 }

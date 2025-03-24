@@ -76,6 +76,7 @@ export default {
           localStorage.setItem("access_token", response.data.access_token);
           localStorage.setItem("rol", response.data.rol);
           localStorage.setItem("usuario_id", response.data.usuario_id); // Guardar el identificador del usuario
+          console.log("Token guardado:", response.data.access_token);
           this.$router.push("/dashboard");
         } else {
           this.error = "Usuario o contraseña incorrectos";
@@ -90,6 +91,9 @@ export default {
 </script>
 
 <style scoped>
+/* Importando la fuente Roboto desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
 /* Fondo de la página */
 .login-page {
   display: flex;
@@ -110,7 +114,7 @@ export default {
   backdrop-filter: blur(15px);
   box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.8);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente a Roboto */
   font-size: 16px;
   letter-spacing: 0.5px;
   transition: all 0.3s ease-in-out;
@@ -121,13 +125,11 @@ export default {
   box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.3);
 }
 
-
-
-
 h2 {
   color: white;
   font-size: 24px;
   margin-bottom: 15px;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente del título */
 }
 
 /* Botones de redes sociales */
@@ -176,6 +178,7 @@ h2 {
   color: white;
   font-size: 14px;
   margin-bottom: 5px;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente de las etiquetas */
 }
 
 .input-group input {
@@ -184,6 +187,7 @@ h2 {
   border-radius: 5px;
   border: none;
   font-size: 16px;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente de los inputs */
 }
 
 /* Botón de inicio de sesión */
@@ -196,6 +200,7 @@ h2 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente del botón */
 }
 
 /* Mensaje de error */

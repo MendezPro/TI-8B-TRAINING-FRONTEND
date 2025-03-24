@@ -32,7 +32,12 @@ export default {
     };
   },
   mounted() {
-    axios.get('http://localhost:8000/api/dietas')
+    const token = localStorage.getItem('access_token'); 
+    axios.get('http://localhost:8000/api/dietas', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then(response => {
       this.dataset = response.data.map(dieta => ({
         ID: dieta.id,

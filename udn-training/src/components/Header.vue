@@ -25,6 +25,9 @@ export default {
 </script>
 
 <style scoped>
+/* Importando la fuente Roboto desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
 /* Barra de navegación */
 .navbar {
   display: flex;
@@ -32,6 +35,7 @@ export default {
   align-items: center;
   padding: 15px 40px;
   background-color: black;
+  font-family: 'Roboto', sans-serif; /* Cambié la fuente a Roboto */
 }
 
 /* Logo */
@@ -118,4 +122,3 @@ export default {
   background: darkred;
 }
 </style>
-```

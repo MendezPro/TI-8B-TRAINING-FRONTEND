@@ -1,13 +1,13 @@
 <template>
   <div class="register-page">
     <div class="register-container">
-      <h2>Regístrate</h2>
+      <h2 class="montserrat">Regístrate</h2>
 
-      <p class="or-divider">Completa tus datos</p>
+      <p class="or-divider montserrat">Completa tus datos</p>
 
       <form @submit.prevent="register">
         <div class="input-group">
-          <label>Nombre de Usuario</label>
+          <label class="montserrat">Nombre de Usuario</label>
           <input
             type="text"
             v-model="nombreUsuario"
@@ -17,7 +17,7 @@
         </div>
 
         <div class="input-group">
-          <label>Email</label>
+          <label class="montserrat">Email</label>
           <input
             type="email"
             v-model="correo"
@@ -27,7 +27,7 @@
         </div>
 
         <div class="input-group">
-          <label>Número Telefónico</label>
+          <label class="montserrat">Número Telefónico</label>
           <input
             type="tel"
             v-model="telefono"
@@ -36,7 +36,7 @@
         </div>
 
         <div class="input-group">
-          <label>Contraseña</label>
+          <label class="montserrat">Contraseña</label>
           <input
             type="password"
             v-model="password"
@@ -45,16 +45,16 @@
           />
         </div>
 
-        <button type="submit" class="register-btn">Regístrate</button>
+        <button type="submit" class="register-btn montserrat">Regístrate</button>
         <button
           type="button"
-          class="cancel-btn"
+          class="cancel-btn montserrat"
           @click="$router.push('/login')"
         >
           Cancelar
         </button>
 
-        <p v-if="error" class="error-message">{{ error }}</p>
+        <p v-if="error" class="error-message montserrat">{{ error }}</p>
       </form>
     </div>
   </div>
@@ -110,20 +110,21 @@ export default {
   },
 };
 </script>
-  <style scoped>
-  /* Fondo de la página */
-  .register-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: url("@/assets/fondologin.jpg") no-repeat center center;
-    background-size: cover;
-  }
-  
-  /* Contenedor del formulario */
-  .register-container {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(50, 50, 50, 0.6));
+
+<style scoped>
+/* Fondo de la página */
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("@/assets/fondologin.jpg") no-repeat center center;
+  background-size: cover;
+}
+
+/* Contenedor del formulario */
+.register-container {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(50, 50, 50, 0.6));
   padding: 30px;
   border-radius: 15px;
   text-align: center;
@@ -131,80 +132,84 @@ export default {
   backdrop-filter: blur(15px);
   box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.8);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   letter-spacing: 0.5px;
   transition: all 0.3s ease-in-out;
-  }
+}
 
-  .register-container:hover {
+.register-container:hover {
   transform: translateY(-5px); /* Mueve la card en vez de escalarla */
   box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.3);
 }
-  
-  h2 {
-    color: white;
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
-  
-  .or-divider {
-    color: white;
-    margin: 10px 0;
-    font-size: 14px;
-    opacity: 0.7;
-  }
-  
-  /* Campos de entrada */
-  .input-group {
-    text-align: left;
-    margin-bottom: 15px;
-  }
-  
-  .input-group label {
-    display: block;
-    color: white;
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-  
-  .input-group input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-  }
-  
-  /* Botones */
-  .register-btn {
-    width: 100%;
-    padding: 10px;
-    background: red;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .cancel-btn {
-    width: 100%;
-    padding: 10px;
-    background: gray;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 5px;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  </style>
-  
+
+h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.or-divider {
+  color: white;
+  margin: 10px 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Campos de entrada */
+.input-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+}
+
+/* Botones */
+.register-btn {
+  width: 100%;
+  padding: 10px;
+  background: red;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  width: 100%;
+  padding: 10px;
+  background: gray;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Estilo de la tipografía Montserrat */
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+</style>

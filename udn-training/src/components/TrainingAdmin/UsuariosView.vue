@@ -33,7 +33,12 @@
       };
     },
     mounted() {
-      axios.get('http://localhost:8000/api/usuarios')
+      const token = localStorage.getItem('access_token'); 
+      axios.get('http://localhost:8000/api/usuarios', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
         .then(response => {
           this.dataset = response.data.map(usuario => ({
             ID: usuario.id,

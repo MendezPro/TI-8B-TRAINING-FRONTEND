@@ -39,7 +39,12 @@
       };
     },
     mounted() {
-      axios.get('http://localhost:8000/api/expedientes')
+      const token = localStorage.getItem('access_token'); 
+      axios.get('http://localhost:8000/api/expedientes', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
         .then(response => {
           this.dataset = response.data.map(exp => ({
             _id: exp._id,

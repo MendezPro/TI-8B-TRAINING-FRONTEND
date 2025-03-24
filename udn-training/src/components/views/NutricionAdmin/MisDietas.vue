@@ -47,10 +47,15 @@
       };
     },
     mounted() {
+      const token = localStorage.getItem('access_token'); 
       // Obtener el id del usuario logueado desde localStorage
       const usuario_id = localStorage.getItem("usuario_id");
       // Llamada al nuevo endpoint que filtra las dietas según el user_id
-      axios.get(`http://localhost:8000/api/dietas/usuario/${usuario_id}`)
+      axios.get(`http://localhost:8000/api/dietas/usuario/${usuario_id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
         .then(response => {
           this.dietas = response.data;
         })

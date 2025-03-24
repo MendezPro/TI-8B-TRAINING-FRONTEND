@@ -60,8 +60,13 @@ export default {
   },
   methods: {
     fetchEjercicios() {
+  const token = localStorage.getItem('access_token');
   axios
-    .get('http://localhost:8000/api/ejercicios')
+    .get('http://localhost:8000/api/ejercicios', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((response) => {
       this.dataset = response.data.map((ejercicio) => ({
         ID: ejercicio.id,
@@ -74,7 +79,7 @@ export default {
         Fecha_Registro: new Date(ejercicio.fecha_registro).toLocaleDateString(),
         Recomendaciones: ejercicio.recomendaciones || 'N/A',
         Restricciones: ejercicio.restricciones || 'N/A',
-        completado: ejercicio.completado, // Estado de completado
+        completado: ejercicio.completado,
         usuario: ejercicio.usuario || { nombre_usuario: 'No asignado' },
       }));
     })
