@@ -52,12 +52,7 @@
           <input type="checkbox" v-model="ejercicio.estatus" />
         </div>
 
-        <!-- Nuevo campo para 'completado' si deseas que se defina al crear -->
-        <div class="form-group">
-          <label>¿Completado?</label>
-          <input type="checkbox" v-model="ejercicio.completado" />
-        </div>
-
+      
         <!-- Nuevo campo para 'objetivo' -->
         <div class="form-group">
           <label>Objetivo:</label>
