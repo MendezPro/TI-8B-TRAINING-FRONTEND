@@ -4,14 +4,6 @@
       <div class="footer-logo">
         <img src="@/assets/logo1.png" alt="Gym Bulls" />
       </div>
-      
-      <div class="footer-links">
-        <ul>
-          <li><router-link to="/">Inicio</router-link></li>
-          <li><router-link to="/services">Servicios</router-link></li>
-          <li><router-link to="/contact">Contacto</router-link></li>
-        </ul>
-      </div>
 
       <div class="footer-social">
         <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>

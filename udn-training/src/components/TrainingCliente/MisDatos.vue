@@ -67,40 +67,44 @@
 </script>
   
 <style scoped>
-
 .mis-datos {
     padding: 20px;
     max-width: 800px;
     margin: auto;
 }
-  
-  .mis-datos h1 {
+
+.mis-datos h1 {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .card {
-    background: #fff;
+    color: #222; /* Un gris oscuro para el título */
+}
+
+.card {
+    background: #d9d9d9; /* Un gris claro */
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más notoria */
     padding: 20px;
-  }
-  
-  .field {
-    margin-bottom: 15px;
-  }
-  
-  .field label {
+    text-align: center; /* Centra el contenido */
+}
+
+.field label {
     font-weight: bold;
     display: block;
     margin-bottom: 5px;
-    color: #555;
-  }
-  
-  .field span {
+    color: #444; /* Un gris medio */
+}
+
+.field span {
     font-size: 1.1rem;
-    color: #333;
-  }
+    color: #222; /* Gris oscuro para el contenido */
+    display: block; /* Hace que el span ocupe todo el ancho y se centre */
+}
+
+
+.field span {
+    font-size: 1.1rem;
+    color: #222; /* Gris oscuro para el contenido */
+}
+
 </style>
   
