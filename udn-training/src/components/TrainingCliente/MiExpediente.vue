@@ -16,18 +16,25 @@
             <p><strong>Estatura:</strong> {{ expediente.estatura }} cm</p>
             <p><strong>Peso:</strong> {{ expediente.peso }} kg</p>
             <p><strong>Fecha de registro:</strong> {{ new Date(expediente.fecha_registro).toLocaleString() }}</p>
+        </div><br><br>
+        <div v-if="expediente">
+            <!-- ✅ Mostrar gráfica de presión arterial -->
+            <BloodPressureChart :expediente="expediente" />
         </div>
         <div v-else>
-            <p>Cargando expediente...</p>
+            <p v-if="expediente === null">🚨 Aún no tienes asignado un expediente médico.</p>
+            <p v-else>Cargando expediente...</p>
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
-
+import BloodPressureChart from '@/components/BloodPressureChart.vue'
 export default {
     name: 'MiExpediente',
+    components: { BloodPressureChart },
+    
     data() {
         return {
             expediente: null

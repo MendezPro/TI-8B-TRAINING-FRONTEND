@@ -52,6 +52,18 @@
           <input type="checkbox" v-model="ejercicio.estatus" />
         </div>
 
+        <!-- Nuevo campo para 'completado' si deseas que se defina al crear -->
+        <div class="form-group">
+          <label>¿Completado?</label>
+          <input type="checkbox" v-model="ejercicio.completado" />
+        </div>
+
+        <!-- Nuevo campo para 'objetivo' -->
+        <div class="form-group">
+          <label>Objetivo:</label>
+          <input type="text" v-model="ejercicio.objetivo" placeholder="Ej: Aumentar resistencia" />
+        </div>
+
         <div class="form-group">
           <label>Selecciona Usuario:</label>
           <select v-model="ejercicio.user_id" required>
@@ -70,7 +82,7 @@
 
 <script>
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 export default {
   name: 'NewEjercicio',
   data() {
@@ -85,6 +97,8 @@ export default {
         recomendaciones: '',
         restricciones: '',
         user_id: null,
+        completado: false,    // Inicialmente en false
+        objetivo: '',
       },
       usuarios: [],
     };
@@ -111,11 +125,22 @@ export default {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log('Ejercicio guardado correctamente');
+        // Mostrar alerta de éxito
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Ejercicio guardado correctamente',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+        });
         this.$router.push('/ejercicios');
       } catch (error) {
         console.error('Error al guardar ejercicio:', error);
-        alert('Error al guardar ejercicio');
+        Swal.fire({
+          title: 'Error',
+          text: 'Error al guardar ejercicio',
+          icon: 'error',
+        });
       }
     },
   },

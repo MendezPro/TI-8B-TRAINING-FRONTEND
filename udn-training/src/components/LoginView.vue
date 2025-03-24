@@ -77,6 +77,8 @@ export default {
           localStorage.setItem("rol", response.data.rol);
           localStorage.setItem("usuario_id", response.data.usuario_id); // Guardar el identificador del usuario
           console.log("Token guardado:", response.data.access_token);
+           // ✅ Emitir evento global
+          this.$root.$emit("auth-change");
           this.$router.push("/dashboard");
         } else {
           this.error = "Usuario o contraseña incorrectos";
