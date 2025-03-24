@@ -21,7 +21,9 @@ import MisEjercicios from '@/components/TrainingAdmin/MisEjercicios.vue';
 import MisDatos from '@/components/TrainingCliente/MisDatos.vue';
 import MiExpediente from '@/components/TrainingCliente/MiExpediente.vue';
 
+import ProgresoUsuario from '@/components/ProgresoUsuario.vue'; // Importa el componente correctamente
 const routes = [
+  { path: '/progreso', name: 'ProgresoUsuario', component: ProgresoUsuario }, // Ruta para la gráfica de progreso
   { path: '/dietas', name: 'Dietas', component: DietasView }, // Ruta para dietas
   { path: '/', name: 'Home', component: HomeView },
   { path: '/error', name: 'Error', component: ErrorView }, // Ruta para error 404 - ErrorView.vue �� Nueva vista

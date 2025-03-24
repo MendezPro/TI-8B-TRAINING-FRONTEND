@@ -8,6 +8,7 @@
         <h2>Nutrición</h2>
         <p>Planif ica tus dietas y mejora tu alimentación.</p>
       </div>
+      
       <div v-if="esAdmin" class="card" @click="$router.push('/ejercicios')">
         <i class="fas fa-dumbbell"></i>
         <h2>Training</h2>
