@@ -2,19 +2,27 @@
 
 /* Eliminar el borde por defecto de todos los elementos */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Eliminar borde blanco alrededor del body */
-  body {
-    border: none;
-    outline: none;
-  }
-  
-  /* Opcional: También puedes eliminar los bordes del html si es necesario */
-  html {
-    border: none;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Eliminar borde blanco alrededor del body */
+body {
+  border: none;
+  outline: none;
+}
+
+/* Opcional: También puedes eliminar los bordes del html si es necesario */
+html {
+  border: none;
+}
+
+/* Aplicar la fuente Montserrat o Rubik a los h1 */
+h1, h2, p, label, a, button, input{
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Puedes cambiar este valor a cualquier peso de fuente disponible (100, 200, 300, 400, 500, 600, 700, 800, 900) */
+  font-style: normal;
+}
+
