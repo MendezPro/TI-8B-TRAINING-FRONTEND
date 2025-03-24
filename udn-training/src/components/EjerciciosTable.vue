@@ -2,29 +2,36 @@
   <table>
     <thead>
       <tr>
+        <th>Completado</th> <!-- Nueva columna -->
         <th v-for="key in columns" :key="key" @click="sortBy(key)" :class="{ active: sortKey === key }">
           {{ capitalize(key) }}
           <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
         </th>
-        <th>Usuario Asignado</th> <!-- Nueva columna de usuario asignado -->
+        <th>Usuario Asignado</th>
         <th>Operaciones</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(entry, index) in filteredEntries" :key="index">
-        <td v-for="key in columns" :key="key">
-          {{ entry[key] }}
-        </td>
-        <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td> <!-- Mostrar nombre de usuario asignado -->
-        <td>
-          <button @click="editEjercicio(entry.ID)">
-            <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
-          </button>
-          <button @click="deleteEjercicio(entry.ID)">
-            <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
-          </button>
-        </td>
-      </tr>
+  <td>
+    <button v-if="!entry.completado" @click="markAsCompleted(entry.ID)">
+      Marcar como Completado
+    </button>
+    <span v-else>Completado</span>
+  </td>
+  <td v-for="key in columns" :key="key">
+    {{ entry[key] || 'N/A' }} <!-- Manejar valores nulos -->
+  </td>
+  <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
+  <td>
+    <button @click="editEjercicio(entry.ID)">
+      <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
+    </button>
+    <button @click="deleteEjercicio(entry.ID)">
+      <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
+    </button>
+  </td>
+</tr>
     </tbody>
   </table>
 </template>
@@ -72,6 +79,31 @@ export default {
     }
   },
   methods: {
+    toggleCompleted(id, currentStatus) {
+      // Enviar solicitud al backend para actualizar el estado de "completado"
+      axios
+        .put(`http://localhost:8000/api/ejercicios/${id}`, { completado: !currentStatus })
+        .then(() => {
+          // Actualizar el estado localmente
+          const ejercicio = this.entries.find((entry) => entry.ID === id);
+          if (ejercicio) ejercicio.completado = !currentStatus;
+        })
+        .catch((error) => {
+          console.error("Error al actualizar el estado de completado:", error);
+        });
+    },
+    markAsCompleted(id) {
+    axios
+      .put(`http://localhost:8000/api/ejercicios/${id}/completar`)
+      .then(() => {
+        const ejercicio = this.entries.find((entry) => entry.ID === id);
+        if (ejercicio) ejercicio.completado = true;
+        this.$emit('entryUpdated'); // Emitir evento para actualizar la tabla
+      })
+      .catch((error) => {
+        console.error('Error al marcar como completado:', error);
+      });
+  },
     capitalize(input) {
       return input.charAt(0).toUpperCase() + input.slice(1);
     },
@@ -83,16 +115,16 @@ export default {
       this.$router.push(`/ejercicios/editar/${id}`);
     },
     async deleteEjercicio(id) {
-      const result = await Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¡No podrás recuperar este ejercicio después de eliminarlo!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-      });
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡No podrás recuperar este ejercicio después de eliminarlo!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
 
       if (result.isConfirmed) {
         try {

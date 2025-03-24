@@ -6,11 +6,24 @@
       <p>Buscar</p>
       <input v-model="searchInput" placeholder="Buscar ejercicios..." />
     </form>
-    <EjerciciosTable 
-      :entries="dataset" 
-      :columns="dataColumns" 
-      :filter-key="searchInput"
-    />
+    <div>
+      <button @click="activeTab = 'ejercicios'" :class="{ active: activeTab === 'ejercicios' }">Ejercicios</button>
+      <button @click="activeTab = 'completados'" :class="{ active: activeTab === 'completados' }">Completados</button>
+    </div>
+    <EjerciciosTable
+  v-if="activeTab === 'ejercicios'"
+  :entries="dataset.filter(e => !e.completado)" 
+  :columns="dataColumns"
+  :filter-key="searchInput"
+  @toggleCompleted="handleToggleCompleted"
+/>
+<EjerciciosTable
+  v-if="activeTab === 'completados'"
+  :entries="dataset.filter(e => e.completado)" 
+  :columns="dataColumns"
+  :filter-key="searchInput"
+  @toggleCompleted="handleToggleCompleted"
+/>
   </div>
 </template>
 
@@ -21,53 +34,63 @@ import EjerciciosTable from '@/components/EjerciciosTable.vue';
 export default {
   name: 'EjerciciosAdminView',
   components: {
-    EjerciciosTable
+    EjerciciosTable,
   },
   data() {
     return {
-      searchInput: "",
+      searchInput: '',
+      activeTab: 'ejercicios', // Pestaña activa
       dataColumns: [
-        "ID", 
-        "Nombre", 
-        "Descripcion", 
-        "Video", 
-        "Tipo", 
-        "Estatus", 
-        "Dificultad", 
-        "Fecha_Registro", 
-        "Recomendaciones", 
-        "Restricciones"
+        'ID',
+        'Nombre',
+        'Descripcion',
+        'Video',
+        'Tipo',
+        'Estatus',
+        'Dificultad',
+        'Fecha_Registro',
+        'Recomendaciones',
+        'Restricciones',
       ],
-      dataset: []
+      dataset: [],
     };
   },
   mounted() {
-    axios.get('http://localhost:8000/api/ejercicios')
-      .then(response => {
-        this.dataset = response.data.map(ejercicio => ({
-          ID: ejercicio.id,
-          Nombre: ejercicio.nombre,
-          Descripcion: ejercicio.descripcion,
-          Video: ejercicio.video,
-          Tipo: ejercicio.tipo,
-          Estatus: ejercicio.estatus ? 'Activo' : 'Inactivo',
-          Dificultad: ejercicio.dificultad,
-          Fecha_Registro: ejercicio.fecha_registro,
-          Recomendaciones: ejercicio.recomendaciones,
-          Restricciones: ejercicio.restricciones,
-          usuario: ejercicio.usuario // Pasa el objeto usuario directamente
-
-
-        }));
-      })
-      .catch(error => {
-        console.error("Error al cargar ejercicios:", error);
-      });
-  }
+    this.fetchEjercicios();
+  },
+  methods: {
+    fetchEjercicios() {
+  axios
+    .get('http://localhost:8000/api/ejercicios')
+    .then((response) => {
+      this.dataset = response.data.map((ejercicio) => ({
+        ID: ejercicio.id,
+        Nombre: ejercicio.nombre,
+        Descripcion: ejercicio.descripcion,
+        Video: ejercicio.video,
+        Tipo: ejercicio.tipo,
+        Estatus: ejercicio.estatus ? 'Activo' : 'Inactivo',
+        Dificultad: ejercicio.dificultad,
+        Fecha_Registro: new Date(ejercicio.fecha_registro).toLocaleDateString(),
+        Recomendaciones: ejercicio.recomendaciones || 'N/A',
+        Restricciones: ejercicio.restricciones || 'N/A',
+        completado: ejercicio.completado, // Estado de completado
+        usuario: ejercicio.usuario || { nombre_usuario: 'No asignado' },
+      }));
+    })
+    .catch((error) => {
+      console.error('Error al cargar ejercicios:', error);
+    });
+},
+  },
 };
 </script>
 
 <style scoped>
+button.active {
+  background-color: #388e3c;
+  color: white;
+}
 /* Contenedor principal */
 div {
   max-width: 1000px;
