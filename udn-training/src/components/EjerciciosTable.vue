@@ -1,39 +1,41 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th>Completado</th> <!-- Nueva columna -->
-        <th v-for="key in columns" :key="key" @click="sortBy(key)" :class="{ active: sortKey === key }">
-          {{ capitalize(key) }}
-          <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
-        </th>
-        <th>Usuario Asignado</th>
-        <th>Operaciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(entry, index) in filteredEntries" :key="index">
-  <td>
-    <button v-if="!entry.completado" @click="markAsCompleted(entry.ID)">
-      Marcar como Completado
-    </button>
-    <span v-else>Completado</span>
-  </td>
-  <td v-for="key in columns" :key="key">
-    {{ entry[key] || 'N/A' }} <!-- Manejar valores nulos -->
-  </td>
-  <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
-  <td>
-    <button @click="editEjercicio(entry.ID)">
-      <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
-    </button>
-    <button @click="deleteEjercicio(entry.ID)">
-      <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
-    </button>
-  </td>
-</tr>
-    </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Completado</th> <!-- Nueva columna -->
+          <th v-for="key in columns" :key="key" @click="sortBy(key)" :class="{ active: sortKey === key }">
+            {{ capitalize(key) }}
+            <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th>Usuario Asignado</th>
+          <th>Operaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(entry, index) in filteredEntries" :key="index">
+          <td>
+            <button v-if="!entry.completado" @click="markAsCompleted(entry.ID)">
+              Marcar como Completado
+            </button>
+            <span v-else>Completado</span>
+          </td>
+          <td v-for="key in columns" :key="key">
+            {{ entry[key] || 'N/A' }} <!-- Manejar valores nulos -->
+          </td>
+          <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
+          <td>
+            <button @click="editEjercicio(entry.ID)">
+              <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
+            </button>
+            <button @click="deleteEjercicio(entry.ID)">
+              <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -93,17 +95,22 @@ export default {
         });
     },
     markAsCompleted(id) {
-    axios
-      .put(`http://localhost:8000/api/ejercicios/${id}/completar`)
-      .then(() => {
-        const ejercicio = this.entries.find((entry) => entry.ID === id);
-        if (ejercicio) ejercicio.completado = true;
-        this.$emit('entryUpdated'); // Emitir evento para actualizar la tabla
-      })
-      .catch((error) => {
-        console.error('Error al marcar como completado:', error);
-      });
-  },
+      const token = localStorage.getItem('access_token');
+      axios
+        .put(`http://localhost:8000/api/ejercicios/${id}/completar`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => {
+          const ejercicio = this.entries.find((entry) => entry.ID === id);
+          if (ejercicio) ejercicio.completado = true;
+          this.$emit('entryUpdated'); // Emitir evento para actualizar la tabla
+        })
+        .catch((error) => {
+          console.error('Error al marcar como completado:', error);
+        });
+    },
     capitalize(input) {
       return input.charAt(0).toUpperCase() + input.slice(1);
     },
@@ -115,20 +122,25 @@ export default {
       this.$router.push(`/ejercicios/editar/${id}`);
     },
     async deleteEjercicio(id) {
-    const result = await Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¡No podrás recuperar este ejercicio después de eliminarlo!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    });
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¡No podrás recuperar este ejercicio después de eliminarlo!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+      });
 
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:8000/api/ejercicios/${id}`);
+          const token = localStorage.getItem('access_token');
+          await axios.delete(`http://localhost:8000/api/ejercicios/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           this.$emit('entryDeleted', id);
           Swal.fire('¡Eliminado!', 'El ejercicio ha sido eliminado con éxito.', 'success');
           this.$router.push(`/ejercicios`);
@@ -142,9 +154,18 @@ export default {
 </script>
 
 <style scoped>
-/* Estilo para la tabla */
+/* Contenedor para centrar la tabla */
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la ventana */
+  margin: 0;
+  padding: 0;
+}
+
 table {
-  width: 100%;
+  width: 80%; /* Ajusta el tamaño de la tabla */
   border-collapse: collapse;
   margin-top: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

@@ -84,13 +84,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Esto hace que el contenedor ocupe toda la altura de la pantalla */
+  height: 50vh; /* Esto hace que el contenedor ocupe toda la altura de la pantalla */
 }
 
 .carousel {
   position: relative;
   width: 90%; /* Ajusta el ancho según el tamaño que desees */
-  height: 400px;
+  height: 300px;
   overflow: hidden;
 }
 
