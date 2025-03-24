@@ -1,0 +1,20 @@
+/* src/styles/global.css */
+
+/* Eliminar el borde por defecto de todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Eliminar borde blanco alrededor del body */
+  body {
+    border: none;
+    outline: none;
+  }
+  
+  /* Opcional: También puedes eliminar los bordes del html si es necesario */
+  html {
+    border: none;
+  }
+  
