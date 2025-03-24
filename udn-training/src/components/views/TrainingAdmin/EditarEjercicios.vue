@@ -73,7 +73,12 @@ export default {
     },
     mounted() {
         const ejercicioId = this.$route.params.id;
-        axios.get(`http://localhost:8000/api/ejercicios/${ejercicioId}`)
+        const token = localStorage.getItem('access_token');
+        axios.get(`http://localhost:8000/api/ejercicios/${ejercicioId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
             .then(response => {
                 const data = response.data;
                 console.log(data); // Verifica la respuesta de la API
