@@ -1,3 +1,4 @@
+<!-- filepath: c:\Users\soyme\Desktop\8VO CUATRI\DEVGENIUS\TI-8B-TRAINING-FRONTEND\udn-training\src\components\ProgresoUsuario.vue -->
 <template>
   <div>
     <h1>Consulta el nivel de progreso del usuario</h1>
@@ -7,6 +8,13 @@
         {{ user.nombre_usuario }}
       </option>
     </select>
+    <label for="mes">Seleccionar mes:</label>
+    <select id="mes" v-model="selectedMonth" @change="fetchProgress">
+      <option v-for="(mes, index) in meses" :key="index" :value="index + 1">
+        {{ mes }}
+      </option>
+    </select>
+    <p v-if="objetivo">Objetivo del usuario: <strong>{{ objetivo }}</strong></p>
     <canvas ref="progressChart" width="400" height="200"></canvas>
     <p v-if="!hasData">No hay datos para mostrar en la gráfica.</p>
     <p v-else>Datos recopilados de acuerdo a su nivel de ejercicios completados.</p>
@@ -46,99 +54,89 @@ export default {
   data() {
     return {
       selectedUser: null,
+      selectedMonth: new Date().getMonth() + 1, // Mes actual
       usuarios: [],
       chart: null,
       hasData: false,
+      objetivo: null, // Nuevo campo para el objetivo del usuario
+      meses: [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      ],
     };
   },
   mounted() {
     this.fetchUsuarios();
   },
   methods: {
-  async fetchUsuarios() {
-    try {
-      const token = localStorage.getItem('access_token'); // Obtener el token
-      const response = await axios.get("http://localhost:8000/api/usuarios", {
-        headers: {
-          Authorization: `Bearer ${token}` // Incluir el token en los encabezados
-        }
-      });
-      this.usuarios = response.data;
-    } catch (error) {
-      console.error("Error al obtener usuarios:", error);
-    }
-  },
-
-  async fetchProgress() {
-    if (!this.selectedUser) {
-      this.updateChart(Array(31).fill(0)); // Mostrar gráfica vacía si no hay usuario seleccionado
-      return;
-    }
-    try {
-      const token = localStorage.getItem('access_token'); // Obtener el token
-      const response = await axios.get(
-        `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}`,
-        {
+    async fetchUsuarios() {
+      try {
+        const token = localStorage.getItem('access_token'); // Obtener el token
+        const response = await axios.get("http://localhost:8000/api/usuarios", {
           headers: {
             Authorization: `Bearer ${token}` // Incluir el token en los encabezados
           }
-        }
-      );
-      const progressData = response.data.data || Array(31).fill(0); // Asegurarse de que siempre haya datos
-      this.hasData = progressData.some((value) => value > 0); // Verifica si hay datos
-      this.updateChart(progressData);
-    } catch (error) {
-      console.error("Error al obtener progreso:", error);
-      this.updateChart(Array(31).fill(0)); // Mostrar gráfica vacía en caso de error
-    }
-  },
-    processData(data) {
-      const days = Array(31).fill(0);
-      if (Array.isArray(data)) {
-        data.forEach((ejercicio) => {
-          const day = new Date(ejercicio.fecha_registro).getDate();
-          days[day - 1]++;
         });
+        this.usuarios = response.data;
+      } catch (error) {
+        console.error("Error al obtener usuarios:", error);
       }
-      return days;
     },
-    updateChart(data) {
-      if (this.chart) {
-        this.chart.destroy();
+
+    async fetchProgress() {
+      if (!this.selectedUser) {
+        this.updateChart(Array(31).fill(0), 0); // Gráfica vacía
+        return;
       }
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get(
+          `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}?mes=${this.selectedMonth}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const progressData = response.data.data || Array(31).fill(0);
+        const totalCompleted = progressData.reduce((sum, value) => sum + value, 0);
+        const percentage = Math.round((totalCompleted / 31) * 100);
+
+        this.hasData = totalCompleted > 0;
+        this.objetivo = response.data.objetivo; // Asignar el objetivo del usuario
+        this.updateChart(progressData, percentage);
+      } catch (error) {
+        console.error("Error al obtener progreso:", error);
+        this.updateChart(Array(31).fill(0), 0);
+      }
+    },
+
+    updateChart(data, percentage) {
+      if (this.chart) this.chart.destroy();
 
       const ctx = this.$refs.progressChart.getContext("2d");
       this.chart = new Chart(ctx, {
-        type: "line", // Tipo de gráfico
+        type: "line",
         data: {
           labels: Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`),
           datasets: [
             {
-              label: "Ejercicios Completados",
+              label: `Progreso (${percentage}% completado)`,
               data,
               borderColor: "rgba(75, 192, 192, 1)",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderWidth: 2,
-              pointBackgroundColor: data.map((value) =>
-                value > 0 ? "green" : "red"
-              ),
             },
           ],
         },
         options: {
           responsive: true,
-          animation: { duration: 1000 },
           plugins: { legend: { display: true, position: "top" } },
           scales: {
             x: { title: { display: true, text: "Días del Mes" } },
-            y: { title: { display: true, text: "Ejercicios Completados" }, beginAtZero: true },
+            y: { title: { display: true, text: "Ejercicios Completados" }, min: 1, max: 10 }, // Ajustar rango de 1 a 10
           },
         },
       });
     },
   },
 };
-
 </script>
 
 <style scoped>
@@ -171,7 +169,6 @@ canvas {
   width: 400px;
   height: 200px;
   margin: 0 auto;
-  border: 1px solid red;
 }
 
 p {

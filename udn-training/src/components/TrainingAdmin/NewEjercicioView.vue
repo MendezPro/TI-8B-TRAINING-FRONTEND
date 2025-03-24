@@ -6,7 +6,15 @@
         <label>Nombre:</label>
         <input type="text" v-model="ejercicio.nombre" required />
       </div>
-
+      <div>
+        <label>Objetivo:</label>
+        <input type="text" v-model="ejercicio.objetivo" placeholder="Escribe el objetivo del ejercicio" />
+      </div>
+      <!-- filepath: c:\Users\soyme\Desktop\8VO CUATRI\DEVGENIUS\TI-8B-TRAINING-FRONTEND\udn-training\src\components\TrainingAdmin\NewEjercicioView.vue -->
+<div>
+  <label>Selecciona la fecha:</label>
+  <input type="date" v-model="ejercicio.fecha_registro" required />
+</div>
       <div>
         <label>Descripción:</label>
         <input type="text" v-model="ejercicio.descripcion" required />
@@ -85,11 +93,13 @@ export default {
         restricciones: '',
         user_id: this.selectedUserId
       },
+       token: localStorage.getItem('token'), // Obtener el token del localStorage
       usuarios: []  // Lista de usuarios que se llenará desde la API
     };
   }, async created() {
     // Obtener la lista de usuarios al cargar el componente
     try {
+      
       const response = await axios.get('http://localhost:8000/api/usuarios');
       this.usuarios = response.data;
     } catch (error) {
@@ -98,15 +108,20 @@ export default {
   },
   methods: {
     async submitForm() {
-      try {
-        await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio);
-        console.log('Ejercicio guardado correctamente');
-        this.$router.push('/ejercicios'); // Redirige a la vista de administración
-      } catch (error) {
-        console.error('Error al guardar ejercicio:', error);
-        alert('Error al guardar ejercicio');
-      }
-    }
+  try {
+    const fecha = new Date();
+    fecha.setDate(this.ejercicio.dia || fecha.getDate());
+    fecha.setMonth((this.ejercicio.mes || fecha.getMonth() + 1) - 1);
+    this.ejercicio.fecha_registro = fecha.toISOString();
+
+    await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio);
+    console.log('Ejercicio guardado correctamente');
+    this.$router.push('/ejercicios');
+  } catch (error) {
+    console.error('Error al guardar ejercicio:', error);
+    alert('Error al guardar ejercicio');
+  }
+}
   }
 };
 </script>
