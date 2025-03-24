@@ -1,5 +1,4 @@
 <template>
-  <br>
   <div>
     <h1>Agregar Nuevo Ejercicio</h1>
     <form @submit.prevent="submitForm" class="form-container">
@@ -85,40 +84,41 @@ export default {
         dificultad: 'Basico',
         recomendaciones: '',
         restricciones: '',
-        user_id: this.selectedUserId
+        user_id: null,
       },
-      usuarios: []
+      usuarios: [],
     };
-  }, async created() {
-  try {
-    const token = localStorage.getItem('access_token');
-    const response = await axios.get('http://localhost:8000/api/usuarios', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    this.usuarios = response.data;
-  } catch (error) {
-    console.error('Error al obtener los usuarios:', error);
-  }
-},
+  },
+  async created() {
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://localhost:8000/api/usuarios', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      this.usuarios = response.data;
+    } catch (error) {
+      console.error('Error al obtener los usuarios:', error);
+    }
+  },
   methods: {
     async submitForm() {
-  try {
-    const token = localStorage.getItem('access_token'); 
-    await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log('Ejercicio guardado correctamente');
-    this.$router.push('/ejercicios'); // Redirige a la vista de administración
-  } catch (error) {
-    console.error('Error al guardar ejercicio:', error);
-    alert('Error al guardar ejercicio');
-  }
-}
-  }
+      try {
+        const token = localStorage.getItem('access_token');
+        await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Ejercicio guardado correctamente');
+        this.$router.push('/ejercicios');
+      } catch (error) {
+        console.error('Error al guardar ejercicio:', error);
+        alert('Error al guardar ejercicio');
+      }
+    },
+  },
 };
 </script>
 
