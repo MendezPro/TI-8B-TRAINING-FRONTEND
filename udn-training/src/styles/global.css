@@ -8,16 +8,21 @@
 }
 
 /* Eliminar borde blanco alrededor del body */
-body {
-  border: none;
-  outline: none;
+/* global.css */
+
+/* Estilos globales básicos */
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
 }
 
-/* Opcional: También puedes eliminar los bordes del html si es necesario */
-html {
-  border: none;
+/* Asegúrate de que los estilos globales no afecten a tablas específicas */
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
 }
-
 /* Aplicar la fuente Montserrat o Rubik a los h1 */
 h1, h2, p, label, a, button, input{
   font-family: "Montserrat", sans-serif;
