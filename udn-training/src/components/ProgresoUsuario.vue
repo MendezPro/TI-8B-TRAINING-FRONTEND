@@ -35,6 +35,7 @@ import {
   Filler,
 } from 'chart.js';
 import axios from "axios";
+import { io } from "socket.io-client"; // Importa el cliente de Socket.IO
 
 // Registrar los módulos necesarios de Chart.js
 Chart.register(
@@ -63,10 +64,20 @@ export default {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
       ],
+      socket: null, // Instancia de Socket.IO
     };
   },
   mounted() {
   this.fetchUsuarios(); // Llama al método para obtener los usuarios
+  this.setupSocket(); // Configura la conexión de Socket.IO
+
+   // Si hay un usuario seleccionado previamente, carga su progreso
+   const savedUser = localStorage.getItem("selectedUser");
+    if (savedUser) {
+      this.selectedUser = parseInt(savedUser, 10);
+      this.fetchProgress();
+    }
+
 },
   methods: {
   async fetchUsuarios() {
@@ -88,7 +99,7 @@ export default {
     return;
   }
   try {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem("access_token");
     const response = await axios.get(
       `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}?mes=${this.selectedMonth}`,
       { headers: { Authorization: `Bearer ${token}` } }
@@ -99,28 +110,49 @@ export default {
     this.hasData = progressData.some(value => value > 0); // Verificar si hay datos
     this.updateChart(progressData, labels);
   } catch (error) {
-    console.error('Error al obtener progreso:', error);
+    console.error("Error al obtener progreso:", error);
     this.updateChart(Array(31).fill(0), Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`));
   }
 },
-  updateChart(data, labels) {
-    if (this.chart) this.chart.destroy();
-    const ctx = this.$refs.progressChart.getContext('2d');
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Progreso',
-            data,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          },
-        ],
-      },
-    });
-  },
+updateChart(data, labels) {
+  if (this.chart) this.chart.destroy(); // Destruir la gráfica anterior
+  const ctx = this.$refs.progressChart.getContext("2d");
+  this.chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Progreso",
+          data,
+          borderColor: "rgba(75, 192, 192, 1)",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+        },
+      ],
+    },
+  });
+},
+setupSocket() {
+  this.socket = io("http://localhost:8000"); // Conectar al servidor de sockets
+
+  // Escuchar eventos de conexión
+  this.socket.on("connect", () => {
+    console.log("Conectado al servidor de sockets"); // Mensaje cuando el cliente se conecta
+  });
+
+  // Escuchar eventos de desconexión
+  this.socket.on("disconnect", () => {
+    console.warn("Socket desconectado. Intentando reconectar..."); // Mensaje cuando el cliente se desconecta
+  });
+
+  // Escuchar eventos de actualización de progreso
+  this.socket.on("update_progress", (data) => {
+    console.log("Evento recibido:", data); // Mensaje cuando se recibe un evento
+    if (data.user_id === this.selectedUser) {
+      this.fetchProgress(); // Actualizar la gráfica si el usuario coincide
+    }
+  });
+},
 },
 };
 </script>
