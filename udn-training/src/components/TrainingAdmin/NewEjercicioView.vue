@@ -52,6 +52,20 @@
           <input type="checkbox" v-model="ejercicio.estatus" />
         </div>
 
+<div class="form-group">
+  <label>Fecha Personalizada:</label>
+  <div class="date-picker">
+    <select v-model="fecha.dia" required>
+      <option v-for="d in 31" :key="d" :value="d">{{ d }}</option>
+    </select>
+    <select v-model="fecha.mes" required>
+      <option v-for="(mes, index) in meses" :key="index" :value="index + 1">{{ mes }}</option>
+    </select>
+    <select v-model="fecha.anio" required>
+      <option v-for="anio in anios" :key="anio" :value="anio">{{ anio }}</option>
+    </select>
+  </div>
+</div>
       
         <!-- Nuevo campo para 'objetivo' -->
         <div class="form-group">
@@ -94,8 +108,19 @@ export default {
         user_id: null,
         completado: false,    // Inicialmente en false
         objetivo: '',
+        fecha_personalizada: null,
       },
+      fecha: {
+      dia: new Date().getDate(),
+      mes: new Date().getMonth() + 1,
+      anio: new Date().getFullYear(),
+    },
+    meses: [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ],
       usuarios: [],
+      anios: Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i),
     };
   },
   async created() {
@@ -113,31 +138,19 @@ export default {
   },
   methods: {
     async submitForm() {
-      try {
-        const token = localStorage.getItem('access_token');
-        await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // Mostrar alerta de éxito
-        Swal.fire({
-          title: 'Éxito',
-          text: 'Ejercicio guardado correctamente',
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        this.$router.push('/ejercicios');
-      } catch (error) {
-        console.error('Error al guardar ejercicio:', error);
-        Swal.fire({
-          title: 'Error',
-          text: 'Error al guardar ejercicio',
-          icon: 'error',
-        });
-      }
-    },
+  this.ejercicio.fecha_personalizada = `${this.fecha.anio}-${String(this.fecha.mes).padStart(2, '0')}-${String(this.fecha.dia).padStart(2, '0')}`;
+  try {
+    const token = localStorage.getItem('access_token');
+    await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    Swal.fire('Éxito', 'Ejercicio guardado correctamente', 'success');
+    this.$router.push('/ejercicios');
+  } catch (error) {
+    console.error('Error al guardar ejercicio:', error.response.data);
+    Swal.fire('Error', 'Error al guardar ejercicio', 'error');
+  }
+},
   },
 };
 </script>

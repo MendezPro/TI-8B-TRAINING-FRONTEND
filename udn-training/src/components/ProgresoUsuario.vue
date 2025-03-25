@@ -66,76 +66,62 @@ export default {
     };
   },
   mounted() {
-    this.fetchUsuarios();
-  },
+  this.fetchUsuarios(); // Llama al método para obtener los usuarios
+},
   methods: {
-    async fetchUsuarios() {
-      try {
-        const token = localStorage.getItem('access_token'); // Obtener el token
-        const response = await axios.get("http://localhost:8000/api/usuarios", {
-          headers: {
-            Authorization: `Bearer ${token}` // Incluir el token en los encabezados
-          }
-        });
-        this.usuarios = response.data;
-      } catch (error) {
-        console.error("Error al obtener usuarios:", error);
-      }
-    },
-
-    async fetchProgress() {
-      if (!this.selectedUser) {
-        this.updateChart(Array(31).fill(0), 0); // Gráfica vacía
-        return;
-      }
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(
-          `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}?mes=${this.selectedMonth}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const progressData = response.data.data || Array(31).fill(0);
-        const totalCompleted = progressData.reduce((sum, value) => sum + value, 0);
-        const percentage = Math.round((totalCompleted / 31) * 100);
-
-        this.hasData = totalCompleted > 0;
-        this.objetivo = response.data.objetivo; // Asignar el objetivo del usuario
-        this.updateChart(progressData, percentage);
-      } catch (error) {
-        console.error("Error al obtener progreso:", error);
-        this.updateChart(Array(31).fill(0), 0);
-      }
-    },
-
-    updateChart(data, percentage) {
-      if (this.chart) this.chart.destroy();
-
-      const ctx = this.$refs.progressChart.getContext("2d");
-      this.chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`),
-          datasets: [
-            {
-              label: `Progreso (${percentage}% completado)`,
-              data,
-              borderColor: "rgba(75, 192, 192, 1)",
-              backgroundColor: "rgba(75, 192, 192, 0.2)",
-              borderWidth: 2,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: true, position: "top" } },
-          scales: {
-            x: { title: { display: true, text: "Días del Mes" } },
-            y: { title: { display: true, text: "Ejercicios Completados" }, min: 1, max: 10 }, // Ajustar rango de 1 a 10
-          },
+  async fetchUsuarios() {
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://localhost:8000/api/usuarios', {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       });
-    },
+      this.usuarios = response.data;
+    } catch (error) {
+      console.error('Error al obtener los usuarios:', error);
+    }
   },
+  async fetchProgress() {
+  if (!this.selectedUser) {
+    this.updateChart(Array(31).fill(0), Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`));
+    return;
+  }
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await axios.get(
+      `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}?mes=${this.selectedMonth}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const progressData = response.data.data || Array(31).fill(0);
+    const labels = Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`);
+    this.objetivo = response.data.objetivo; // Mostrar el objetivo del usuario
+    this.hasData = progressData.some(value => value > 0); // Verificar si hay datos
+    this.updateChart(progressData, labels);
+  } catch (error) {
+    console.error('Error al obtener progreso:', error);
+    this.updateChart(Array(31).fill(0), Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`));
+  }
+},
+  updateChart(data, labels) {
+    if (this.chart) this.chart.destroy();
+    const ctx = this.$refs.progressChart.getContext('2d');
+    this.chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Progreso',
+            data,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          },
+        ],
+      },
+    });
+  },
+},
 };
 </script>
 
