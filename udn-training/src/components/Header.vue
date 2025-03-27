@@ -7,8 +7,11 @@
       <ul>
         <li><router-link to="/" active-class="active">Inicio</router-link></li>
         <li><router-link to="/dashboard" active-class="active">Dashboard</router-link></li>
-        <li><router-link to="/dietas" active-class="active">Nutrición</router-link></li>
-        <li><router-link to="/ejercicios" active-class="active">Training</router-link></li>
+        <template v-if="userRole === 'Administrador'">
+          <li><router-link to="/dietas" active-class="active">Nutrición</router-link></li>
+          <li><router-link to="/ejercicios" active-class="active">Training</router-link></li> 
+          
+        </template>
       </ul>
     </nav>
     <div class="auth-buttons">
@@ -21,6 +24,40 @@
 <script>
 export default {
   name: "HeaderComponent",
+  data() {
+    return {
+      isLoggedIn: !!localStorage.getItem("access_token"),
+      userRole: localStorage.getItem("rol") || "", // ✅ Obtener el rol desde localStorage
+    };
+  },
+  created() {
+    this.isLoggedIn = !!localStorage.getItem("access_token");
+    this.userRole = localStorage.getItem("rol") || "";
+
+    // ✅ Escuchar cambios en el localStorage
+    window.addEventListener("storage", this.syncAuthState);
+  },
+  beforeUnmount() {
+    window.removeEventListener("storage", this.syncAuthState);
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("rol");
+      localStorage.removeItem("usuario_id");
+
+      this.isLoggedIn = false;
+      this.userRole = "";
+      this.$router.push("/");
+    },
+    syncAuthState() {
+      this.isLoggedIn = !!localStorage.getItem("access_token");
+      this.userRole = localStorage.getItem("rol") || "";
+      if (this.isLoggedIn) {
+        location.reload();
+      }
+    },
+  },
 };
 </script>
 

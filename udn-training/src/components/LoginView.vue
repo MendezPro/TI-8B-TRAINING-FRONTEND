@@ -78,7 +78,7 @@ export default {
           localStorage.setItem("usuario_id", response.data.usuario_id); // Guardar el identificador del usuario
           console.log("Token guardado:", response.data.access_token);
           this.$router.push("/dashboard");
-        } else {
+      } else {
           this.error = "Usuario o contraseña incorrectos";
         }
       } catch (err) {
