@@ -1,31 +1,40 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th v-for="key in columns" :key="key" @click="sortBy(key)" :class="{ active: sortKey === key }">
-          {{ capitalize(key) }}
-          <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
-        </th>
-        <th>Operaciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(entry, index) in filteredEntries" :key="index">
-        <td v-for="key in columns" :key="key">
-          {{ entry[key] }}
-        </td>
-        <td>
-          <button @click="editRegistro(entry.curp)">
-            <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
-          </button>
-          <button @click="deleteRegistro(entry.curp)">
-            <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
-          </button>
-
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <!-- Se eliminó el input interno, ahora se usa el buscador de la vista principal -->
+    <table>
+      <thead>
+        <tr>
+          <th 
+            v-for="key in columns" 
+            :key="key" 
+            @click="sortBy(key)" 
+            :class="{ active: sortKey === key }"
+          >
+            {{ capitalize(key) }}
+            <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th>Usuario Asignado</th>
+          <th>Operaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(entry, index) in filteredEntries" :key="index">
+          <td v-for="key in columns" :key="key">
+            {{ entry[key] }}
+          </td>
+          <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
+          <td>
+            <button @click="editRegistro(entry.curp)">
+              <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
+            </button>
+            <button @click="deleteRegistro(entry.curp)">
+              <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -35,32 +44,53 @@ import Swal from 'sweetalert2';
 export default {
   name: 'ExpedienteTable',
   props: {
-    entries: Array,
-    columns: Array,
-    filterKey: String
+    entries: {
+      type: Array,
+      default: () => []
+    },
+    columns: {
+      type: Array,
+      default: () => []
+    },
+    filterKey: {
+      type: String,
+      default: ""
+    }
   },
   data() {
     return {
+      usuarios: [],
       sortKey: "",
-      sortColumns: this.columns.reduce((acc, key) => {
-        acc[key] = 1;
-        return acc;
-      }, {})
+      sortColumns: {} // Se inicializará en created()
     };
   },
   computed: {
+    // Une cada expediente con su usuario asignado
+    dataset() {
+      return this.entries.map(exp => {
+        const usuario = this.usuarios.find(u => u.id === exp.usuario_id);
+        return {
+          ...exp,
+          usuario: usuario || { nombre_usuario: 'No asignado' }
+        };
+      });
+    },
+    // Filtra y ordena la data unida usando filterKey (viene desde la vista principal)
     filteredEntries() {
-      let entries = this.entries || [];
-      const filterKey = this.filterKey?.toLowerCase();
-
+      let entries = this.dataset;
+      const filterKey = this.filterKey ? this.filterKey.toLowerCase() : "";
       if (filterKey) {
-        entries = entries.filter(entry =>
-          Object.keys(entry).some(key =>
-            String(entry[key]).toLowerCase().includes(filterKey)
-          )
-        );
+        entries = entries.filter(entry => {
+          // Se filtra sobre las columnas definidas y sobre el nombre de usuario
+          const inDataColumns = this.columns.some(key => {
+            return entry[key] && entry[key].toString().toLowerCase().includes(filterKey);
+          });
+          const inUsuario = entry.usuario &&
+                            entry.usuario.nombre_usuario &&
+                            entry.usuario.nombre_usuario.toLowerCase().includes(filterKey);
+          return inDataColumns || inUsuario;
+        });
       }
-
       if (this.sortKey) {
         const order = this.sortColumns[this.sortKey];
         entries = entries.slice().sort((a, b) => {
@@ -69,9 +99,25 @@ export default {
           return (x === y ? 0 : x > y ? 1 : -1) * order;
         });
       }
-
       return entries;
     }
+  },
+  created() {
+    // Inicializa sortColumns para cada columna recibida en props
+    this.sortColumns = this.columns.reduce((acc, key) => {
+      acc[key] = 1;
+      return acc;
+    }, {});
+  },
+  mounted() {
+    // Carga la información de usuarios
+    axios.get('http://localhost:8000/api/usuarios')
+      .then(response => {
+        this.usuarios = response.data;
+      })
+      .catch(error => {
+        console.error("Error al cargar usuarios:", error);
+      });
   },
   methods: {
     capitalize(input) {
@@ -95,11 +141,10 @@ export default {
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
       });
-
       if (result.isConfirmed) {
         try {
           await axios.delete(`http://localhost:8000/api/expedientes/${curp}`);
-          this.$emit('entryDeleted', curp);
+          this.$emit('entryDeleted', curp); // Permite que la vista principal actualice la lista
           Swal.fire('¡Eliminado!', 'El expediente ha sido eliminado con éxito.', 'success');
         } catch (error) {
           Swal.fire('Error', 'Hubo un problema al eliminar el expediente.', 'error');
@@ -109,7 +154,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 /* Estilo para la tabla */

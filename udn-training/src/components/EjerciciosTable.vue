@@ -1,40 +1,46 @@
 <template>
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Completado</th> <!-- Nueva columna -->
-          <th v-for="key in columns" :key="key" @click="sortBy(key)" :class="{ active: sortKey === key }">
-            {{ capitalize(key) }}
-            <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
-          </th>
-          <th>Usuario Asignado</th>
-          <th>Operaciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(entry, index) in filteredEntries" :key="index">
-          <td>
-            <button v-if="!entry.completado" @click="markAsCompleted(entry.ID)">
-              Marcar como Completado
-            </button>
-            <span v-else>Completado</span>
-          </td>
-          <td v-for="key in columns" :key="key">
-            {{ entry[key] || 'N/A' }} <!-- Manejar valores nulos -->
-          </td>
-          <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
-          <td>
-            <button @click="editEjercicio(entry.ID)">
-              <i class="fa fa-pencil" style="color: #e74c3c;"></i> Editar
-            </button>
-            <button @click="deleteEjercicio(entry.ID)">
-              <i class="fa fa-trash" style="color: #c0392b;"></i> Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="admin-container">
+    <div class="table-container">
+      <table class="ejercicios-admin-table">
+        <thead>
+          <tr>
+            <th>Completado</th>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Video</th>
+            <th>Tipo</th>
+            <th>Estatus</th>
+            <th>Dificultad</th>
+            <th>Fecha Registro</th>
+            <th>Recomendaciones</th>
+            <th>Restricciones</th>
+            <th>Usuario Asignado</th>
+            <th>Operaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(entry, index) in entries" :key="index">
+            <td>{{ entry.completado ? 'Sí' : 'No' }}</td>
+            <td>{{ entry.ID }}</td>
+            <td>{{ entry.Nombre }}</td>
+            <td>{{ entry.Descripcion }}</td>
+            <td>{{ entry.Video }}</td>
+            <td>{{ entry.Tipo }}</td>
+            <td>{{ entry.Estatus }}</td>
+            <td>{{ entry.Dificultad }}</td>
+            <td>{{ entry.Fecha_Registro }}</td>
+            <td>{{ entry.Recomendaciones }}</td>
+            <td>{{ entry.Restricciones }}</td>
+            <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
+            <td>
+              <button @click="editEjercicio(entry.ID)">Editar</button>
+              <button @click="deleteEjercicio(entry.ID)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -153,114 +159,52 @@ export default {
 };
 </script>
 
+
 <style scoped>
-/* Contenedor para centrar la tabla */
+/* Contenedor de la tabla */
 .table-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la ventana */
-  margin: 0;
-  padding: 0;
-}
-
-table {
-  width: 80%; /* Ajusta el tamaño de la tabla */
-  border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 1200px;
   overflow-x: auto;
-  /* Permite desplazamiento horizontal en pantallas pequeñas */
-}
-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 0 5px;
-    padding: 5px 10px;
 }
 
-button i {
-    margin-right: 5px;
+/* Tabla de ejercicios */
+.ejercicios-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-button:hover {
-    opacity: 0.7;
-}
-
-th,
-td {
-  padding: 8px;
-  /* Reducido para mejor ajuste */
-  border: 1px solid #ddd;
+.ejercicios-admin-table th,
+.ejercicios-admin-table td {
+  padding: 12px 15px;
   text-align: left;
-  font-family: 'Arial', sans-serif;
-  font-size: 12px;
-  /* Reducido para más ajuste en pantallas pequeñas */
+  border: 1px solid #ddd;
 }
 
-th {
-  cursor: pointer;
-  background-color: #e74c3c;
-  /* Rojo */
+.ejercicios-admin-table th {
+  background-color: #388e3c;
   color: white;
   font-weight: bold;
-  border-bottom: 2px solid #c0392b;
-  /* Rojo oscuro */
 }
 
-th.active {
-  background-color: #c0392b;
+.ejercicios-admin-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-tr:nth-child(even) {
-  background-color: #f4f4f4;
+.ejercicios-admin-table tr:hover {
+  background-color: #f1f1f1;
 }
 
-tr:hover {
-  background-color: #ecf0f1;
-}
-
-.arrow {
-  margin-left: 10px;
-  font-size: 12px;
-  color: #bbb;
-}
-
-.arrow.asc::after {
-  content: '▲';
-}
-
-.arrow.dsc::after {
-  content: '▼';
-}
-
-tbody td {
-  font-size: 12px;
-  /* Reducido para mejor ajuste */
-  color: #555;
-}
-
-/* Responsividad para pantallas pequeñas */
+/* Responsividad */
 @media (max-width: 768px) {
-
-  th,
-  td {
-    padding: 16px;
-    /* Aún más reducido */
-    font-size: 10px;
-    /* Ajustado para pantallas pequeñas */
-  }
-
-  .arrow {
-    font-size: 10px;
-    /* Tamaño reducido para el icono de flecha */
-  }
-
-  table {
-    font-size: 10px;
-    /* Ajuste de fuente general */
+  .ejercicios-admin-table th,
+  .ejercicios-admin-table td {
+    font-size: 12px;
+    padding: 8px;
   }
 }
 </style>

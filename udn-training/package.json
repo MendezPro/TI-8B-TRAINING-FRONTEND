@@ -11,6 +11,7 @@
     "axios": "^1.8.3",
     "chart.js": "^4.1.1",
     "core-js": "^3.8.3",
+    "socket.io-client": "^4.8.1",
     "sweetalert2": "^11.17.2",
     "udn-training": "file:",
     "vue": "^3.2.13",

@@ -1,4 +1,4 @@
-<template> 
+<template>
   <header class="navbar">
     <div class="logo">
       <img src="@/assets/logo1.png" alt="Gym Bulls" />
@@ -10,13 +10,21 @@
         <template v-if="userRole === 'Administrador'">
           <li><router-link to="/dietas" active-class="active">Nutrición</router-link></li>
           <li><router-link to="/ejercicios" active-class="active">Training</router-link></li> 
-          
         </template>
       </ul>
     </nav>
+
     <div class="auth-buttons">
-      <button class="login-btn" @click="$router.push('/login')">Login</button>
-      <button class="register-btn" @click="$router.push('/register')">Regístrate</button>
+      <!-- ✅ Mostrar solo si NO está logueado -->
+      <template v-if="!isLoggedIn">
+        <button class="login-btn" @click="$router.push('/login')">Login</button>
+        <button class="register-btn" @click="$router.push('/register')">Regístrate</button>
+      </template>
+
+      <!-- ✅ Mostrar solo si está logueado -->
+      <template v-else>
+        <button class="logout-btn" @click="logout">Cerrar sesión</button>
+      </template>
     </div>
   </header>
 </template>
@@ -26,26 +34,29 @@ export default {
   name: "HeaderComponent",
   data() {
     return {
-      isLoggedIn: !!localStorage.getItem("access_token"),
+      isLoggedIn: !!localStorage.getItem("access_token"), // ✅ Revisar si hay token al cargar el componente
       userRole: localStorage.getItem("rol") || "", // ✅ Obtener el rol desde localStorage
     };
   },
   created() {
+    // ✅ Revisar el token al cargar el componente
     this.isLoggedIn = !!localStorage.getItem("access_token");
     this.userRole = localStorage.getItem("rol") || "";
 
-    // ✅ Escuchar cambios en el localStorage
-    window.addEventListener("storage", this.syncAuthState);
+    // ✅ 🔥 Detectar cambios en el token automáticamente
+    window.addEventListener('storage', this.syncAuthState);
   },
   beforeUnmount() {
-    window.removeEventListener("storage", this.syncAuthState);
+    window.removeEventListener('storage', this.syncAuthState);
   },
   methods: {
     logout() {
+      // ✅ Eliminar token y datos del usuario
       localStorage.removeItem("access_token");
       localStorage.removeItem("rol");
       localStorage.removeItem("usuario_id");
 
+      // ✅ Actualizar estado y redirigir
       this.isLoggedIn = false;
       this.userRole = "";
       this.$router.push("/");
@@ -54,7 +65,7 @@ export default {
       this.isLoggedIn = !!localStorage.getItem("access_token");
       this.userRole = localStorage.getItem("rol") || "";
       if (this.isLoggedIn) {
-        location.reload();
+        location.reload(); // ✅ Recarga para actualizar automáticamente el botón
       }
     },
   },
@@ -156,6 +167,23 @@ export default {
 }
 
 .register-btn:hover {
+  background: darkred;
+}
+
+/* ✅ Estilo para el botón de cerrar sesión */
+.logout-btn {
+  padding: 10px 20px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
   background: darkred;
 }
 </style>

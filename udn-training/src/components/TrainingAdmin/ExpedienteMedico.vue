@@ -62,7 +62,8 @@
             lesiones_previas: exp.lesiones_previas || "N/A",
             presion_arterial: exp.presion_arterial || "N/A",
             estatura: exp.estatura || "N/A",
-            peso: exp.peso || "N/A"
+            peso: exp.peso || "N/A",
+            usuario_id: exp.usuario_id
           }));
         })
         .catch(error => {
