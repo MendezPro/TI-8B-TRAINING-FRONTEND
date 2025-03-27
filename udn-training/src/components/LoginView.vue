@@ -80,7 +80,7 @@ export default {
            // ✅ Emitir evento global
           this.$root.$emit("auth-change");
           this.$router.push("/dashboard");
-        } else {
+      } else {
           this.error = "Usuario o contraseña incorrectos";
         }
       } catch (err) {

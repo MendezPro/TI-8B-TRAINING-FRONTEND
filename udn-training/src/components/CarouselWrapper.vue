@@ -105,7 +105,7 @@ export default {
 
 .toggle-page i {
   cursor: pointer;
-  background-color: #6347c7;
+  background-color: #a32607;
   color: white;
   border-radius: 50%;
   padding: 10px;
@@ -131,7 +131,7 @@ span {
 }
 
 span.active {
-  background-color: #6347c7;
+  background-color: #de3232;
   opacity: 1;
 }
 

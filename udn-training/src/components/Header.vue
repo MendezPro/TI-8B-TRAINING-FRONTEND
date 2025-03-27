@@ -7,8 +7,10 @@
       <ul>
         <li><router-link to="/" active-class="active">Inicio</router-link></li>
         <li><router-link to="/dashboard" active-class="active">Dashboard</router-link></li>
-        <li><router-link to="/dietas" active-class="active">Nutrición</router-link></li>
-        <li><router-link to="/ejercicios" active-class="active">Training</router-link></li>
+        <template v-if="userRole === 'Administrador'">
+          <li><router-link to="/dietas" active-class="active">Nutrición</router-link></li>
+          <li><router-link to="/ejercicios" active-class="active">Training</router-link></li> 
+        </template>
       </ul>
     </nav>
 
@@ -33,11 +35,13 @@ export default {
   data() {
     return {
       isLoggedIn: !!localStorage.getItem("access_token"), // ✅ Revisar si hay token al cargar el componente
+      userRole: localStorage.getItem("rol") || "", // ✅ Obtener el rol desde localStorage
     };
   },
   created() {
     // ✅ Revisar el token al cargar el componente
     this.isLoggedIn = !!localStorage.getItem("access_token");
+    this.userRole = localStorage.getItem("rol") || "";
 
     // ✅ 🔥 Detectar cambios en el token automáticamente
     window.addEventListener('storage', this.syncAuthState);
@@ -54,15 +58,17 @@ export default {
 
       // ✅ Actualizar estado y redirigir
       this.isLoggedIn = false;
+      this.userRole = "";
       this.$router.push("/");
     },
     syncAuthState() {
       this.isLoggedIn = !!localStorage.getItem("access_token");
+      this.userRole = localStorage.getItem("rol") || "";
       if (this.isLoggedIn) {
-      location.reload(); // ✅ Recarga para actualizar automáticamente el botón
-    }
-    }
-  }
+        location.reload(); // ✅ Recarga para actualizar automáticamente el botón
+      }
+    },
+  },
 };
 </script>
 
