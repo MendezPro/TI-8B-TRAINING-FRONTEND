@@ -23,6 +23,9 @@ import MiExpediente from '@/components/TrainingCliente/MiExpediente.vue';
 import ViewError from "../components/ViewError.vue"; // Importa el componente ViewError
 import ProgresoUsuario from '@/components/ProgresoUsuario.vue'; // Importa el componente correctamente
 import { authGuard } from './guards'; // ✅ Importa el guard
+import IndicadorView from '@/components/views/TrainingAdmin/IndicadorView.vue';
+import IndicadorForm from '@/components/views/TrainingAdmin/IndicadorForm.vue';
+import IndicadorEdit from '@/components/views/TrainingAdmin/IndicadorEdit.vue';
 
 const routes = [
   
@@ -48,8 +51,10 @@ const routes = [
   { path: '/perfil/misejercicios', name: 'MisEjercicios', component: MisEjercicios },
   { path: '/perfil/misdatos', name: 'MisDatos', component: MisDatos },
   {path: '/perfil/miexpediente', name: 'MiExpediente', component: MiExpediente },
-
-  { path: '/error', name: 'Error', component: ViewError }, 
+  {path: '/indicadores', name: 'Indicador', component: IndicadorView, meta: { requiresAdmin: true } },
+  {path: '/indicadores/nuevo', name: 'IndicadorForm', component: IndicadorForm, meta: { requiresAdmin: true }  },
+  {path: '/indicadores/editar/:id', name: 'IndicadorEdit', component: IndicadorEdit, meta: { requiresAdmin: true }  },
+  {path: '/error', name: 'Error', component: ViewError }, 
 ];
 
 const router = createRouter({

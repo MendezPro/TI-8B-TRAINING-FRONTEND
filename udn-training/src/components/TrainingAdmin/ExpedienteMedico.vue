@@ -18,6 +18,7 @@
   
   <script>
   import axios from 'axios';
+  import Swal from 'sweetalert2';
   import ExpedienteTable from '@/components/ExpedienteTable.vue';
   
   export default {
@@ -29,10 +30,7 @@
       return {
         searchInput: "",
         dataColumns: [
-          "nombre", "apellido",
-          "fecha_nacimiento", "sexo", "curp", "fecha_registro", 
-          "direccion", "telefono", "correo_electronico", 
-          "fecha_ultima_de_evaluacion", "antecedentes_medicos","lesiones_previas", "presion_arterial",
+          "curp", "fecha_registro", "fecha_ultima_de_evaluacion", "antecedentes_medicos","lesiones_previas", "presion_arterial",
           "estatura", "peso"
         ],
         dataset: []
@@ -48,15 +46,8 @@
         .then(response => {
           this.dataset = response.data.map(exp => ({
             _id: exp._id,
-            nombre: exp.nombre,
-            apellido: exp.apellido, 
-            fecha_nacimiento: exp.fecha_nacimiento,
-            sexo: exp.sexo,
             curp: exp.curp,
             fecha_registro: exp.fecha_registro,
-            direccion: exp.direccion || "N/A",
-            telefono: exp.telefono || "N/A",
-            correo_electronico: exp.correo_electronico || "N/A",
             fecha_ultima_de_evaluacion: exp.fecha_ultima_de_evaluacion,
             antecedentes_medicos: exp.antecedentes_medicos || "N/A",
             lesiones_previas: exp.lesiones_previas || "N/A",
@@ -67,6 +58,7 @@
           }));
         })
         .catch(error => {
+          Swal.fire('Error', 'Hubo un problema al cargar el expediente.', 'error');
           console.error("Error al cargar expedientes:", error);
         });
     }
