@@ -4,12 +4,7 @@
     <table>
       <thead>
         <tr>
-          <th 
-            v-for="key in columns" 
-            :key="key" 
-            @click="sortBy(key)" 
-            :class="{ active: sortKey === key }"
-          >
+          <th v-for="key in columns" :key="key" @click="sortBy(key)" :class="{ active: sortKey === key }">
             {{ capitalize(key) }}
             <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
           </th>
@@ -86,8 +81,8 @@ export default {
             return entry[key] && entry[key].toString().toLowerCase().includes(filterKey);
           });
           const inUsuario = entry.usuario &&
-                            entry.usuario.nombre_usuario &&
-                            entry.usuario.nombre_usuario.toLowerCase().includes(filterKey);
+            entry.usuario.nombre_usuario &&
+            entry.usuario.nombre_usuario.toLowerCase().includes(filterKey);
           return inDataColumns || inUsuario;
         });
       }
@@ -110,8 +105,13 @@ export default {
     }, {});
   },
   mounted() {
+    const token = localStorage.getItem('access_token');
     // Carga la información de usuarios
-    axios.get('http://localhost:8000/api/usuarios')
+    axios.get('http://localhost:8000/api/usuarios', {
+      headers: {
+        Authorization: `Bearer ${token}` // Incluir el token en el header
+      }
+    })
       .then(response => {
         this.usuarios = response.data;
       })
@@ -143,7 +143,12 @@ export default {
       });
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:8000/api/expedientes/${curp}`);
+          const token = localStorage.getItem('access_token');
+          await axios.delete(`http://localhost:8000/api/expedientes/${curp}`, {
+            headers: {
+              Authorization: `Bearer ${token}` // Se añade el token en el header
+            }
+          })
           this.$emit('entryDeleted', curp); // Permite que la vista principal actualice la lista
           Swal.fire('¡Eliminado!', 'El expediente ha sido eliminado con éxito.', 'success');
         } catch (error) {
