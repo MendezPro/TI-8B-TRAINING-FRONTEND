@@ -3,39 +3,8 @@
         <h1>Editar Expediente Médico</h1>
         <form @submit.prevent="updateExpediente">
             <div>
-                <label for="nombre">Nombre</label>
-                <input v-model="expediente.nombre" id="nombre" type="text" required />
-            </div>
-            <div>
-                <label for="apellido">Apellido</label>
-                <input v-model="expediente.apellido" id="apellido" type="text" required />
-            </div>
-            <div>
-                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-                <input v-model="expediente.fecha_nacimiento" id="fecha_nacimiento" type="date" required />
-            </div>
-            <div>
-                <label for="sexo">Sexo</label>
-                <select v-model="expediente.sexo" id="sexo" required>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                </select>
-            </div>
-            <div>
                 <label for="curp">CURP</label>
                 <input v-model="expediente.curp" id="curp" type="text" required />
-            </div>
-            <div>
-                <label for="direccion">Dirección</label>
-                <input v-model="expediente.direccion" id="direccion" type="text" required />
-            </div>
-            <div>
-                <label for="telefono">Teléfono</label>
-                <input v-model="expediente.telefono" id="telefono" type="tel" required />
-            </div>
-            <div>
-                <label for="correo_electronico">Correo Electrónico</label>
-                <input v-model="expediente.correo_electronico" id="correo_electronico" type="email" required />
             </div>
             <div>
                 <label for="antecedentes_medicos">Antecedentes Médicos</label>
@@ -71,14 +40,7 @@ export default {
     data() {
         return {
             expediente: {
-                nombre: '',
-                apellido: '',
-                fecha_nacimiento: '',
-                sexo: '',
                 curp: '',
-                direccion: '',
-                telefono: '',
-                correo_electronico: '',
                 antecedentes_medicos: '',
                 lesiones_previas: '',
                 presion_arterial: '',
@@ -89,28 +51,36 @@ export default {
     },
     mounted() {
         const expedienteCurp = this.$route.params.curp;
-        axios.get(`http://localhost:8000/api/expedientes/${expedienteCurp}`)
-            .then(response => {
-                this.expediente = { ...response.data };
-            })
+        const token = localStorage.getItem('access_token'); // Obtener el token
+        axios.get(`http://localhost:8000/api/expedientes/${expedienteCurp}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            this.expediente = { ...response.data };
+        })
             .catch(() => {
                 Swal.fire('Error', 'No se pudo cargar el expediente.', 'error');
             });
     },
     methods: {
         updateExpediente() {
+            const token = localStorage.getItem('access_token'); // Obtener el token
             const expedienteCurp = this.$route.params.curp;
-            axios.put(`http://localhost:8000/api/expedientes/${expedienteCurp}`, this.expediente)
-                .then(() => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Expediente actualizado',
-                        text: 'El expediente se actualizó correctamente',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    this.$router.push('/expediente');
-                })
+            axios.put(`http://localhost:8000/api/expedientes/${expedienteCurp}`, this.expediente, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Expediente actualizado',
+                    text: 'El expediente se actualizó correctamente',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                this.$router.push('/expediente');
+            })
                 .catch(() => {
                     Swal.fire('Error', 'No se pudo actualizar el expediente', 'error');
                 });

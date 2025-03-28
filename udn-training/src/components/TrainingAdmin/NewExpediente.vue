@@ -3,47 +3,8 @@
     <h1>Agregar Nuevo Expediente Médico</h1>
     <form @submit.prevent="submitForm">
       <div class="form-group">
-        <label>Nombre:</label>
-        <input type="text" v-model="expediente.nombre" required />
-      </div>
-
-      <div class="form-group">
-        <label>Apellido:</label>
-        <input type="text" v-model="expediente.apellido" required />
-      </div>
-
-      <div class="form-group">
-        <label>Fecha de Nacimiento:</label>
-        <input type="date" v-model="expediente.fecha_nacimiento" required />
-      </div>
-
-      <div class="form-group">
-        <label>Sexo:</label>
-        <select v-model="expediente.sexo" required>
-          <option value="Masculino">Masculino</option>
-          <option value="Femenino">Femenino</option>
-          <option value="Otro">Otro</option>
-        </select>
-      </div>
-
-      <div class="form-group">
         <label>CURP:</label>
         <input type="text" v-model="expediente.curp" required maxlength="18" />
-      </div>
-
-      <div class="form-group">
-        <label>Dirección:</label>
-        <input type="text" v-model="expediente.direccion" />
-      </div>
-
-      <div class="form-group">
-        <label>Teléfono:</label>
-        <input type="text" v-model="expediente.telefono" maxlength="15" />
-      </div>
-
-      <div class="form-group">
-        <label>Correo Electrónico:</label>
-        <input type="email" v-model="expediente.correo_electronico" />
       </div>
 
       <div class="form-group">
@@ -92,19 +53,13 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
     return {
       expediente: {
-        nombre: '',
-        apellido: '',
-        fecha_nacimiento: '',
-        sexo: '',
         curp: '',
-        direccion: '',
-        telefono: '',
-        correo_electronico: '',
         fecha_ultima_de_evaluacion: '',
         antecedentes_medicos: '',
         lesiones_previas: '',
@@ -117,8 +72,14 @@ export default {
       usuarios: []
     };
   }, mounted() {
+    // Obtener el token de autorización
+    const token = localStorage.getItem('access_token');
     // Cargar los usuarios desde la API
-    axios.get('http://localhost:8000/api/usuarios')
+    axios.get('http://localhost:8000/api/usuarios', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(response => {
         this.usuarios = response.data;
       })
@@ -128,19 +89,30 @@ export default {
   },
   methods: {
     submitForm() {
+      const token = localStorage.getItem('access_token');
       // Convertir la fecha al formato ISO antes de enviarla
       const expedienteData = {
         ...this.expediente,
-        fecha_nacimiento: new Date(this.expediente.fecha_nacimiento).toISOString().split('T')[0],
         fecha_ultima_de_evaluacion: new Date(this.expediente.fecha_ultima_de_evaluacion).toISOString().split('T')[0]
       };
 
-      axios.post('http://localhost:8000/api/expedientes', expedienteData)
-        .then(response => {
-          console.log('Expediente agregado:', response.data);
+      axios.post('http://localhost:8000/api/expedientes', expedienteData, {
+        headers: {
+          Authorization: `Bearer ${token}` // Se añade el token en el header
+        }
+      })
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Expediente agregado',
+            text: 'El expediente se agregó correctamente',
+            timer: 2000,
+            showConfirmButton: false
+          });
           this.$router.push('/expediente');
         })
         .catch(error => {
+          Swal.fire('Error', 'Hubo un problema al agregar el expediente.', 'error');
           console.error('Error al agregar expediente:', error);
         });
     }
