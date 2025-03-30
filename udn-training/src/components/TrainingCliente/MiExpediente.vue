@@ -30,7 +30,7 @@
 
 <script>
 import axios from 'axios';
-import BloodPressureChart from '@/components/BloodPressureChart.vue'
+import BloodPressureChart from '@/components/GraficaExpedientes.vue'
 export default {
     name: 'MiExpediente',
     components: { BloodPressureChart },
