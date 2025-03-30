@@ -30,7 +30,7 @@
       return {
         searchInput: "",
         dataColumns: [
-          "curp", "fecha_registro", "fecha_ultima_de_evaluacion", "antecedentes_medicos","lesiones_previas", "presion_arterial",
+          "curp", "fecha_registro", "fecha_ultima_de_evaluacion", "antecedentes_medicos","lesiones_previas", "presion_sistolica", "presion_diastolica",
           "estatura", "peso"
         ],
         dataset: []
@@ -51,7 +51,8 @@
             fecha_ultima_de_evaluacion: exp.fecha_ultima_de_evaluacion,
             antecedentes_medicos: exp.antecedentes_medicos || "N/A",
             lesiones_previas: exp.lesiones_previas || "N/A",
-            presion_arterial: exp.presion_arterial || "N/A",
+            presion_sistolica: exp.presion_sistolica || "N/A",
+            presion_diastolica: exp.presion_diastolica || "N/A",
             estatura: exp.estatura || "N/A",
             peso: exp.peso || "N/A",
             usuario_id: exp.usuario_id

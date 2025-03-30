@@ -15,16 +15,20 @@
                 <textarea v-model="expediente.lesiones_previas" id="lesiones_previas" required></textarea>
             </div>
             <div>
-                <label for="presion_arterial">Presión Arterial</label>
-                <input v-model="expediente.presion_arterial" id="presion_arterial" type="text" required />
+                <label for="presion_arterial">Presión Sistolica</label>
+                <input v-model="expediente.presion_sistolica" id="presion_sistolica" type="text" required />
+            </div>
+            <div>
+                <label for="presion_diastolica">Presión Diastolica</label>
+                <input v-model="expediente.presion_diastolica" id="presion_diastolica" type="text" required />
             </div>
             <div>
                 <label for="estatura">Estatura (cm)</label>
-                <input v-model="expediente.estatura" id="estatura" type="number" required />
+                <input v-model="expediente.estatura" id="estatura" type="number" required step="any"/>
             </div>
             <div>
                 <label for="peso">Peso (kg)</label>
-                <input v-model="expediente.peso" id="peso" type="number" required />
+                <input v-model="expediente.peso" id="peso" type="number" required step="any" />
             </div>
             <button type="submit">Actualizar Expediente</button>
         </form>
@@ -43,7 +47,8 @@ export default {
                 curp: '',
                 antecedentes_medicos: '',
                 lesiones_previas: '',
-                presion_arterial: '',
+                presion_sistolica: '',
+                presion_diastolica: '',
                 estatura: '',
                 peso: ''
             }

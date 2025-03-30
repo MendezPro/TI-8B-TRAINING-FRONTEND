@@ -1,8 +1,9 @@
 <template>
-  <div>
-    <h2>Gráfica combinada de Expedientes Médicos</h2>
+  <div class="container">
+    <h2>Gráfica de Presión Arterial</h2>
     <label for="usuario">Seleccionar usuario:</label>
     <select id="usuario" v-model="selectedUser" @change="fetchExpedientes">
+      <option value="" disabled>-- Selecciona un usuario --</option>
       <option v-for="user in usuarios" :key="user.id" :value="user.id">
         {{ user.nombre_usuario }}
       </option>
@@ -23,7 +24,7 @@ export default {
     const usuarios = ref([]);
     const chartInstance = ref(null);
 
-    // Obtener lista de usuarios (de tu API SQL o Mongo, según cómo tengas implementada la consulta)
+    // Obtener la lista de usuarios desde la API
     const fetchUsuarios = async () => {
       try {
         const token = localStorage.getItem('access_token');
@@ -36,35 +37,31 @@ export default {
       }
     };
 
-    // Consultar expedientes para el usuario seleccionado en Mongo
+    // Consultar expedientes para el usuario seleccionado y extraer datos de presión arterial
     const fetchExpedientes = async () => {
       if (!selectedUser.value) return;
       try {
         const token = localStorage.getItem('access_token');
-        // Aquí se le pasa el id del usuario (asegúrate de que sea del mismo tipo que guardas en Mongo, por ejemplo, "2")
         const response = await axios.get(
           `http://localhost:8000/api/expedientes/usuario/${selectedUser.value}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const expedientes = response.data;
 
-        // Extraer las fechas y los parámetros que deseas graficar
-        // Por ejemplo, se asume que cada documento tiene 'fecha_registro', 'peso' y 'estatura'
+        // Extraer las fechas y los valores de presión sistólica y diastólica
         const labels = expedientes.map(exp => new Date(exp.fecha_registro).toLocaleDateString());
-        const pesos = expedientes.map(exp => exp.peso);
-        const estaturas = expedientes.map(exp => exp.estatura);
+        const presionSistolica = expedientes.map(exp => exp.presion_sistolica);
+        const presionDiastolica = expedientes.map(exp => exp.presion_diastolica);
 
-        // Actualizar la gráfica
-        updateChart(labels, pesos, estaturas);
+        updateChart(labels, presionSistolica, presionDiastolica);
       } catch (error) {
         console.error('Error al obtener expedientes:', error);
       }
     };
 
-    const updateChart = (labels, pesos, estaturas) => {
-      // Si ya existe una gráfica, destrúyela para evitar solapamientos
+    // Actualizar o crear la gráfica usando Chart.js
+    const updateChart = (labels, presionSistolica, presionDiastolica) => {
       if (chartInstance.value) chartInstance.value.destroy();
-
       const ctx = document.getElementById('expedientesChart').getContext('2d');
       chartInstance.value = new Chart(ctx, {
         type: 'line',
@@ -72,15 +69,15 @@ export default {
           labels: labels,
           datasets: [
             {
-              label: 'Peso (kg)',
-              data: pesos,
+              label: 'Presión Sistólica',
+              data: presionSistolica,
               borderColor: 'rgba(75, 192, 192, 1)',
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               fill: false,
             },
             {
-              label: 'Estatura (cm)',
-              data: estaturas,
+              label: 'Presión Diastólica',
+              data: presionDiastolica,
               borderColor: 'rgba(192, 75, 75, 1)',
               backgroundColor: 'rgba(192, 75, 75, 0.2)',
               fill: false,
@@ -88,6 +85,8 @@ export default {
           ]
         },
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           scales: {
             x: {
               title: {
@@ -98,7 +97,7 @@ export default {
             y: {
               title: {
                 display: true,
-                text: 'Valor'
+                text: 'Valor (mmHg)'
               }
             }
           }
@@ -120,22 +119,50 @@ export default {
 </script>
 
 <style scoped>
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-label {
-  display: block;
-  margin: 10px 0;
-}
-select {
-  display: block;
-  margin-bottom: 20px;
-  padding: 5px;
-}
-canvas {
-  max-width: 100%;
+.container {
+  max-width: 900px;
   margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
   display: block;
+  font-size: 18px;
+  color: #555;
+}
+
+select {
+  width: 60%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+select:focus {
+  border-color: #888;
+}
+
+canvas {
+  width: 100% !important;
+  height: 500px !important;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin: 0 auto;
 }
 </style>
