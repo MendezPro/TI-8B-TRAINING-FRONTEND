@@ -26,6 +26,7 @@ import { authGuard } from './guards'; // ✅ Importa el guard
 import IndicadorView from '@/components/views/TrainingAdmin/IndicadorView.vue';
 import IndicadorForm from '@/components/views/TrainingAdmin/IndicadorForm.vue';
 import IndicadorEdit from '@/components/views/TrainingAdmin/IndicadorEdit.vue';
+import GraficaExpedientes from '@/components/GraficaExpedientes.vue';
 
 const routes = [
   
@@ -55,6 +56,7 @@ const routes = [
   {path: '/indicadores/nuevo', name: 'IndicadorForm', component: IndicadorForm, meta: { requiresAdmin: true }  },
   {path: '/indicadores/editar/:id', name: 'IndicadorEdit', component: IndicadorEdit, meta: { requiresAdmin: true }  },
   {path: '/error', name: 'Error', component: ViewError }, 
+  {path: '/grafica', name: 'GraficaExpedientes', component: GraficaExpedientes, meta: { requiresAdmin: true } }, // Ruta para la gráfica de expedientes
 ];
 
 const router = createRouter({

@@ -19,6 +19,16 @@
         <h2>Progreso</h2>
         <p>Monitorea tu avance y establece nuevas metas.</p>
       </div>
+      <div class="card" @click="$router.push('/expedientes')">
+        <i class="fas fa-file-medical"></i>
+        <h2>Expedientes</h2>
+        <p>Consulta y gestiona tus expedientes médicos.</p>
+      </div>
+      <div class="card" @click="$router.push('/grafica')">
+        <i class="fas fa-chart-pie"></i>
+        <h2>Gráficas</h2>
+        <p>Visualiza tus datos de salud de manera efectiva.</p>
+      </div>
       <div class="card" @click="$router.push('/perfil')">
         <i class="fas fa-user"></i>
         <h2>Perfil</h2>
