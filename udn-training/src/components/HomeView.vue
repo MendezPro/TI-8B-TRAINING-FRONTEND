@@ -12,15 +12,40 @@
       <div class="hero-image">
         <img src="@/assets/logo1.png" alt="Entrenamiento" />
       </div>
+
      <!-- Aquí se cargará el chatbot -->
     <div id="chatbot-container"></div> 
     </section>
-
-    <!-- Galería -->
-    <section class="gallery">
+            <!-- Sección de Estadísticas -->
+            <section class="stats">
+      <div class="stat">
+        <h2>5+</h2>
+        <p>Años de servicio</p>
+      </div>
+      <div class="stat">
+        <h2>10+</h2>
+        <p>Certificados</p>
+      </div>
+      <div class="stat">
+        <h2>786+</h2>
+        <p>Miembros fieles</p>
+      </div>
+      <div class="stat">
+        <h2>95%</h2>
+        <p>De resultados</p>
+      </div>
+    </section>
+        <!-- Galería -->
+        <section class="gallery">
       <h2>Nuestra Galería</h2>
       <CarouselWrapper />
     </section>
+   <!-- ¿Por qué elegirnos? -->
+   <section class="why-choose-us">
+      <h2>¿Por qué elegirnos?</h2>
+      <p>Entrenadores expertos, resultados reales y un ambiente que te motiva a superarte cada día.</p>
+    </section>
+
 
     
   </div>
@@ -55,6 +80,60 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
 /* Estilos generales */
+
+
+
+/* Sección de estadísticas */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 30px;
+  background-color: #111;
+}
+
+.stat h2 {
+  font-size: 2rem;
+  color: red;
+}
+
+.stat p {
+  font-size: 1rem;
+  color: white;
+}
+
+
+
+/* ¿Por qué elegirnos? */
+.why-choose-us {
+  text-align: center;
+  margin-top: 40px;
+  padding: 30px;
+  background-color: #000000;
+  color: white;
+}
+
+.why-choose-us h2 {
+  font-size: 2.5rem;
+  color: red;
+}
+
+.why-choose-us p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.cta-btn {
+  margin-top: 15px;
+  padding: 20px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 .hero-image img {
   width: 300%; /* Ajusta este valor según el tamaño que prefieras */
   max-width: 500px; /* Opcional: Establece un límite máximo */
@@ -62,11 +141,10 @@ export default {
 }
 
 .home-container {
-  font-family: 'Roboto', sans-serif; /* Cambié la fuente a Roboto */
+  font-family: 'Roboto', sans-seriF; /* Cambié la fuente a Roboto */
   color: white;
-  background-color: #000;
+  background: rgb(0, 0, 0); 
 }
-
 /* Sección Hero */
 .hero {
   display: flex;

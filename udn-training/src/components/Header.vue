@@ -82,7 +82,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: black;
+  background-color: #111;
   font-family: 'Roboto', sans-serif; /* Cambié la fuente a Roboto */
 }
 
