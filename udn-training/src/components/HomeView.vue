@@ -277,7 +277,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 50px;
-  background: url("@/assets/fondo.jpg") no-repeat center center;
+  background: url("@/assets/help.jpg") no-repeat center center;
   background-size: cover;
   border-radius: 100px 0px 100px 0px;  
 }
