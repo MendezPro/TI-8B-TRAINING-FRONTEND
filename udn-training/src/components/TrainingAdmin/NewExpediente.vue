@@ -23,19 +23,24 @@
       </div>
 
       <div class="form-group">
-        <label>Presión Arterial:</label>
-        <input type="text" v-model="expediente.presion_arterial" />
+        <label>Presión sistolica:</label>
+        <input type="number" v-model="expediente.presion_sistolica" />
+      </div>
+
+      <div class="form-group">
+        <label>Presión diastolica:</label>
+        <input type="number" v-model="expediente.presion_diastolica" />
       </div>
 
       <!-- Nuevos campos -->
       <div class="form-group">
         <label>Peso (kg):</label>
-        <input type="number" v-model="expediente.peso" min="0" />
+        <input type="number" v-model="expediente.peso" min="0" step="any"/>
       </div>
 
       <div class="form-group">
-        <label>Estatura (cm):</label>
-        <input type="number" v-model="expediente.estatura" min="0" />
+        <label>Estatura:</label>
+        <input type="number" v-model="expediente.estatura" min="0" step="any" />
       </div>
 
       <div>
@@ -63,7 +68,8 @@ export default {
         fecha_ultima_de_evaluacion: '',
         antecedentes_medicos: '',
         lesiones_previas: '',
-        presion_arterial: '',
+        presion_sistolica: '',
+        presion_diastolica: '',
         peso: '',
         estatura: '',
         fecha_registro: new Date().toISOString(),
