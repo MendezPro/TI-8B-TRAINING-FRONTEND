@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Se eliminó el input interno, ahora se usa el buscador de la vista principal -->
     <table>
       <thead>
         <tr>
