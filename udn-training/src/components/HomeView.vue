@@ -40,11 +40,32 @@
       <h2>Nuestra Galería</h2>
       <CarouselWrapper />
     </section>
-   <!-- ¿Por qué elegirnos? -->
-   <section class="why-choose-us">
+  <!-- ¿Por qué elegirnos? -->
+<section class="why-choose-us">
+  <div class="why-content">
+    <div class="text-content">
       <h2>¿Por qué elegirnos?</h2>
       <p>Entrenadores expertos, resultados reales y un ambiente que te motiva a superarte cada día.</p>
-    </section>
+      <div class="buttons">
+        
+        <button class="btn-secondary">
+          <i class="fas fa-play"></i> Mirar Demo
+        </button>
+      </div>
+    </div>
+    <div class="image-content">
+      <img src="@/assets/pngwing.png" alt="Entrenadores" class="trainers-img" />
+      <div class="satisfied-customers">
+        <div class="customer-avatars">
+          <img src="@/assets/Mask.png" alt="Customer 1" />
+          <img src="@/assets/Mask1.png" alt="Customer 2" />
+          <img src="@/assets/Mask2.png" alt="Customer 3" />
+        </div>
+        <p>10K+ Clientes Satisfechos</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 
     
@@ -103,37 +124,142 @@ export default {
 
 
 
-/* ¿Por qué elegirnos? */
+/* Sección ¿Por qué elegirnos? */
 .why-choose-us {
-  text-align: center;
-  margin-top: 40px;
-  padding: 30px;
-  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  padding: 80px 5%;
+  background-color: #000;
   color: white;
 }
 
-.why-choose-us h2 {
-  font-size: 2.5rem;
-  color: red;
+.why-content {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
 }
 
-.why-choose-us p {
+.text-content {
+  max-width: 500px;
+}
+
+.text-content h2 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.text-content p {
   font-size: 1.2rem;
-  margin-top: 10px;
+  margin: 20px 0;
+  color: #bbb;
 }
 
-.cta-btn {
-  margin-top: 15px;
-  padding: 20px 30px;
+/* Botones */
+.buttons {
+  display: flex;
+  gap: 15px;
+}
+
+
+.btn-secondary {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.btn-secondary {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
-  border: none;
-  border-radius: 50px;
   color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Imagen de entrenadores */
+.image-content {
+  position: relative;
+}
+
+.trainers-img {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  animation: fadeInUp 1s ease-in-out;
+}
+
+/* Clientes satisfechos */
+.satisfied-customers {
+  position: absolute;
+  bottom: 20px;
+  right: -10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 10px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.customer-avatars {
+  display: flex;
+}
+
+.customer-avatars img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: -10px;
+  border: 2px solid #000;
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .why-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .text-content {
+    max-width: 100%;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .satisfied-customers {
+    position: static;
+    margin-top: 20px;
+  }
+}
 .hero-image img {
   width: 300%; /* Ajusta este valor según el tamaño que prefieras */
   max-width: 500px; /* Opcional: Establece un límite máximo */
@@ -143,7 +269,7 @@ export default {
 .home-container {
   font-family: 'Roboto', sans-seriF; /* Cambié la fuente a Roboto */
   color: white;
-  background: rgb(0, 0, 0); 
+  background: #111; 
 }
 /* Sección Hero */
 .hero {
@@ -153,6 +279,7 @@ export default {
   padding: 50px;
   background: url("@/assets/fondo.jpg") no-repeat center center;
   background-size: cover;
+  border-radius: 100px 0px 100px 0px;  
 }
 
 .hero-text h1 {
@@ -167,12 +294,18 @@ export default {
 
 .cta-btn {
   margin-top: 15px;
-  padding: 10px 20px;
-  background-color: red;
-  border: none;
-  color: white;
+  padding: 12px 20px;
   font-size: 1.2rem;
+  border: none;
   cursor: pointer;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Sección de estadísticas */
