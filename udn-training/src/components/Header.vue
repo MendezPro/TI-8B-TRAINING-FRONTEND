@@ -76,56 +76,62 @@ export default {
 /* Importando la fuente Roboto desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
+/* Importando la fuente moderna desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 /* Barra de navegación */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: black;
-  font-family: 'Roboto', sans-serif; /* Cambié la fuente a Roboto */
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in-out;
 }
 
 /* Logo */
 .navbar .logo img {
-  width: 120px;
-  transition: transform 0.3s ease-in-out;
+  width: 130px;
+  transition: transform 0.4s ease-in-out;
 }
 
 .navbar .logo img:hover {
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(3deg);
 }
 
 /* Navegación */
 .navbar nav ul {
   display: flex;
   list-style: none;
-  gap: 25px;
+  gap: 30px;
 }
 
 .navbar nav ul li a {
   text-decoration: none;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 16px;
   position: relative;
-  transition: color 0.3s;
+  padding: 5px 0;
+  transition: color 0.3s ease-in-out;
 }
 
 .navbar nav ul li a:hover {
-  color: red;
+  color: #ff4d4d;
 }
 
-/* Subrayado animado del enlace activo */
+/* Efecto de subrayado animado */
 .navbar nav ul li a::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
-  bottom: -4px;
+  bottom: -5px;
   width: 0;
   height: 2px;
-  background-color: red;
-  transition: all 0.3s ease-in-out;
+  background-color: #ff4d4d;
+  transition: all 0.4s ease-in-out;
   transform: translateX(-50%);
 }
 
@@ -137,53 +143,59 @@ export default {
 /* Botones de autenticación */
 .auth-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .auth-buttons button {
-  padding: 10px 20px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
 }
 
 .login-btn {
   background: none;
-  border: 1px solid white;
+  border: 2px solid white;
   color: white;
 }
 
 .login-btn:hover {
   background: white;
   color: black;
+  transform: scale(1.05);
 }
 
 .register-btn {
-  background: red;
+  background: #ff4d4d;
   color: white;
+  box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.4);
 }
 
 .register-btn:hover {
-  background: darkred;
+  background: #d93c3c;
+  transform: scale(1.05);
 }
 
-/* ✅ Estilo para el botón de cerrar sesión */
+/* Estilo del botón de cierre de sesión */
 .logout-btn {
-  padding: 10px 20px;
-  background: red;
+  background: #ff4d4d;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
+  padding: 12px 25px;
   font-weight: bold;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .logout-btn:hover {
-  background: darkred;
+  background: #d93c3c;
+  transform: scale(1.05);
 }
+
 </style>

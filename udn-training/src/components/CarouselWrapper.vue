@@ -1,79 +1,93 @@
 <template>
   <div class="carousel-container">
-    <div class="carousel">
-      <!-- Navegación -->
-      <div class="navigate">
-        <div class="toggle-page left">
-          <i @click="prevSlide" class="fas fa-chevron-left"></i>
-        </div>
-
-        <div class="toggle-page right">
-          <i @click="nextSlide" class="fas fa-chevron-right"></i>
-        </div>
-      </div>
-
-      <!-- Paginación -->
-      <div class="pagination">
-        <span
-          v-for="(slide, index) in images"
-          :key="index"
-          :class="{ active: index + 1 === currentSlide }"
-          @click="currentSlide = index + 1"
-        ></span>
-      </div>
-
-      <!-- Mostrar imágenes -->
-      <div class="slides">
-        <div v-for="(image, index) in images" :key="index" class="slide">
-          <img v-show="currentSlide === index + 1" :src="'data:image/jpeg;base64,' + image.imageBase64" />
-        </div>
+    <div class="carousel" ref="carousel">
+      <div 
+        v-for="(image, index) in images" 
+        :key="index" 
+        class="carousel-item" 
+        :class="{ 'active': index === activeIndex, 'prev': index === prevIndex, 'next': index === nextIndex }"
+      >
+        <img :src="'data:image/jpeg;base64,' + image.imageBase64" alt="Carousel Image" class="carousel-image" />
       </div>
     </div>
+    <div class="indicators">
+      <span 
+        v-for="(image, index) in images" 
+        :key="index" 
+        class="indicator" 
+        :class="{ 'active': index === activeIndex }"
+        @click="goToSlide(index)"></span>
+    </div>
+    <button class="nav-button left" @click="prevSlide">&#10094;</button>
+    <button class="nav-button right" @click="nextSlide">&#10095;</button>
   </div>
 </template>
 
-
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 export default {
   setup() {
-    const currentSlide = ref(1);
+    const activeIndex = ref(0);
+    const prevIndex = ref(null);
+    const nextIndex = ref(null);
     const images = ref([]);
+    let interval = null;
 
-    // Lógica para cambiar las imágenes
+    const updateIndices = () => {
+      prevIndex.value = activeIndex.value === 0 ? images.value.length - 1 : activeIndex.value - 1;
+      nextIndex.value = activeIndex.value === images.value.length - 1 ? 0 : activeIndex.value + 1;
+    };
+
     const nextSlide = () => {
-      if (currentSlide.value === images.value.length) {
-        currentSlide.value = 1;
-      } else {
-        currentSlide.value += 1;
-      }
+      activeIndex.value = nextIndex.value;
+      updateIndices();
     };
 
     const prevSlide = () => {
-      if (currentSlide.value === 1) {
-        currentSlide.value = images.value.length;
-      } else {
-        currentSlide.value -= 1;
-      }
+      activeIndex.value = prevIndex.value;
+      updateIndices();
     };
 
-    // Cargar las imágenes desde la API
+    const goToSlide = (index) => {
+      activeIndex.value = index;
+      updateIndices();
+    };
+
+    const startAutoSlide = () => {
+      interval = setInterval(() => {
+        nextSlide();
+      }, 5000);
+    };
+
+    const stopAutoSlide = () => {
+      clearInterval(interval);
+    };
+
     onMounted(async () => {
       try {
         const response = await fetch("http://localhost:8000/api/images/");
         const data = await response.json();
         images.value = data;
+        updateIndices();
+        startAutoSlide();
       } catch (error) {
         console.error("Error al obtener las imágenes:", error);
       }
     });
 
+    onUnmounted(() => {
+      stopAutoSlide();
+    });
+
     return {
-      currentSlide,
+      activeIndex,
+      prevIndex,
+      nextIndex,
+      images,
       nextSlide,
       prevSlide,
-      images
+      goToSlide,
     };
   }
 };
@@ -82,70 +96,104 @@ export default {
 <style scoped>
 .carousel-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 50vh; /* Esto hace que el contenedor ocupe toda la altura de la pantalla */
-}
-
-.carousel {
+  justify-content: center;
   position: relative;
-  width: 90%; /* Ajusta el ancho según el tamaño que desees */
-  height: 300px;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
   overflow: hidden;
 }
 
-.navigate {
-  position: absolute;
-  top: 50%;
-  width: 100%;
+.carousel {
   display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-}
-
-.toggle-page i {
-  cursor: pointer;
-  background-color: #a32607;
-  color: white;
-  border-radius: 50%;
-  padding: 10px;
-  font-size: 20px;
-}
-
-.pagination {
-  position: absolute;
-  bottom: 10px;
-  display: flex;
-  gap: 10px;
   justify-content: center;
+  align-items: center;
+  position: relative;
   width: 100%;
+  height: 400px;
 }
 
-span {
+.carousel-item {
+  position: absolute;
+  width: 60%;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  opacity: 0.5;
+  transform: scale(0.85);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-item.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 10;
+}
+
+.carousel-item.prev {
+  transform: translateX(-50%) scale(0.8);
+  opacity: 0.4;
+  z-index: 5;
+}
+
+.carousel-item.next {
+  transform: translateX(50%) scale(0.8);
+  opacity: 0.4;
+  z-index: 5;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.indicator {
   width: 12px;
   height: 12px;
+  margin: 0 5px;
   border-radius: 50%;
-  background-color: white;
+  background-color: #ddd;
   cursor: pointer;
-  opacity: 0.5;
+  transition: background-color 0.3s ease;
 }
 
-span.active {
-  background-color: #de3232;
-  opacity: 1;
+.indicator.active {
+  background-color: #7b61ff;
+  transform: scale(1.2);
 }
 
-.slides {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.5s ease;
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 20;
 }
 
-.slide img {
-  width: 100%;
-  height: 100%;
-  margin-left: 135px;
-  object-fit: cover;
+.nav-button.left {
+  left: 10px;
+}
+
+.nav-button.right {
+  right: 10px;
+}
+
+.nav-button:hover {
+  background: rgba(0, 0, 0, 0.8);
 }
 </style>
