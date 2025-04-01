@@ -8,6 +8,7 @@
             {{ capitalize(key) }}
             <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
           </th>
+          <th>Asignado a</th>
           <th>Operaciones</th>
         </tr>
       </thead>
@@ -15,6 +16,9 @@
         <tr v-for="(entry, index) in filteredEntries" :key="index">
           <td v-for="key in columns" :key="key">
             {{ entry[key] }}
+          </td>
+          <td>
+            {{ entry.usuario_nombre ? entry.usuario_nombre : 'No asignado' }}
           </td>
           <td>
             <button @click="editIndicador(entry.id)">
@@ -128,23 +132,45 @@ table {
   border-collapse: collapse;
   margin-top: 20px;
 }
-th, td {
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+button i {
+  margin-right: 5px;
+}
+
+button:hover {
+  opacity: 0.7;
+}
+
+th,
+td {
   padding: 8px;
   border: 1px solid #ddd;
   text-align: left;
 }
+
 th {
   background-color: #e74c3c;
   color: white;
   cursor: pointer;
 }
+
 .arrow {
   margin-left: 10px;
   font-size: 12px;
 }
+
 .arrow.asc::after {
   content: '▲';
 }
+
 .arrow.dsc::after {
   content: '▼';
 }

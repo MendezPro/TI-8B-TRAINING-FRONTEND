@@ -3,24 +3,30 @@
         <h1>Editar Indicador Nutricional</h1>
         <form v-if="indicador" @submit.prevent="submitForm">
             <div class="form-group">
-                <label>Nombre:</label>
-                <input type="text" v-model="indicador.nombre" required />
+                <label>Altura (m):</label>
+                <input type="number" step="0.01" v-model="indicador.altura" required />
             </div>
             <div class="form-group">
-                <label>Descripción:</label>
-                <input type="text" v-model="indicador.descripcion" required />
+                <label>Peso (kg):</label>
+                <input type="number" step="0.01" v-model="indicador.peso" required />
             </div>
             <div class="form-group">
-                <label>Unidad:</label>
-                <input type="text" v-model="indicador.unidad" required />
+                <label>IMC:</label>
+                <input type="number" step="0.01" v-model="indicador.imc" readonly />
             </div>
             <div class="form-group">
-                <label>Valor de Referencia:</label>
-                <input type="number" v-model="indicador.valor_referencia" required />
+                <label>Porcentaje de Grasa:</label>
+                <input type="number" step="0.01" v-model="indicador.porcentaje_grasa" required />
             </div>
             <div class="form-group">
-                <label>Usuario ID:</label>
-                <input type="text" v-model="indicador.usuario_id" placeholder="Opcional" />
+                <label>Nivel de Actividad:</label>
+                <select v-model="indicador.nivel_actividad" required>
+                    <option value="Sedentario">Sedentario</option>
+                    <option value="Ligero">Ligero</option>
+                    <option value="Moderado">Moderado</option>
+                    <option value="Activo">Activo</option>
+                    <option value="Muy_Activo">Muy Activo</option>
+                </select>
             </div>
             <button type="submit">Actualizar Indicador</button>
         </form>
@@ -54,8 +60,19 @@ export default {
             .catch(error => {
                 console.error("Error al cargar el indicador:", error);
             });
+    }, watch: {
+        // Calcula automáticamente el IMC cuando cambian el peso o la altura
+        'indicador.altura': 'calculateIMC',
+        'indicador.peso': 'calculateIMC'
     },
     methods: {
+        calculateIMC() {
+            if (this.indicador.altura > 0 && this.indicador.peso > 0) {
+                this.indicador.imc = (this.indicador.peso / (this.indicador.altura ** 2)).toFixed(2);
+            } else {
+                this.indicador.imc = 0;
+            }
+        },
         submitForm() {
 
             const token = localStorage.getItem('access_token');
@@ -102,7 +119,8 @@ label {
     margin-bottom: 5px;
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
