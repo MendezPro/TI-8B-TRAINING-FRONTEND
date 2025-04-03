@@ -3,11 +3,14 @@
     <!-- Sección Hero -->
     <section class="hero">
       <div class="hero-text">
-        <h1>Fortalece tu cuerpo con profesionales</h1>
+        <h1>Enciede tu <span class="highlight">Fuerza</span>, Con GymBulls</h1>
         <p>
-          ¡Entrena como un profesional! Mejora tu salud y resistencia con nuestros programas de Training, Gym y más.
+          Gym Bulls, no solo es un gimnasio, es el cambio que necesitas para empezar de nuevo.
         </p>
-        <button class="cta-btn">¡Entrena ya!</button>
+        <div class="cta-buttons">
+          <button class="cta-btn">!Entrena ↗</button>
+          <button class="cta-btn-secondary">Ya!</button>
+        </div>
       </div>
       <div class="hero-image">
         <img src="@/assets/logo1.png" alt="Entrenamiento" />
@@ -16,8 +19,8 @@
      <!-- Aquí se cargará el chatbot -->
     <div id="chatbot-container"></div> 
     </section>
-            <!-- Sección de Estadísticas -->
-            <section class="stats">
+     <!-- Sección de Estadísticas -->
+     <section class="stats">
       <div class="stat">
         <h2>5+</h2>
         <p>Años de servicio</p>
@@ -98,41 +101,139 @@ export default {
 
 <style scoped>
 /* Importando la fuente Roboto desde Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 /* Estilos generales */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.home-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+/* Sección Hero */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+  background: url("@/assets/help.jpg") no-repeat center center/cover;
+  border-radius: 50px;
+  text-align: left;
+}
+.hero-text h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 10px;
+  
+}
+.hero-text .highlight {
+  color: #ff914d;
+  
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #989797;
+}
 
 
+.cta-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.cta-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: linear-gradient(90deg, #ff914d, #ff4d4d);
+  color: white;
+  transition: 0.3s;
+}
+.cta-btn-secondary {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.cta-btn:hover {
+  background: linear-gradient(90deg, #ff6666, #ff3333);
+}
+
+.cta-btn:hover {
+  background: linear-gradient(90deg, #ff6666, #ff3333);
+}
+
+.hero-image img {
+  max-width: 450px;
+  width: 100%;
+  height: auto;
+}
 
 /* Sección de estadísticas */
 .stats {
   display: flex;
   justify-content: space-around;
-  padding: 30px;
+  padding: 40px;
   background-color: #111;
+  border-radius: 20px;
+  margin-top: 30px;
+}
+
+.stat {
+  text-align: center;
 }
 
 .stat h2 {
-  font-size: 2rem;
-  color: red;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ff4d4d;
 }
 
 .stat p {
-  font-size: 1rem;
-  color: white;
+  font-size: 1.2rem;
+  color: #ccc;
 }
-
-
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .hero-image img {
+    max-width: 300px;
+  }
+}
 
 /* Sección ¿Por qué elegirnos? */
 .why-choose-us {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: left;
   padding: 80px 5%;
   background-color: #000;
   color: white;
+  border-radius: 50px;
 }
 
 .why-content {
@@ -142,10 +243,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   gap: 40px;
-}
-
-.text-content {
-  max-width: 500px;
 }
 
 .text-content h2 {
@@ -159,37 +256,23 @@ export default {
   color: #bbb;
 }
 
-/* Botones */
-.buttons {
-  display: flex;
-  gap: 15px;
-}
-
-
 .btn-secondary {
   padding: 12px 20px;
   font-size: 1.2rem;
   border: none;
   cursor: pointer;
   border-radius: 50px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-
-.btn-secondary {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: 0.3s;
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Imagen de entrenadores */
 .image-content {
   position: relative;
 }
@@ -242,17 +325,18 @@ export default {
 
 /* Responsivo */
 @media (max-width: 900px) {
-  .why-content {
+  .hero {
     flex-direction: column;
     text-align: center;
   }
-
-  .text-content {
-    max-width: 100%;
+  
+  .hero-image img {
+    max-width: 300px;
   }
-
-  .buttons {
-    justify-content: center;
+  
+  .why-content {
+    flex-direction: column;
+    text-align: center;
   }
 
   .satisfied-customers {
@@ -260,124 +344,5 @@ export default {
     margin-top: 20px;
   }
 }
-.hero-image img {
-  width: 300%; /* Ajusta este valor según el tamaño que prefieras */
-  max-width: 500px; /* Opcional: Establece un límite máximo */
-  height: auto; /* Mantiene la proporción */
-}
 
-.home-container {
-  font-family: 'Roboto', sans-seriF; /* Cambié la fuente a Roboto */
-  color: white;
-  background: #111; 
-}
-/* Sección Hero */
-.hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 50px;
-  background: url("@/assets/help.jpg") no-repeat center center;
-  background-size: cover;
-  border-radius: 100px 0px 100px 0px;  
-}
-
-.hero-text h1 {
-  font-size: 3rem;
-  font-weight: bold;
-}
-
-.hero-text p {
-  font-size: 1.2rem;
-  margin-top: 10px;
-}
-
-.cta-btn {
-  margin-top: 15px;
-  padding: 12px 20px;
-  font-size: 1.2rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Sección de estadísticas */
-.stats {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px;
-  background-color: #111;
-}
-
-.stat h2 {
-  font-size: 2rem;
-  color: red;
-}
-
-.stat p {
-  font-size: 1rem;
-  color: white;
-}
-
-/* Galería */
-.gallery {
-  margin-top: 40px;
-  padding: 30px;
-  background-color: #000;
-  color: white;
-}
-
-.gallery h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: red;
-}
-
-.carousel {
-  margin-top: 20px;
-  width: 100%;
-  height: 400px;
-}
-
-.slide-info {
-  width: 100%;
-  height: 100%;
-}
-
-.slide-info img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Botones de navegación */
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 10px;
-}
-
-.prev-btn,
-.next-btn {
-  padding: 10px 20px;
-  background-color: red;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.prev-btn:hover,
-.next-btn:hover {
-  background-color: #ff4d4d;
-}
 </style>
