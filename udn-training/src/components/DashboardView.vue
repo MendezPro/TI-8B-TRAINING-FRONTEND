@@ -44,6 +44,11 @@
         <h2>Indicadores</h2>
         <p>Consulta y administra los indicadores nutricionales.</p>
       </div>
+      <div v-if="esAdmin" class="card" @click="$router.push('/rutinas')">
+        <i class="fas fa-list-alt"></i>
+        <h2>Rutinas</h2>
+        <p>Asigna rutinas a los usuarios.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -98,12 +103,14 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
   color: white;
   text-align: center;
 }
 
 .overlay {
   position: absolute;
+  
   top: 0;
   left: 0;
   width: 100%;

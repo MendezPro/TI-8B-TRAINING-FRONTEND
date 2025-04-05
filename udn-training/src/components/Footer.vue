@@ -54,6 +54,7 @@ export default {
   padding: 40px 0;
   text-align: center;
   font-family: 'Roboto', sans-serif;
+  border-radius: 35px 35px 0px 0px;
 }
 
 .footer-container {

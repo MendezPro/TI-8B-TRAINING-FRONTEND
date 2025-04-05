@@ -116,6 +116,7 @@ body {
   margin: auto;
   padding: 20px;
   font-family: 'Poppins', sans-serif;
+  max-width: 1250px; /* Ajusta el ancho según necesites */
   text-align: center;
 }
 
@@ -128,6 +129,7 @@ body {
   background: url("@/assets/help.jpg") no-repeat center center/cover;
   border-radius: 50px;
   text-align: left;
+  
 }
 .hero-text h1 {
   font-size: 3.5rem;
