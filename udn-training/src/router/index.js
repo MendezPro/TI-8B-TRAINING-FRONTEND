@@ -27,9 +27,10 @@ import IndicadorView from '@/components/views/TrainingAdmin/IndicadorView.vue';
 import IndicadorForm from '@/components/views/TrainingAdmin/IndicadorForm.vue';
 import IndicadorEdit from '@/components/views/TrainingAdmin/IndicadorEdit.vue';
 import GraficaExpedientes from '@/components/GraficaExpedientes.vue';
+import RutinasView from '../components/RutinasView.vue'; // Import the new RutinasView
 
 const routes = [
-  
+  { path: '/rutinas', name: 'Rutinas', component: RutinasView, meta: { requiresAdmin: true } }, // New route for RutinasView
   { path: '/progreso', name: 'ProgresoUsuario', component: ProgresoUsuario }, // Ruta para la gráfica de progreso
   { path: '/dietas', name: 'Dietas', component: DietasView, meta: { requiresAdmin: true } },
   { path: '/', name: 'Home', component: HomeView },

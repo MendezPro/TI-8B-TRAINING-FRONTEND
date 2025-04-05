@@ -77,9 +77,11 @@ export default {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease-in-out;
   height: 100px;
-  max-width: 1150px; /* Ajusta el ancho según necesites */
+  background-size: cover;
+  max-width: 1250px; /* Ajusta el ancho según necesites */
   margin: 20px auto; /* Centra el navbar */
   padding: 10px 30px; /* Reduce el padding para hacerlo más compacto */
+  justify-content: space-between;
 }
 
 .navbar .logo img {

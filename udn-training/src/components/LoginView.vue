@@ -100,6 +100,8 @@ export default {
 .login-page {
   display: flex;
   justify-content: center;
+  border-radius: 35px 35px 35px 35px;
+  margin-bottom: 20px;
   align-items: center;
   height: 100vh;
   background: url("@/assets/fondologin.jpg") no-repeat center center;
