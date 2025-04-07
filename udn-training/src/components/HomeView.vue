@@ -40,7 +40,8 @@
     </section>
         <!-- Galería -->
         <section class="gallery">
-      <h2>Nuestra Galería</h2>
+          <h2 class="titulo-galeria">Nuestra Galería</h2>
+
       <CarouselWrapper />
     </section>
   <!-- ¿Por qué elegirnos? -->
@@ -103,6 +104,43 @@ export default {
 /* Importando la fuente Roboto desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 /* Estilos generales */
+
+.titulo-galeria {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: transparent;
+  background-image: linear-gradient(90deg, #000000, #b7b7b7);
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  margin-bottom: 2rem;
+}
+
+.titulo-galeria::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #5b0505, #b7b7b7);
+  transition: all 0.4s ease-in-out;
+}
+
+.titulo-galeria:hover {
+  letter-spacing: 2px;
+  background-image: linear-gradient(90deg, #000000, #a3a3a3);
+}
+
+.titulo-galeria:hover::after {
+  width: 100%;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   color: white;
@@ -197,7 +235,7 @@ body {
   display: flex;
   justify-content: space-around;
   padding: 40px;
-  background-color: #111;
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
   border-radius: 20px;
   margin-top: 30px;
 }
@@ -229,11 +267,12 @@ body {
 
 /* Sección ¿Por qué elegirnos? */
 .why-choose-us {
+  margin-top: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 80px 5%;
-  background-color: #000;
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
   color: white;
   border-radius: 50px;
 }
@@ -291,7 +330,7 @@ body {
   position: absolute;
   bottom: 20px;
   right: -10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(238, 238, 238, 0.1);
   backdrop-filter: blur(10px);
   padding: 10px 15px;
   border-radius: 20px;
