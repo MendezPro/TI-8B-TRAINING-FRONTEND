@@ -103,8 +103,10 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+  border-radius: 35px 35px 35px 35px;
+  overflow: hidden; 
   color: white;
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -133,6 +135,8 @@ export default {
   z-index: 1;
   width: 80%;
   max-width: 1200px;
+  border-radius: 15px; /* Agrega esta línea para redondear las esquinas */
+  overflow: hidden; /* Opcional: asegura que el contenido no se desborde */
 }
 
 .card {

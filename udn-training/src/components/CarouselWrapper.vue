@@ -7,7 +7,7 @@
         class="carousel-item" 
         :class="{ 'active': index === activeIndex, 'prev': index === prevIndex, 'next': index === nextIndex }"
       >
-        <img :src="'data:image/jpeg;base64,' + image.imageBase64" alt="Carousel Image" class="carousel-image" />
+        <img :src="image" alt="Carousel Image" class="carousel-image" />
       </div>
     </div>
     <div class="indicators">
@@ -22,17 +22,20 @@
     <button class="nav-button right" @click="nextSlide">&#10095;</button>
   </div>
 </template>
-
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
     const activeIndex = ref(0);
     const prevIndex = ref(null);
     const nextIndex = ref(null);
-    const images = ref([]);
-    let interval = null;
+    const images = ref([
+      require('@/assets/banner1.png'),
+      require('@/assets/banner2.png'),
+      require('@/assets/banner3.png'),
+      require('@/assets/banner4.png'),
+    ]);
 
     const updateIndices = () => {
       prevIndex.value = activeIndex.value === 0 ? images.value.length - 1 : activeIndex.value - 1;
@@ -54,30 +57,8 @@ export default {
       updateIndices();
     };
 
-    const startAutoSlide = () => {
-      interval = setInterval(() => {
-        nextSlide();
-      }, 5000);
-    };
-
-    const stopAutoSlide = () => {
-      clearInterval(interval);
-    };
-
-    onMounted(async () => {
-      try {
-        const response = await fetch("http://localhost:8000/api/images/");
-        const data = await response.json();
-        images.value = data;
-        updateIndices();
-        startAutoSlide();
-      } catch (error) {
-        console.error("Error al obtener las imágenes:", error);
-      }
-    });
-
-    onUnmounted(() => {
-      stopAutoSlide();
+    onMounted(() => {
+      updateIndices();
     });
 
     return {
@@ -167,7 +148,7 @@ export default {
 }
 
 .indicator.active {
-  background-color: #7b61ff;
+  background-color: #ff4d4d;
   transform: scale(1.2);
 }
 
