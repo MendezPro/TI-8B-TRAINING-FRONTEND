@@ -4,12 +4,6 @@
       <div class="footer-logo">
         <img src="@/assets/dev.png" alt="Gym Bulls" />
       </div>
-      
-      <div class="footer-info">
-        <p><i class="fas fa-map-marker-alt"></i> 345 Faulconer Drive, Suite 4, Charlottesville, CA, 12345</p>
-        <p><i class="fas fa-phone"></i> (123) 456-7890</p>
-        <p><i class="fas fa-print"></i> (123) 456-7890</p>
-      </div>
 
       <div class="footer-social">
         <a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -32,9 +26,9 @@
         <li><a href="#">DISCLAIMER</a></li>
       </ul>
     </div>
-    
+
     <div class="footer-bottom">
-      <p>© 2024 Gym Bulls. Todos los derechos reservados.</p>
+      <p>© 2025 Gym Bulls. Todos los derechos reservados.</p>
     </div>
   </footer>
 </template>
@@ -50,72 +44,89 @@ export default {
 
 .footer {
   background-color: #111;
-  margin-top: 35px;
+  backdrop-filter: blur(8px);
   color: white;
+  margin-top: 35px;
   padding: 40px 0;
   text-align: center;
   font-family: 'Roboto', sans-serif;
   border-radius: 35px 35px 0px 0px;
+  box-shadow: 0px -5px 20px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
 
 .footer-container {
+  margin-top: 35;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  padding: 10px 20px;
+  gap: 25px;
 }
 
 .footer-logo img {
-  width: 180px;
+  width: 160px;
+  transition: transform 0.3s ease;
 }
 
-.footer-info p {
-  margin: 5px 0;
-  font-size: 1rem;
+.footer-logo img:hover {
+  transform: scale(1.05);
 }
 
-.footer-info i {
-  margin-right: 8px;
-  color: red;
+.footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
 }
 
 .footer-social a {
   color: white;
-  font-size: 1.5rem;
-  margin: 0 10px;
-  transition: 0.3s;
+  font-size: 1.6rem;
+  transition: transform 0.3s, color 0.3s;
 }
 
 .footer-social a:hover {
-  color: red;
+  color: #ff3c3c;
+  transform: scale(1.2) rotate(5deg);
 }
 
 .footer-links ul {
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 25px;
   padding: 0;
-  margin: 20px 0;
+  margin: 30px 0 10px;
 }
 
 .footer-links ul li a {
   text-decoration: none;
   color: white;
-  font-weight: bold;
-  transition: 0.3s;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s, transform 0.3s;
 }
 
 .footer-links ul li a:hover {
-  color: red;
+  color: #ff3c3c;
+  transform: translateY(-2px);
 }
 
 .footer-bottom {
   margin-top: 20px;
   font-size: 0.9rem;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 </style>
