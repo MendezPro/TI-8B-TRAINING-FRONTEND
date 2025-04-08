@@ -6,28 +6,28 @@
       <div class="cards-container">
         <div v-if="esAdmin" class="card" @click="$router.push('/dietas')">
           <i class="fas fa-apple-alt"></i>
-          <h2>Nutrición</h2>
-          <p>Planifica tus dietas y mejora tu alimentación.</p>
+          <h2>Historial Dietas</h2>
+          <p>Consulta y añade Dietas.</p>
         </div>
         <div v-if="esAdmin" class="card" @click="$router.push('/ejercicios')">
           <i class="fas fa-dumbbell"></i>
-          <h2>Training</h2>
-          <p>Descubre rutinas de ejercicios personalizadas.</p>
+          <h2>Historial Ejercicios</h2>
+          <p>Consulta y añade Ejercicios.</p>
         </div>
         <div class="card" @click="$router.push('/progreso')">
           <i class="fas fa-chart-line"></i>
           <h2>Progreso</h2>
-          <p>Monitorea tu avance y establece nuevas metas.</p>
+          <p>Monitorea tu avance.</p>
         </div>
         <div class="card" @click="$router.push('/expedientes')">
           <i class="fas fa-file-medical"></i>
           <h2>Expedientes</h2>
-          <p>Consulta y gestiona tus expedientes médicos.</p>
+          <p>Consulta y gestiona expedientes médicos.</p>
         </div>
         <div class="card" @click="$router.push('/grafica')">
           <i class="fas fa-chart-pie"></i>
           <h2>Gráficas</h2>
-          <p>Visualiza tus datos de salud de manera efectiva.</p>
+          <p>Visualiza datos de salud de manera efectiva.</p>
         </div>
         <div class="card" @click="$router.push('/perfil')">
           <i class="fas fa-user"></i>
@@ -37,23 +37,23 @@
         <div v-if="esAdmin" class="card error-card" @click="$router.push('/usuarios')">
           <i class="fas fa-exclamation-triangle"></i>
           <h2>Usuarios</h2>
-          <p>Accede a la gestión de usuarios (prueba de error).</p>
+          <p>Accede a la gestión de usuarios.</p>
         </div>
         <div v-if="esAdmin" class="card" @click="$router.push('/indicadores')">
-          <i class="fas fa-chart-line"></i>
+          <i class="fas fa-seedling"></i>  <!-- Vida sana / orgánico -->
           <h2>Indicadores</h2>
           <p>Consulta y administra los indicadores nutricionales.</p>
         </div>
         <div v-if="esAdmin" class="card" @click="$router.push('/rutinas')">
           <i class="fas fa-list-alt"></i>
           <h2>Rutinas</h2>
-          <p>Asigna rutinas a los usuarios.</p>
+          <p>Asigna rutinas con ejercicios.</p>
         </div>
         <!-- ✅ MOVIDO AQUÍ -->
         <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
-          <i class="fas fa-list-alt"></i>
+          <i class="fas fa-utensils"></i> <!-- Alimentación general --> 
           <h2>Programas Saludables</h2>
-          <p>Asigna rutinas a los usuarios.</p>
+          <p>Planifica y asigna dietas.</p>
         </div>
       </div>
     </div>
