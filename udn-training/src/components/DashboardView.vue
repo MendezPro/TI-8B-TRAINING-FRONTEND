@@ -103,7 +103,7 @@ export default {
 .dashboard-container {
   position: relative;
   height: 100vh;
-  background: url("@/assets/fondodash.jpg") no-repeat center center/cover;
+  background: url("@/assets/newback2.jpg") no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,7 +121,7 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0px);
 }
 
 .title {

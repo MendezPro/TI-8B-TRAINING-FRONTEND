@@ -51,7 +51,7 @@ export default {
 .dashboard-container {
   position: relative;
   height: 100vh;
-  background: url("@/assets/fondodash.jpg") no-repeat center center/cover;
+  background: url("@/assets/newback2.jpg") no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;

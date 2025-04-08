@@ -67,23 +67,22 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 .navbar {
+  width: 100%; /* Asegura que se expanda completamente */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 30px;
   background: #111;
-  border-radius: 50px;
+  border-radius: 35px 35px 35px 35px; /* para que combine con el footer si deseas */
   font-family: 'Poppins', sans-serif;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease-in-out;
   height: 100px;
   background-size: cover;
-  max-width: 1250px; /* Ajusta el ancho según necesites */
-  margin: 20px auto; /* Centra el navbar */
-  padding: 10px 30px; /* Reduce el padding para hacerlo más compacto */
-  justify-content: space-between;
+  /* Elimina max-width y margin */
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
-
 .navbar .logo img {
   width: 110px;
   transition: transform 0.4s ease-in-out;
