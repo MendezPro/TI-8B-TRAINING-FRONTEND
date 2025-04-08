@@ -28,6 +28,9 @@ import IndicadorForm from '@/components/views/TrainingAdmin/IndicadorForm.vue';
 import IndicadorEdit from '@/components/views/TrainingAdmin/IndicadorEdit.vue';
 import GraficaExpedientes from '@/components/GraficaExpedientes.vue';
 import RutinasView from '../components/RutinasView.vue'; // Import the new RutinasView
+import ProgramasSaludablesView from '@/components/views/TrainingAdmin/ProgramasSaludablesView.vue';
+import ProgramasSaludablesForm from '@/components/views/TrainingAdmin/ProgramaSaludableForm.vue';
+import ProgramaSaludableEdit from '@/components/views/TrainingAdmin/ProgramaSaludableEdit.vue';
 
 const routes = [
   { path: '/rutinas', name: 'Rutinas', component: RutinasView, meta: { requiresAdmin: true } }, // New route for RutinasView
@@ -41,7 +44,7 @@ const routes = [
   { path: '/register', name: 'Register', component: RegisterView, meta: { requiresAdmin: true } }, // Ruta para registro
   { path: '/dietas/nueva', name: 'NuevaDieta', component: NewDietaView , meta: { requiresAdmin: true }},
   { path: '/ejercicios/nuevo', name: 'NuevoEjercicio', component: NewEjercicioView, meta: { requiresAdmin: true } },
-  { path: '/expediente', name: 'Expediente', component: ExpedienteMedico, meta: { requiresAdmin: true }},
+  { path: '/expedientes', name: 'Expediente', component: ExpedienteMedico, meta: { requiresAdmin: true }},
   { path: '/expedientes/nuevo', name: 'NuevoExpediente', component: NewExpediente, meta: { requiresAdmin: true } },
   { path: '/usuarios', name: 'Usuarios', component: UsuariosView },
   { path: '/usuarios/editar/:id', name: 'EditarUsuario', component: EditarUsuarioView, meta: { requiresAdmin: true } },
@@ -57,7 +60,10 @@ const routes = [
   {path: '/indicadores/nuevo', name: 'IndicadorForm', component: IndicadorForm, meta: { requiresAdmin: true }  },
   {path: '/indicadores/editar/:id', name: 'IndicadorEdit', component: IndicadorEdit, meta: { requiresAdmin: true }  },
   {path: '/error', name: 'Error', component: ViewError }, 
-  {path: '/grafica', name: 'GraficaExpedientes', component: GraficaExpedientes, meta: { requiresAdmin: true } }, // Ruta para la gráfica de expedientes
+  {path: '/grafica', name: 'GraficaExpedientes', component: GraficaExpedientes, meta: { requiresAdmin: true } },
+  {path: '/programas_saludables', name: 'ProgramasSaludables', component: ProgramasSaludablesView, meta: { requiresAdmin: true } },
+  {path: '/programas_saludables/nuevo', name: 'ProgramasSaludablesForm', component: ProgramasSaludablesForm, meta: { requiresAdmin: true } },
+  {path: '/programas_saludables/editar/:id', name: 'ProgramaSaludableEdit', component: ProgramaSaludableEdit, meta: { requiresAdmin: true } },
 ];
 
 const router = createRouter({
