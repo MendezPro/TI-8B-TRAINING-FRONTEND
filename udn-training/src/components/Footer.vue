@@ -50,6 +50,7 @@ export default {
 
 .footer {
   background-color: #111;
+  margin-top: 35px;
   color: white;
   padding: 40px 0;
   text-align: center;

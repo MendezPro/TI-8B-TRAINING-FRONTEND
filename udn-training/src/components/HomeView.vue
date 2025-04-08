@@ -8,8 +8,7 @@
           Gym Bulls, no solo es un gimnasio, es el cambio que necesitas para empezar de nuevo.
         </p>
         <div class="cta-buttons">
-          <button class="cta-btn">!Entrena ↗</button>
-          <button class="cta-btn-secondary">Ya!</button>
+          <button class="cta-btn" @click="goToLogin">Entrena Ya</button>
         </div>
       </div>
       <div class="hero-image">
@@ -95,7 +94,10 @@ export default {
         script.setAttribute("domain", "www.chatbase.co");
         document.body.appendChild(script);
       }
-    }
+    },
+    goToLogin() {
+      this.$router.push("/login"); // Redirige a la página de login
+    },
   }
 };
 </script>
@@ -193,35 +195,48 @@ body {
   gap: 15px;
 }
 
+/* Botón principal */
 .cta-btn {
-  padding: 12px 24px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  background: linear-gradient(90deg, #ff914d, #ff4d4d);
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
   color: white;
-  transition: 0.3s;
-}
-.cta-btn-secondary {
-  padding: 12px 24px;
-  font-size: 1rem;
+  background: linear-gradient(90deg, #ff914d, #ff4d4d);
   border: none;
-  border-radius: 30px;
+  border-radius: 50px;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  color: rgb(255, 255, 255);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  transition: 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animación de hover */
+.cta-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 300%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-45deg);
+  transition: all 0.5s ease-in-out;
+}
+
+.cta-btn:hover::before {
+  left: 100%;
 }
 
 .cta-btn:hover {
-  background: linear-gradient(90deg, #ff6666, #ff3333);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(255, 77, 77, 0.5);
 }
 
-.cta-btn:hover {
-  background: linear-gradient(90deg, #ff6666, #ff3333);
+/* Animación de clic */
+.cta-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .hero-image img {

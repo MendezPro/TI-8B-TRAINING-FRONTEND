@@ -2,52 +2,53 @@
   <div class="dashboard-container">
     <div class="overlay"></div>
     <h1 class="title">Bienvenido al Dashboard</h1>
-    <div class="cards-container">
-      <div v-if="esAdmin" class="card" @click="$router.push('/dietas')">
-        <i class="fas fa-apple-alt"></i>
-        <h2>Nutrición</h2>
-        <p>Planif ica tus dietas y mejora tu alimentación.</p>
-      </div>
-      
-      <div v-if="esAdmin" class="card" @click="$router.push('/ejercicios')">
-        <i class="fas fa-dumbbell"></i>
-        <h2>Training</h2>
-        <p>Descubre rutinas de ejercicios personalizadas.</p>
-      </div>
-      <div class="card" @click="$router.push('/progreso')">
-        <i class="fas fa-chart-line"></i>
-        <h2>Progreso</h2>
-        <p>Monitorea tu avance y establece nuevas metas.</p>
-      </div>
-      <div class="card" @click="$router.push('/expedientes')">
-        <i class="fas fa-file-medical"></i>
-        <h2>Expedientes</h2>
-        <p>Consulta y gestiona tus expedientes médicos.</p>
-      </div>
-      <div class="card" @click="$router.push('/grafica')">
-        <i class="fas fa-chart-pie"></i>
-        <h2>Gráficas</h2>
-        <p>Visualiza tus datos de salud de manera efectiva.</p>
-      </div>
-      <div class="card" @click="$router.push('/perfil')">
-        <i class="fas fa-user"></i>
-        <h2>Perfil</h2>
-        <p>Gestiona tu información personal y preferencias.</p>
-      </div>
-      <div v-if="esAdmin" class="card error-card" @click="$router.push('/usuarios')">
-        <i class="fas fa-exclamation-triangle"></i>
-        <h2>Usuarios</h2>
-        <p>Accede a la gestión de usuarios (prueba de error).</p>
-      </div>
-      <div v-if="esAdmin" class="card" @click="$router.push('/indicadores')">
-        <i class="fas fa-chart-line"></i>
-        <h2>Indicadores</h2>
-        <p>Consulta y administra los indicadores nutricionales.</p>
-      </div>
-      <div v-if="esAdmin" class="card" @click="$router.push('/rutinas')">
-        <i class="fas fa-list-alt"></i>
-        <h2>Rutinas</h2>
-        <p>Asigna rutinas a los usuarios.</p>
+    <div class="cards-scroll-container">
+      <div class="cards-container">
+        <div v-if="esAdmin" class="card" @click="$router.push('/dietas')">
+          <i class="fas fa-apple-alt"></i>
+          <h2>Nutrición</h2>
+          <p>Planifica tus dietas y mejora tu alimentación.</p>
+        </div>
+        <div v-if="esAdmin" class="card" @click="$router.push('/ejercicios')">
+          <i class="fas fa-dumbbell"></i>
+          <h2>Training</h2>
+          <p>Descubre rutinas de ejercicios personalizadas.</p>
+        </div>
+        <div class="card" @click="$router.push('/progreso')">
+          <i class="fas fa-chart-line"></i>
+          <h2>Progreso</h2>
+          <p>Monitorea tu avance y establece nuevas metas.</p>
+        </div>
+        <div class="card" @click="$router.push('/expedientes')">
+          <i class="fas fa-file-medical"></i>
+          <h2>Expedientes</h2>
+          <p>Consulta y gestiona tus expedientes médicos.</p>
+        </div>
+        <div class="card" @click="$router.push('/grafica')">
+          <i class="fas fa-chart-pie"></i>
+          <h2>Gráficas</h2>
+          <p>Visualiza tus datos de salud de manera efectiva.</p>
+        </div>
+        <div class="card" @click="$router.push('/perfil')">
+          <i class="fas fa-user"></i>
+          <h2>Perfil</h2>
+          <p>Gestiona tu información personal y preferencias.</p>
+        </div>
+        <div v-if="esAdmin" class="card error-card" @click="$router.push('/usuarios')">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Usuarios</h2>
+          <p>Accede a la gestión de usuarios (prueba de error).</p>
+        </div>
+        <div v-if="esAdmin" class="card" @click="$router.push('/indicadores')">
+          <i class="fas fa-chart-line"></i>
+          <h2>Indicadores</h2>
+          <p>Consulta y administra los indicadores nutricionales.</p>
+        </div>
+        <div v-if="esAdmin" class="card" @click="$router.push('/rutinas')">
+          <i class="fas fa-list-alt"></i>
+          <h2>Rutinas</h2>
+          <p>Asigna rutinas a los usuarios.</p>
+        </div>
       </div>
       <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
         <i class="fas fa-list-alt"></i>
@@ -95,8 +96,7 @@ export default {
       document.body.appendChild(script);
     }
   },
-};
-
+}
 </script>
 
 <style scoped>
@@ -108,16 +108,14 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 35px 35px 35px 35px;
-  overflow: hidden; 
+  border-radius: 35px;
+  overflow: hidden;
   color: white;
-  margin-bottom: 20px;
   text-align: center;
 }
 
 .overlay {
   position: absolute;
-  
   top: 0;
   left: 0;
   width: 100%;
@@ -133,15 +131,20 @@ export default {
   margin-bottom: 20px;
 }
 
+.cards-scroll-container {
+  max-height: 100vh; /* Limita la altura máxima del contenedor */
+  overflow-y: auto; /* Agrega scroll vertical si es necesario */
+  padding: 10px;
+  z-index: 1;   
+  width: 100%;
+}
+
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   z-index: 1;
-  width: 80%;
-  max-width: 1200px;
-  border-radius: 15px; /* Agrega esta línea para redondear las esquinas */
-  overflow: hidden; /* Opcional: asegura que el contenido no se desborde */
+  width: 100%;
 }
 
 .card {
