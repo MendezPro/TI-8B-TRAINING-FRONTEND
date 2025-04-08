@@ -1,14 +1,24 @@
 <template>
-  <div class="container">
-    <h2>Gráfica de Presión Arterial</h2>
-    <label for="usuario">Seleccionar usuario:</label>
-    <select id="usuario" v-model="selectedUser" @change="fetchExpedientes">
-      <option value="" disabled>-- Selecciona un usuario --</option>
-      <option v-for="user in usuarios" :key="user.id" :value="user.id">
-        {{ user.nombre_usuario }}
-      </option>
-    </select>
-    <canvas id="expedientesChart"></canvas>
+  <div class="grafica-wrapper">
+    <div class="grafica-header">
+      <h1 class="grafica-title">
+        Presión <span class="highlight">Sistólica y</span> Diastólica
+      </h1>
+    </div>
+
+    <div class="search-container">
+      <label for="usuario" class="search-label">Seleccionar usuario:</label>
+      <select id="usuario" v-model="selectedUser" @change="fetchExpedientes" class="search-select">
+        <option value="" disabled>-- Selecciona un usuario --</option>
+        <option v-for="user in usuarios" :key="user.id" :value="user.id">
+          {{ user.nombre_usuario }}
+        </option>
+      </select>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="expedientesChart"></canvas>
+    </div>
   </div>
 </template>
 
@@ -24,7 +34,6 @@ export default {
     const usuarios = ref([]);
     const chartInstance = ref(null);
 
-    // Obtener la lista de usuarios desde la API
     const fetchUsuarios = async () => {
       try {
         const token = localStorage.getItem('access_token');
@@ -37,7 +46,6 @@ export default {
       }
     };
 
-    // Consultar expedientes para el usuario seleccionado y extraer datos de presión arterial
     const fetchExpedientes = async () => {
       if (!selectedUser.value) return;
       try {
@@ -48,7 +56,6 @@ export default {
         );
         const expedientes = response.data;
 
-        // Extraer las fechas y los valores de presión sistólica y diastólica
         const labels = expedientes.map(exp => new Date(exp.fecha_registro).toLocaleDateString());
         const presionSistolica = expedientes.map(exp => exp.presion_sistolica);
         const presionDiastolica = expedientes.map(exp => exp.presion_diastolica);
@@ -59,7 +66,6 @@ export default {
       }
     };
 
-    // Actualizar o crear la gráfica usando Chart.js
     const updateChart = (labels, presionSistolica, presionDiastolica) => {
       if (chartInstance.value) chartInstance.value.destroy();
       const ctx = document.getElementById('expedientesChart').getContext('2d');
@@ -81,8 +87,8 @@ export default {
               borderColor: 'rgba(192, 75, 75, 1)',
               backgroundColor: 'rgba(192, 75, 75, 0.2)',
               fill: false,
-            }
-          ]
+            },
+          ],
         },
         options: {
           responsive: true,
@@ -91,17 +97,38 @@ export default {
             x: {
               title: {
                 display: true,
-                text: 'Fecha'
-              }
+                text: 'Fecha',
+                color: '#ffffff',
+              },
+              ticks: {
+                color: '#ffffff',
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.2)',
+              },
             },
             y: {
               title: {
                 display: true,
-                text: 'Valor (mmHg)'
-              }
-            }
-          }
-        }
+                text: 'Valor (mmHg)',
+                color: '#ffffff',
+              },
+              ticks: {
+                color: '#ffffff',
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.2)',
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: '#ffffff',
+              },
+            },
+          },
+        },
       });
     };
 
@@ -119,50 +146,78 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+.grafica-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 35px;
+  align-items: center;
+}
+
+.grafica-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 25px;
+}
+
+.grafica-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
   text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h2 {
+.grafica-title .highlight {
+  color: #ff914d;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
   margin-bottom: 20px;
-  font-size: 28px;
-  color: #333;
 }
 
-label {
-  font-weight: bold;
+.search-label {
+  color: #ffffff;
+  font-size: 16px;
   margin-bottom: 10px;
-  display: block;
-  font-size: 18px;
-  color: #555;
 }
 
-select {
-  width: 60%;
+.search-select {
+  width: 100%;
   padding: 10px;
   font-size: 16px;
-  margin-bottom: 20px;
   border: 2px solid #ddd;
   border-radius: 5px;
   outline: none;
   transition: border-color 0.3s ease;
 }
 
-select:focus {
-  border-color: #888;
+.search-select:focus {
+  border-color: #ffffff;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 900px;
 }
 
 canvas {
   width: 100% !important;
   height: 500px !important;
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 </style>

@@ -26,7 +26,7 @@
         </div>
         <div class="card" @click="$router.push('/grafica')">
           <i class="fas fa-chart-pie"></i>
-          <h2>Gráficas</h2>
+          <h2>Presión Arterial</h2>
           <p>Visualiza datos de salud de manera efectiva.</p>
         </div>
         <div class="card" @click="$router.push('/perfil')">
