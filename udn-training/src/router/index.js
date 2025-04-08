@@ -27,11 +27,13 @@ import IndicadorView from '@/components/views/TrainingAdmin/IndicadorView.vue';
 import IndicadorForm from '@/components/views/TrainingAdmin/IndicadorForm.vue';
 import IndicadorEdit from '@/components/views/TrainingAdmin/IndicadorEdit.vue';
 import GraficaExpedientes from '@/components/GraficaExpedientes.vue';
-import RutinasView from '../components/RutinasView.vue'; // Import the new RutinasView
+import RutinasView from '../components/views/TrainingAdmin/RutinasView.vue'; // Import the new RutinasView
 import ProgramasSaludablesView from '@/components/views/TrainingAdmin/ProgramasSaludablesView.vue';
 import ProgramasSaludablesForm from '@/components/views/TrainingAdmin/ProgramaSaludableForm.vue';
 import ProgramaSaludableEdit from '@/components/views/TrainingAdmin/ProgramaSaludableEdit.vue';
-
+import RutinasForm from '@/components/views/TrainingAdmin/RutinasForm.vue';
+import RutinasEdit from '@/components/views/TrainingAdmin/RutinaEdit.vue';
+//C:\Users\Hp\Documents\TI-8B-TRAINING-FRONTEND\udn-training\src\components\views\TrainingAdmin\RutinaEdit.vue
 const routes = [
   { path: '/rutinas', name: 'Rutinas', component: RutinasView, meta: { requiresAdmin: true } }, // New route for RutinasView
   { path: '/progreso', name: 'ProgresoUsuario', component: ProgresoUsuario }, // Ruta para la gráfica de progreso
@@ -64,6 +66,9 @@ const routes = [
   {path: '/programas_saludables', name: 'ProgramasSaludables', component: ProgramasSaludablesView, meta: { requiresAdmin: true } },
   {path: '/programas_saludables/nuevo', name: 'ProgramasSaludablesForm', component: ProgramasSaludablesForm, meta: { requiresAdmin: true } },
   {path: '/programas_saludables/editar/:id', name: 'ProgramaSaludableEdit', component: ProgramaSaludableEdit, meta: { requiresAdmin: true } },
+  {path: '/rutinas/nuevo', name: 'RutinasForm', component: RutinasForm, meta: { requiresAdmin: true } },
+  {path: '/rutinas/editar/:id', name: 'RutinasEdit', component: RutinasEdit, meta: { requiresAdmin: true } },
+
 ];
 
 const router = createRouter({

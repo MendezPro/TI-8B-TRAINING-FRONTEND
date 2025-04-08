@@ -115,6 +115,18 @@ export default {
   transition: opacity 0.3s ease;
 }
 
+
+input:focus {
+  border-color:rgb(255, 25, 25); /* Verde para el foco */
+  outline: none;
+}
+
+button {
+  background-color:rgb(252, 9, 9);
+  color: white;
+  border: none;
+  }
+
 .btn-agregar-programa:hover::before {
   opacity: 1;
 }
@@ -130,6 +142,7 @@ export default {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50px;
+
   padding: 12px 20px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
