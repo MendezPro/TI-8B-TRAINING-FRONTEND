@@ -105,7 +105,7 @@ export default {
       .catch(error => { console.error("Error al cargar clientes:", error); });
       
     // Cargar dietas disponibles
-    axios.get('http://localhost:8000/api/dietas', {
+    axios.get('http://localhost:8000/api/dietas/?skip=0&limit=10', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => { this.dietas = response.data;  console.log("Dietas cargadas:", this.dietas);  })
