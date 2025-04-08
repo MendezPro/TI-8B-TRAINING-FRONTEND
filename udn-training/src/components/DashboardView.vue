@@ -49,16 +49,16 @@
           <h2>Rutinas</h2>
           <p>Asigna rutinas a los usuarios.</p>
         </div>
-      </div>
-      <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
-        <i class="fas fa-list-alt"></i>
-        <h2>Programas Saludables</h2>
-        <p>Asigna rutinas a los usuarios.</p>
+        <!-- ✅ MOVIDO AQUÍ -->
+        <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
+          <i class="fas fa-list-alt"></i>
+          <h2>Programas Saludables</h2>
+          <p>Asigna rutinas a los usuarios.</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "DashboardView",
