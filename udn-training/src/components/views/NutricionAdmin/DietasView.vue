@@ -67,7 +67,8 @@ export default {
 };
 </script>
 
-<style scoped>.dietas-wrapper {
+<style scoped>
+.dietas-wrapper {
   background-image: url('@/assets/frame1.png');
   background-size: cover;
   background-position: center;
@@ -75,6 +76,7 @@ export default {
   padding: 30px 15px;
   display: flex;
   flex-direction: column;
+  border-radius: 35px;
   align-items: center;
 }
 

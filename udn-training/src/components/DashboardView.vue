@@ -49,16 +49,16 @@
           <h2>Rutinas</h2>
           <p>Asigna rutinas a los usuarios.</p>
         </div>
-      </div>
-      <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
-        <i class="fas fa-list-alt"></i>
-        <h2>Programas Saludables</h2>
-        <p>Asigna rutinas a los usuarios.</p>
+        <!-- ✅ MOVIDO AQUÍ -->
+        <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
+          <i class="fas fa-list-alt"></i>
+          <h2>Programas Saludables</h2>
+          <p>Asigna rutinas a los usuarios.</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "DashboardView",
@@ -103,7 +103,7 @@ export default {
 .dashboard-container {
   position: relative;
   height: 100vh;
-  background: url("@/assets/fondodash.jpg") no-repeat center center/cover;
+  background: url("@/assets/newback2.jpg") no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,7 +121,7 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0px);
 }
 
 .title {
