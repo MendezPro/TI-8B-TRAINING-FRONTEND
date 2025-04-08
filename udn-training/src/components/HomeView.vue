@@ -109,7 +109,7 @@ export default {
 
 .titulo-galeria {
   font-family: 'Poppins', sans-serif;
-  font-size: 3rem;
+  font-size: 8rem;
   font-weight: 700;
   color: transparent;
   background-image: linear-gradient(90deg, #000000, #b7b7b7);
