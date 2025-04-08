@@ -1,51 +1,55 @@
 <template>
   <div class="container">
-    <h1>Editar Programa Saludable</h1>
-    <form @submit.prevent="updatePrograma">
-      <div>
-        <label>Nombre:</label>
-        <input type="text" v-model="programa.nombre" required />
-      </div>
-      <div>
-        <label>Descripción:</label>
-        <textarea v-model="programa.descripcion"></textarea>
-      </div>
-      <div>
-        <label>Fecha de Inicio:</label>
-        <input type="datetime-local" v-model="programa.fecha_inicio" required />
-      </div>
-      <div>
-        <label>Fecha de Finalización:</label>
-        <input type="datetime-local" v-model="programa.fecha_finalizacion" />
-      </div>
-      <div>
-        <label>ID Dietas:</label>
-        <input type="number" v-model="programa.id_dietas" required />
-      </div>
-      <div>
-        <label>Entrenador:</label>
-        <select v-model="programa.id_entrenador" required>
-          <option v-for="entrenador in entrenadores" :key="entrenador.id" :value="entrenador.id">
-            {{ entrenador.nombre_usuario }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <label>Cliente:</label>
-        <select v-model="programa.id_user" required>
-          <option v-for="cliente in clientes" :key="cliente.id" :value="cliente.id">
-            {{ cliente.nombre_usuario }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <label>Fecha de Registro:</label>
-        <input type="datetime-local" v-model="programa.fecha_registro" required />
-      </div>
-      <div>
-        <button type="submit">Actualizar Programa</button>
-      </div>
-    </form>
+    <div class="form-container">
+      <h1>Editar Programa Saludable</h1>
+      <form @submit.prevent="updatePrograma">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input id="nombre" type="text" v-model="programa.nombre" required />
+        </div>
+        <div class="form-group">
+          <label for="descripcion">Descripción:</label>
+          <textarea id="descripcion" v-model="programa.descripcion"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="fecha_inicio">Fecha de Inicio:</label>
+          <input id="fecha_inicio" type="datetime-local" v-model="programa.fecha_inicio" required />
+        </div>
+        <div class="form-group">
+          <label for="fecha_finalizacion">Fecha de Finalización:</label>
+          <input id="fecha_finalizacion" type="datetime-local" v-model="programa.fecha_finalizacion" />
+        </div>
+        <div class="form-group">
+          <label for="id_dietas">ID Dietas:</label>
+          <input id="id_dietas" type="number" v-model="programa.id_dietas" required />
+        </div>
+        <div class="form-group">
+          <label for="entrenador">Entrenador:</label>
+          <select id="entrenador" v-model="programa.id_entrenador" required>
+            <option disabled value="">Selecciona un entrenador</option>
+            <option v-for="entrenador in entrenadores" :key="entrenador.id" :value="entrenador.id">
+              {{ entrenador.nombre_usuario }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cliente">Cliente:</label>
+          <select id="cliente" v-model="programa.id_user" required>
+            <option disabled value="">Selecciona un cliente</option>
+            <option v-for="cliente in clientes" :key="cliente.id" :value="cliente.id">
+              {{ cliente.nombre_usuario }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fecha_registro">Fecha de Registro:</label>
+          <input id="fecha_registro" type="datetime-local" v-model="programa.fecha_registro" required />
+        </div>
+        <div class="form-group button-container">
+          <button type="submit">Actualizar Programa</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -122,49 +126,88 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
-  max-width: 600px;
-  margin: 0 auto;
+/* Contenedor principal para centrar el contenido */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg,rgb(255, 255, 255),rgb(255, 255, 255));
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos para el contenedor del formulario */
+.form-container {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Título principal */
 h1 {
   text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+/* Grupo de campos del formulario */
+.form-group {
   margin-bottom: 20px;
 }
 
-.form-group {
-  margin-bottom: 16px;
-}
-
+/* Etiquetas de los campos */
 label {
-  font-weight: bold;
   display: block;
-  margin-bottom: 5px;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #555;
 }
 
-input,
+/* Inputs, textarea y selects */
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+textarea,
 select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color:rgb(255, 17, 0);
+  outline: none;
+}
+
+/* Botón del formulario */
+.button-container {
+  margin-top: 30px;
 }
 
 button {
-  background-color: #388e3c;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
   width: 100%;
+  padding: 12px;
+  background-color:rgb(255, 45, 45);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #2c6f29;
+  background-color:rgb(248, 0, 0);
 }
 </style>

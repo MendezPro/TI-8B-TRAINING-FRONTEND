@@ -181,7 +181,7 @@ h1 {
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #388e3c;
+  border-color:red;
 }
 
 .full-width {
@@ -190,7 +190,7 @@ h1 {
 }
 
 button {
-  background-color: #388e3c;
+  background-color:red;
   color: #fff;
   padding: 12px 20px;
   border: none;
@@ -202,6 +202,6 @@ button {
 }
 
 button:hover {
-  background-color: #2c6f29;
+  background-color:rgb(250, 13, 13);
 }
 </style>

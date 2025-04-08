@@ -82,12 +82,12 @@ input {
 }
 
 input:focus {
-  border-color: #388e3c; /* Verde para el foco */
+  border-color:rgb(255, 25, 25); /* Verde para el foco */
   outline: none;
 }
 
 button {
-  background-color: #388e3c;
+  background-color:rgb(252, 9, 9);
   color: white;
   border: none;
   padding: 12px 20px;
