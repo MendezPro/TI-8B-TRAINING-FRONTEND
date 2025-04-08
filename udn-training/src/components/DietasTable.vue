@@ -132,105 +132,92 @@ export default {
 </script>
 
 <style scoped>
-/* Estilo para la tabla */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  /* Permite desplazamiento horizontal en pantallas pequeñas */
-}
-
-th,
-td {
-  padding: 8px;
-  /* Reducido para mejor ajuste */
-  border: 1px solid #ddd;
-  text-align: left;
-  font-family: 'Arial', sans-serif;
-  font-size: 12px;
-  /* Reducido para más ajuste en pantallas pequeñas */
-}
-
-th {
-  cursor: pointer;
-  background-color: #e74c3c;
-  /* Rojo */
-  color: white;
-  font-weight: bold;
-  border-bottom: 2px solid #c0392b;
-  /* Rojo oscuro */
-}
-
-th.active {
-  background-color: #c0392b;
-}
-
-tr:nth-child(even) {
-  background-color: #f4f4f4;
-}
-
-tr:hover {
-  background-color: #ecf0f1;
-}
-
-.arrow {
-  margin-left: 10px;
-  font-size: 12px;
-  color: #bbb;
-}
-
 .arrow.asc::after {
   content: '▲';
+  margin-left: 5px;
+  font-size: 12px;
+  color: #e74c3c;
 }
 
 .arrow.dsc::after {
   content: '▼';
+  margin-left: 5px;
+  font-size: 12px;
+  color: #e74c3c;
+} 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
 }
 
-tbody td {
-  font-size: 12px;
-  /* Reducido para mejor ajuste */
-  color: #555;
+th, td {
+  padding: 12px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+th {
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+th:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+th.active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+td {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.3s ease;
+}
+
+tr:hover td {
+  background-color: rgba(255, 255, 255, 0.07);
 }
 
 button {
-  background-color: transparent;
+  padding: 6px 12px;
+  font-size: 12px;
   border: none;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
-  margin: 0 5px;
-  padding: 5px 10px;
-}
-
-button i {
-  margin-right: 5px;
+  background: rgba(231, 76, 60, 0.85);
+  color: white;
+  margin: 0 4px;
+  transition: transform 0.2s ease, background 0.3s;
 }
 
 button:hover {
-  opacity: 0.7;
+  background: rgba(192, 57, 43, 0.9);
+  transform: scale(1.05);
 }
 
-/* Responsividad para pantallas pequeñas */
 @media (max-width: 768px) {
-
-  th,
-  td {
-    padding: 16px;
-    /* Aún más reducido */
-    font-size: 10px;
-    /* Ajustado para pantallas pequeñas */
+  th, td {
+    font-size: 11px;
+    padding: 8px;
   }
 
-  .arrow {
+  button {
     font-size: 10px;
-    /* Tamaño reducido para el icono de flecha */
-  }
-
-  table {
-    font-size: 10px;
-    /* Ajuste de fuente general */
+    padding: 5px 8px;
   }
 }
+
 </style>
