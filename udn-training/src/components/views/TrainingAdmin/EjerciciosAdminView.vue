@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <h1>Administración de Ejercicios</h1>
-    <button @click="$router.push('/ejercicios/nuevo')">Agregar Nuevo Ejercicio</button>
-    <form id="search">
-      <p>Buscar</p>
-      <input v-model="searchInput" placeholder="Buscar ejercicios..." />
-    </form>
-    <div>
-      <button @click="activeTab = 'ejercicios'" :class="{ active: activeTab === 'ejercicios' }">Ejercicios</button>
-      <button @click="activeTab = 'completados'" :class="{ active: activeTab === 'completados' }">Completados</button>
+  <div class="ejercicios-wrapper">
+    <div class="ejercicios-header">
+      <h1 class="ejercicios-title">Administración de Ejercicios</h1>
+      <button @click="$router.push('/ejercicios/nuevo')" class="btn-agregar-ejercicio">
+        <i class="fas fa-plus-circle"></i> Agregar Nuevo Ejercicio
+      </button>
     </div>
+
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input
+        v-model="searchInput"
+        placeholder="Buscar ejercicios..."
+        class="search-input"
+      />
+    </div>
+
     <EjerciciosTable
-  v-if="activeTab === 'ejercicios'"
-  :entries="dataset.filter(e => !e.completado)" 
-  :columns="dataColumns"
-  :filter-key="searchInput"
-  @toggleCompleted="handleToggleCompleted"
-/>
-<EjerciciosTable
-  v-if="activeTab === 'completados'"
-  :entries="dataset.filter(e => e.completado)" 
-  :columns="dataColumns"
-  :filter-key="searchInput"
-  @toggleCompleted="handleToggleCompleted"
-/>
+      :entries="dataset"
+      :columns="dataColumns"
+      :filter-key="searchInput"
+      @entryDeleted="fetchEjercicios"
+    />
   </div>
 </template>
 
@@ -39,7 +37,6 @@ export default {
   data() {
     return {
       searchInput: '',
-      activeTab: 'ejercicios', // Pestaña activa
       dataColumns: [
         'ID',
         'Nombre',
@@ -50,7 +47,7 @@ export default {
         'Dificultad',
         'Fecha_Registro',
         'Recomendaciones',
-        'Restricciones',
+        'Restricciones'
       ],
       dataset: [],
     };
@@ -60,140 +57,141 @@ export default {
   },
   methods: {
     fetchEjercicios() {
-  const token = localStorage.getItem('access_token');
-  axios
-    .get('http://localhost:8000/api/ejercicios', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      this.dataset = response.data.map((ejercicio) => ({
-        ID: ejercicio.id,
-        Nombre: ejercicio.nombre,
-        Descripcion: ejercicio.descripcion,
-        Video: ejercicio.video,
-        Tipo: ejercicio.tipo,
-        Estatus: ejercicio.estatus ? 'Activo' : 'Inactivo',
-        Dificultad: ejercicio.dificultad,
-        Fecha_Registro: new Date(ejercicio.fecha_registro).toLocaleDateString(),
-        Recomendaciones: ejercicio.recomendaciones || 'N/A',
-        Restricciones: ejercicio.restricciones || 'N/A',
-        completado: ejercicio.completado,
-        usuario: ejercicio.usuario || { nombre_usuario: 'No asignado' },
-      }));
-    })
-    .catch((error) => {
-      console.error('Error al cargar ejercicios:', error);
-    });
-},
+      const token = localStorage.getItem('access_token');
+      axios
+        .get('http://localhost:8000/api/ejercicios/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          this.dataset = response.data.map((ejercicio) => ({
+            ID: ejercicio.id,
+            Nombre: ejercicio.nombre,
+            Descripcion: ejercicio.descripcion,
+            Video: ejercicio.video,
+            Tipo: ejercicio.tipo,
+            Estatus: ejercicio.estatus ? 'Activo' : 'Inactivo',
+            Dificultad: ejercicio.dificultad,
+            Fecha_Registro: new Date(ejercicio.fecha_registro).toLocaleDateString(),
+            Recomendaciones: ejercicio.recomendaciones || 'N/A',
+            Restricciones: ejercicio.restricciones || 'N/A',
+            // Otras propiedades que necesites...
+          }));
+        })
+        .catch((error) => {
+          console.error('Error al cargar ejercicios:', error);
+        });
+    }
   },
 };
 </script>
 
 <style scoped>
-button.active {
-  background-color: #388e3c;
-  color: white;
-}
-/* Contenedor principal */
-div {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Título principal */
-h1 {
-  color: #388e3c; /* Verde oscuro */
-  text-align: center;
-  font-size: 32px;
-  margin-bottom: 20px;
-}
-
-/* Botón para agregar nueva dieta */
-button {
-  background-color: #388e3c;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 250px;
-  transition: background-color 0.3s;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-button:hover {
-  background-color: #2c6f29;
-}
-
-/* Estilo para el formulario de búsqueda */
-form {
+.ejercicios-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px 15px;
   display: flex;
   flex-direction: column;
+  border-radius: 35px;
   align-items: center;
-  margin-bottom: 20px;
 }
 
-form p {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 8px;
-}
-
-input {
-  padding: 10px;
+.ejercicios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  max-width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f1f1f1;
-  font-size: 14px;
-  margin-bottom: 15px;
-  transition: border-color 0.3s;
-}
-
-input:focus {
-  border-color: #388e3c; /* Verde para el foco */
-  outline: none;
-}
-
-/* Contenedor principal */
-div {
   max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  margin-bottom: 25px;
 }
 
-/* Botón para agregar nueva dieta */
-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 12px 20px;
+.ejercicios-title {
+  color: #ffffff;
+  font-size: 2.2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.btn-agregar-ejercicio {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
+  color: #fff;
+  font-weight: 600;
   font-size: 16px;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 26px;
   cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 250px;
-  transition: background-color 0.3s;
-  margin-left: auto;
-  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(255, 130, 0, 0.3);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
 }
 
-button:hover {
-  background-color: #c0392b;
+.btn-agregar-ejercicio::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #f8a545, #f56b00);
+  border-radius: 50px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-agregar-ejercicio:hover::before {
+  opacity: 1;
+}
+
+.btn-agregar-ejercicio:hover {
+  transform: scale(1.05);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  padding: 12px 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.search-container:hover {
+  box-shadow: 0 6px 25px rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.search-icon {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  width: 100%;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: #ccc;
+  opacity: 0.7;
 }
 </style>

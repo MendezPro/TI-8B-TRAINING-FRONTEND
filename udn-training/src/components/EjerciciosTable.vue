@@ -1,76 +1,71 @@
 <template>
-  <div class="admin-container">
-    <div class="table-container">
-      <table class="ejercicios-admin-table">
-        <thead>
-          <tr>
-            <th>Completado</th>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Video</th>
-            <th>Tipo</th>
-            <th>Estatus</th>
-            <th>Dificultad</th>
-            <th>Fecha Registro</th>
-            <th>Recomendaciones</th>
-            <th>Restricciones</th>
-            <th>Usuario Asignado</th>
-            <th>Operaciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(entry, index) in entries" :key="index">
-            <td>{{ entry.completado ? 'Sí' : 'No' }}</td>
-            <td>{{ entry.ID }}</td>
-            <td>{{ entry.Nombre }}</td>
-            <td>{{ entry.Descripcion }}</td>
-            <td>{{ entry.Video }}</td>
-            <td>{{ entry.Tipo }}</td>
-            <td>{{ entry.Estatus }}</td>
-            <td>{{ entry.Dificultad }}</td>
-            <td>{{ entry.Fecha_Registro }}</td>
-            <td>{{ entry.Recomendaciones }}</td>
-            <td>{{ entry.Restricciones }}</td>
-            <td>{{ entry.usuario ? entry.usuario.nombre_usuario : 'No asignado' }}</td>
-            <td>
-              <button @click="editEjercicio(entry.ID)">Editar</button>
-              <button @click="deleteEjercicio(entry.ID)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="table-container">
+    <table class="ejercicios-admin-table">
+      <thead>
+        <tr>
+          <th
+            v-for="key in columns"
+            :key="key"
+            @click="sortBy(key)"
+            :class="{ active: sortKey === key }"
+          >
+            {{ capitalize(key) }}
+            <span class="arrow" :class="sortColumns[key] > 0 ? 'asc' : 'dsc'"></span>
+          </th>
+          <th>Operaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(entry, index) in filteredEntries" :key="index">
+          <td v-for="key in columns" :key="key">
+            {{ entry[key] }}
+          </td>
+          <td>
+            <button @click="editEjercicio(entry.ID)">
+              <i class="fa fa-pencil"></i> Editar
+            </button>
+            <button @click="deleteEjercicio(entry.ID)">
+              <i class="fa fa-trash"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
 export default {
-  name: 'EjerciciosTable',
+  name: "EjerciciosTable",
   props: {
-    entries: Array,
-    columns: Array,
-    filterKey: String
+    entries: {
+      type: Array,
+      default: () => []
+    },
+    columns: {
+      type: Array,
+      default: () => []
+    },
+    filterKey: {
+      type: String,
+      default: ""
+    }
   },
   data() {
     return {
       sortKey: "",
-      sortColumns: this.columns.reduce((acc, key) => {
-        acc[key] = 1;
-        return acc;
-      }, {})
+      sortColumns: {}
     };
   },
   computed: {
     filteredEntries() {
       let entries = this.entries || [];
-      const filterKey = this.filterKey?.toLowerCase();
+      const filterKey = this.filterKey ? this.filterKey.toLowerCase() : "";
       if (filterKey) {
         entries = entries.filter(entry =>
-          Object.keys(entry).some(key =>
+          this.columns.some(key =>
             String(entry[key]).toLowerCase().includes(filterKey)
           )
         );
@@ -86,37 +81,13 @@ export default {
       return entries;
     }
   },
+  created() {
+    this.sortColumns = this.columns.reduce((acc, key) => {
+      acc[key] = 1;
+      return acc;
+    }, {});
+  },
   methods: {
-    toggleCompleted(id, currentStatus) {
-      // Enviar solicitud al backend para actualizar el estado de "completado"
-      axios
-        .put(`http://localhost:8000/api/ejercicios/${id}`, { completado: !currentStatus })
-        .then(() => {
-          // Actualizar el estado localmente
-          const ejercicio = this.entries.find((entry) => entry.ID === id);
-          if (ejercicio) ejercicio.completado = !currentStatus;
-        })
-        .catch((error) => {
-          console.error("Error al actualizar el estado de completado:", error);
-        });
-    },
-    markAsCompleted(id) {
-      const token = localStorage.getItem('access_token');
-      axios
-        .put(`http://localhost:8000/api/ejercicios/${id}/completar`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(() => {
-          const ejercicio = this.entries.find((entry) => entry.ID === id);
-          if (ejercicio) ejercicio.completado = true;
-          this.$emit('entryUpdated'); // Emitir evento para actualizar la tabla
-        })
-        .catch((error) => {
-          console.error('Error al marcar como completado:', error);
-        });
-    },
     capitalize(input) {
       return input.charAt(0).toUpperCase() + input.slice(1);
     },
@@ -128,6 +99,7 @@ export default {
       this.$router.push(`/ejercicios/editar/${id}`);
     },
     async deleteEjercicio(id) {
+      const token = localStorage.getItem('access_token');
       const result = await Swal.fire({
         title: '¿Estás seguro?',
         text: '¡No podrás recuperar este ejercicio después de eliminarlo!',
@@ -138,14 +110,10 @@ export default {
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar',
       });
-
       if (result.isConfirmed) {
         try {
-          const token = localStorage.getItem('access_token');
           await axios.delete(`http://localhost:8000/api/ejercicios/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           });
           this.$emit('entryDeleted', id);
           Swal.fire('¡Eliminado!', 'El ejercicio ha sido eliminado con éxito.', 'success');
@@ -159,52 +127,86 @@ export default {
 };
 </script>
 
-
 <style scoped>
-/* Contenedor de la tabla */
 .table-container {
   margin: 20px auto;
   max-width: 1200px;
   overflow-x: auto;
 }
-
-/* Tabla de ejercicios */
 .ejercicios-admin-table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  border-radius: 8px;
+  margin-top: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.18);
   overflow: hidden;
 }
-
 .ejercicios-admin-table th,
 .ejercicios-admin-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
 }
-
 .ejercicios-admin-table th {
-  background-color: #388e3c;
+  background: rgba(255,255,255,0.08);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.ejercicios-admin-table th:hover {
+  background-color: rgba(255,255,255,0.15);
+}
+.ejercicios-admin-table th.active {
+  background-color: rgba(255,255,255,0.15);
+}
+.ejercicios-admin-table td {
+  background-color: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.3s ease;
+}
+.ejercicios-admin-table tr:hover td {
+  background-color: rgba(255,255,255,0.07);
+}
+.arrow {
+  margin-left: 10px;
+  font-size: 12px;
+}
+.arrow.asc::after {
+  content: '▲';
+}
+.arrow.dsc::after {
+  content: '▼';
+}
+button {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(231,76,60,0.85);
   color: white;
-  font-weight: bold;
+  margin: 0 4px;
+  transition: transform 0.2s ease, background 0.3s;
 }
-
-.ejercicios-admin-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+button:hover {
+  background: rgba(192,57,43,0.9);
+  transform: scale(1.05);
 }
-
-.ejercicios-admin-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Responsividad */
 @media (max-width: 768px) {
   .ejercicios-admin-table th,
   .ejercicios-admin-table td {
-    font-size: 12px;
+    font-size: 11px;
     padding: 8px;
+  }
+  button {
+    font-size: 10px;
+    padding: 5px 8px;
   }
 }
 </style>

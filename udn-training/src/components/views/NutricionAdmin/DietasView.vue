@@ -3,8 +3,8 @@
     <div class="dietas-header">
       <h1 class="dietas-title">Bienvenido a Dietas</h1>
       <button @click="$router.push('/dietas/nueva')" class="btn-agregar-dieta">
-  <i class="fas fa-dumbbell"></i> Agregar Nueva Dieta
-</button>
+        <i class="fas fa-dumbbell"></i> Agregar Nueva Dieta
+      </button>
     </div>
 
     <div class="search-container">
@@ -13,11 +13,7 @@
       <input v-model="searchInput" placeholder="Buscar dietas..." class="search-input" />
     </div>
 
-    <DietasTable 
-      :entries="dataset" 
-      :columns="dataColumns" 
-      :filter-key="searchInput"
-    />
+    <DietasTable :entries="dataset" :columns="dataColumns" :filter-key="searchInput" />
   </div>
 </template>
 <script>
@@ -32,37 +28,33 @@ export default {
   data() {
     return {
       searchInput: "",
-      dataColumns: ["ID", "Nombre", "Genero", "Altura", "Peso", "Objetivo","Ejercicios Recomendados", "Dias Ejercicio", "Calorias Diarias", "Observaciones","Estatus", "Fecha Registro"],
+      dataColumns: ["ID", "nombre", "Objetivo", "Tipo_Ejercicios_Recomendados", "Dias_Ejercicio", "Calorias_Diarias", "Observaciones", "Estatus", "Fecha_Registro"],
       dataset: []
     };
   },
   mounted() {
-    const token = localStorage.getItem('access_token'); 
-    axios.get('http://localhost:8000/api/dietas', {
+    const token = localStorage.getItem('access_token');
+    axios.get('http://localhost:8000/api/dietas/?skip=0&limit=10', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    .then(response => {
-      this.dataset = response.data.map(dieta => ({
-        ID: dieta.id,
-        Nombre: dieta.nombre,
-        Genero: dieta.genero,
-        Altura: dieta.altura,
-        Peso: dieta.peso,
-        Objetivo: dieta.objetivo,
-        Tipo_Ejercicios_Recomendados: dieta.tipo_ejercicios_recomendados,
-        Dias_Ejercicio: dieta.dias_ejercicio,
-        Calorias_Diarias: dieta.calorias_diarias,
-        Observaciones: dieta.observaciones,
-        Estatus: dieta.estatus ? 'Activo' : 'Inactivo',
-        Fecha_Registro: dieta.fecha_registro,
-        usuario: dieta.usuario 
-      }));
-    })
-    .catch(error => {
-      console.error("Error al cargar dietas:", error);
-    });
+      .then(response => {
+        this.dataset = response.data.map(dieta => ({
+          ID: dieta.id,
+          nombre: dieta.nombre,
+          Objetivo: dieta.objetivo,
+          Tipo_Ejercicios_Recomendados: dieta.tipo_ejercicios_recomendados,
+          Dias_Ejercicio: dieta.dias_ejercicio,
+          Calorias_Diarias: dieta.calorias_diarias,
+          Observaciones: dieta.observaciones,
+          Estatus: dieta.estatus ? 'Activo' : 'Inactivo',
+          Fecha_Registro: dieta.fecha_registro,
+        }));
+      })
+      .catch(error => {
+        console.error("Error al cargar dietas:", error);
+      });
   }
 };
 </script>
@@ -93,7 +85,7 @@ export default {
 .dietas-title {
   color: #ffffff;
   font-size: 2.2rem;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .btn-agregar-dieta {
@@ -174,6 +166,4 @@ export default {
   color: #ccc;
   opacity: 0.7;
 }
-
-
 </style>

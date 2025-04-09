@@ -127,45 +127,91 @@
   </script>
   
   <style scoped>
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  th,
-  td {
+/* Efecto de transparencia, blur y sombras para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+th {
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+th:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+th.active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+td {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.3s ease;
+}
+
+tr:hover td {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.arrow {
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+.arrow.asc::after {
+  content: '▲';
+}
+
+.arrow.dsc::after {
+  content: '▼';
+}
+
+button {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(231, 76, 60, 0.85);
+  color: white;
+  margin: 0 4px;
+  transition: transform 0.2s ease, background 0.3s;
+}
+
+button:hover {
+  background: rgba(192, 57, 43, 0.9);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  th, td {
+    font-size: 11px;
     padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  th {
-    background-color: #e74c3c;
-    color: white;
-    cursor: pointer;
-  }
-  .arrow {
-    margin-left: 10px;
-    font-size: 12px;
-  }
-  .arrow.asc::after {
-    content: '▲';
-  }
-  .arrow.dsc::after {
-    content: '▼';
   }
   button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 0 5px;
-    padding: 5px 10px;
+    font-size: 10px;
+    padding: 5px 8px;
   }
-  button i {
-    margin-right: 5px;
-  }
-  button:hover {
-    opacity: 0.7;
-  }
-  </style>
-  
+}
+</style>
