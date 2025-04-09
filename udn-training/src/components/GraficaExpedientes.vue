@@ -37,7 +37,7 @@ export default {
     const fetchUsuarios = async () => {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get('http://localhost:8000/api/usuarios', {
+        const response = await axios.get('http://localhost:8000/api/usuarios/?skip=0&limit=10', {
           headers: { Authorization: `Bearer ${token}` },
         });
         usuarios.value = response.data;
