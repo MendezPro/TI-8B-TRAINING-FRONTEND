@@ -149,6 +149,10 @@ export default {
   font-weight: 600;
   margin-bottom: 5px;
 }
+.dieta-form select option {
+    background-color: #333; /* Mismo color de fondo para las opciones */
+    color: #fff; /* Texto en blanco */
+}
 
 .form-group input,
 .form-group select,

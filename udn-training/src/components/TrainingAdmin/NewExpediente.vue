@@ -1,57 +1,59 @@
 <template>
-  <div class="form-container">
+  <div class="expediente-form-wrapper">
     <h1>Agregar Nuevo Expediente Médico</h1>
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="submitForm" class="expediente-form">
       <div class="form-group">
-        <label>CURP:</label>
-        <input type="text" v-model="expediente.curp" required maxlength="18" />
+        <label for="curp">CURP:</label>
+        <input id="curp" type="text" v-model="expediente.curp" required maxlength="18" />
       </div>
 
       <div class="form-group">
-        <label>Fecha de Última Evaluación:</label>
-        <input type="date" v-model="expediente.fecha_ultima_de_evaluacion" required />
+        <label for="fecha">Fecha de Última Evaluación:</label>
+        <input id="fecha" type="date" v-model="expediente.fecha_ultima_de_evaluacion" required />
+      </div>
+
+      <div class="form-group form-full">
+        <label for="antecedentes">Antecedentes Médicos:</label>
+        <textarea id="antecedentes" v-model="expediente.antecedentes_medicos"></textarea>
+      </div>
+
+      <div class="form-group form-full">
+        <label for="lesiones">Lesiones Previas:</label>
+        <textarea id="lesiones" v-model="expediente.lesiones_previas"></textarea>
       </div>
 
       <div class="form-group">
-        <label>Antecedentes Médicos:</label>
-        <textarea v-model="expediente.antecedentes_medicos"></textarea>
+        <label for="presion_sistolica">Presión Sistolica:</label>
+        <input id="presion_sistolica" type="number" v-model="expediente.presion_sistolica" />
       </div>
 
       <div class="form-group">
-        <label>Lesiones Previas:</label>
-        <textarea v-model="expediente.lesiones_previas"></textarea>
+        <label for="presion_diastolica">Presión Diastolica:</label>
+        <input id="presion_diastolica" type="number" v-model="expediente.presion_diastolica" />
       </div>
 
       <div class="form-group">
-        <label>Presión sistolica:</label>
-        <input type="number" v-model="expediente.presion_sistolica" />
+        <label for="peso">Peso (kg):</label>
+        <input id="peso" type="number" v-model="expediente.peso" min="0" step="any"/>
       </div>
 
       <div class="form-group">
-        <label>Presión diastolica:</label>
-        <input type="number" v-model="expediente.presion_diastolica" />
-      </div>
-
-      <!-- Nuevos campos -->
-      <div class="form-group">
-        <label>Peso (kg):</label>
-        <input type="number" v-model="expediente.peso" min="0" step="any"/>
+        <label for="estatura">Estatura:</label>
+        <input id="estatura" type="number" v-model="expediente.estatura" min="0" step="any" />
       </div>
 
       <div class="form-group">
-        <label>Estatura:</label>
-        <input type="number" v-model="expediente.estatura" min="0" step="any" />
-      </div>
-
-      <div>
-        <label for="usuario_id">Usuario</label>
-        <select v-model="expediente.usuario_id" id="usuario_id" required>
+        <label for="usuario_id">Usuario:</label>
+        <select id="usuario_id" v-model="expediente.usuario_id" required>
           <option v-for="user in usuarios" :key="user.id" :value="user.id">
             {{ user.nombre_usuario }}
           </option>
         </select>
       </div>
-      <button type="submit">Guardar Expediente</button>
+
+      <div class="form-footer">
+        <button type="submit" class="btn-guardar">Guardar Expediente</button>
+      </div>
     </form>
   </div>
 </template>
@@ -128,39 +130,72 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
+.expediente-form-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  border-radius: 35px;
   max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-h1 {
+.expediente-form-wrapper h1 {
+  color: #fff;
   text-align: center;
-  color: #333;
+  font-size: 2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
 }
 
-form .form-group {
-  margin-bottom: 16px;
+.expediente-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
-label {
-  font-weight: bold;
-  color: #333;
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
-input,
-select,
-textarea {
-  display: block;
-  width: 100%;
+.form-group label {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
   padding: 10px;
-  margin-top: 8px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease, background 0.3s ease;
+}
+
+.form-group select {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-group select option {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #ff4d4d;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 textarea {
@@ -168,19 +203,33 @@ textarea {
   min-height: 80px;
 }
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  width: 100%;
+/* Hace que ciertos campos abarquen la fila completa */
+.form-full {
+  grid-column: 1 / -1;
+}
+
+.form-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
 }
 
-button:hover {
-  background-color: #45a049;
+.btn-guardar {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
+  border: none;
+  padding: 12px 24px;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 130, 0, 0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-guardar:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #f8a545, #f56b00);
 }
 </style>
