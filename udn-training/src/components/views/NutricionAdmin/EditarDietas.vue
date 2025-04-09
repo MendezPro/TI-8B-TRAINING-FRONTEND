@@ -7,22 +7,7 @@
                 <label for="nombre">Nombre</label>
                 <input v-model="dieta.nombre" id="nombre" type="text" required />
             </div>
-            <div class="form-group">
-                <label for="genero">Género</label>
-                <select v-model="dieta.genero" id="genero" required>
-                    <option value="H">Hombre</option>
-                    <option value="M">Mujer</option>
-                    <option value="N/B">No Binario</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="altura">Altura (cm)</label>
-                <input v-model="dieta.altura" id="altura" type="number" required />
-            </div>
-            <div class="form-group">
-                <label for="peso">Peso (kg)</label>
-                <input v-model="dieta.peso" id="peso" type="number" required />
-            </div>
+            
             <div class="form-group">
                 <label for="objetivo">Objetivo</label>
                 <select v-model="dieta.objetivo" id="objetivo" required>
@@ -79,9 +64,6 @@ export default {
         return {
             dieta: {
                 nombre: '',
-                genero: '',
-                altura: '',
-                peso: '',
                 objetivo: '',
                 tipo_ejercicios_recomendados: '',
                 dias_ejercicio: '',

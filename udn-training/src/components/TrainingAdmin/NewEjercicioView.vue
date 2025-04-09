@@ -69,7 +69,7 @@ export default {
         descripcion: '',
         video: '',
         tipo: '',
-        estatus: true,
+        estatus: '',
         dificultad: '',
         recomendaciones: '',
         restricciones: '',
@@ -80,7 +80,7 @@ export default {
     async submitForm() {
   try {
     const token = localStorage.getItem('access_token');
-    await axios.post('http://localhost:8000/api/ejercicios', this.ejercicio, {
+    await axios.post('http://localhost:8000/api/ejercicios/', this.ejercicio, {
       headers: { Authorization: `Bearer ${token}` },
     });
     Swal.fire('Éxito', 'Ejercicio guardado correctamente', 'success');

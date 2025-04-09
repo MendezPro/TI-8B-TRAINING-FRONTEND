@@ -46,15 +46,6 @@
                 <label for="restricciones">Restricciones</label>
                 <textarea v-model="ejercicio.restricciones" id="restricciones"></textarea>
             </div>
-            <div>
-                <label for="completado">¿Completado?</label>
-                <input type="checkbox" v-model="ejercicio.completado" id="completado" />
-            </div>
-            <!-- Campo para 'objetivo' -->
-            <div>
-                <label for="objetivo">Objetivo</label>
-                <input type="text" v-model="ejercicio.objetivo" id="objetivo" placeholder="Ej: Aumentar resistencia" />
-            </div>
             <button type="submit">Actualizar Ejercicio</button>
         </form>
     </div>

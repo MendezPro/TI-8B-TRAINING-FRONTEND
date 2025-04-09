@@ -82,10 +82,10 @@ export default {
       this.dieta.calorias_diarias = parseFloat(this.dieta.calorias_diarias);
 
       // Obtener el token almacenado (ajusta el mecanismo según tu implementación)
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
 
       try {
-        await axios.post('http://localhost:8000/api/dietas', this.dieta, {
+        await axios.post('http://localhost:8000/api/dietas/', this.dieta, {
           headers: {
             Authorization: `Bearer ${token}`
           }
