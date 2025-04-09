@@ -4,7 +4,7 @@
       <h2>Iniciar Sesión</h2>
 
       <div class="social-login">
-        <button class="google-btn">
+        <button class="google-btn" @click="loginWithGoogle">
           <i class="fab fa-google"></i> Google
         </button>
         <button class="facebook-btn">
@@ -88,6 +88,9 @@ export default {
         this.error = "Error al conectar con el servidor";
       }
     },
+      loginWithGoogle() {
+        window.location.href = "http://localhost:8000/api/auth/google/login";
+      },
   },
 };
 </script>

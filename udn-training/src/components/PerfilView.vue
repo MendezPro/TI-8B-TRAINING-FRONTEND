@@ -30,9 +30,24 @@
 <script>
 export default {
   name: "PerfilView",
+  mounted() {
+    // Extraer el token de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      // Almacenar el token en localStorage
+      localStorage.setItem("token", token);
+      console.log("Token almacenado en localStorage:", token);
+
+      // Limpiar la URL eliminando el parámetro 'token'
+      window.history.replaceState({}, document.title, "/perfil");
+    } else {
+      console.error("Token no encontrado en la URL");
+    }
+  },
   methods: {
     irADietas() {
-      // Redirige pasando el id del usuario (obtenido de localStorage)
       const usuario_id = localStorage.getItem("usuario_id");
       this.$router.push({ path: '/dietas', query: { user_id: usuario_id } });
     },
@@ -40,7 +55,7 @@ export default {
       const usuario_id = localStorage.getItem("usuario_id");
       this.$router.push({ path: '/ejercicios', query: { user_id: usuario_id } });
     }
-  }
+  },
 };
 </script>
 
@@ -51,7 +66,7 @@ export default {
 .dashboard-container {
   position: relative;
   height: 100vh;
-  background: url("@/assets/newback2.jpg") no-repeat center center/cover;
+  background: url("@/assets/fondodash.jpg") no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
