@@ -1,58 +1,51 @@
 <template>
-  <div>
+  <div class="ejercicio-form-wrapper">
     <h1>Agregar Nuevo Ejercicio</h1>
-    <form @submit.prevent="submitForm" class="form-container">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Nombre:</label>
-          <input type="text" v-model="ejercicio.nombre" required />
-        </div>
-
-        <div class="form-group">
-          <label>Descripción:</label>
-          <input type="text" v-model="ejercicio.descripcion" required />
-        </div>
-
-        <div class="form-group">
-          <label>Video URL:</label>
-          <input type="text" v-model="ejercicio.video" />
-        </div>
-
-        <div class="form-group">
-          <label>Tipo:</label>
-          <select v-model="ejercicio.tipo" required>
-            <option value="Aerobico">Aeróbico</option>
-            <option value="Resistencia">Resistencia</option>
-            <option value="Flexibilidad">Flexibilidad</option>
-            <option value="Fuerza">Fuerza</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Dificultad:</label>
-          <select v-model="ejercicio.dificultad" required>
-            <option value="Basico">Básico</option>
-            <option value="Intermedio">Intermedio</option>
-            <option value="Avanzado">Avanzado</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Recomendaciones:</label>
-          <input type="text" v-model="ejercicio.recomendaciones" />
-        </div>
-
-        <div class="form-group">
-          <label>Restricciones:</label>
-          <input type="text" v-model="ejercicio.restricciones" />
-        </div>
-
-        <div class="form-group">
-          <label>Estatus:</label>
-          <input type="checkbox" v-model="ejercicio.estatus" />
-        </div>
+    <form @submit.prevent="submitForm" class="ejercicio-form">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" v-model="ejercicio.nombre" id="nombre" required />
       </div>
-      <button type="submit">Guardar Ejercicio</button>
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" v-model="ejercicio.descripcion" id="descripcion" required />
+      </div>
+      <div class="form-group">
+        <label for="video">Video URL:</label>
+        <input type="text" v-model="ejercicio.video" id="video" />
+      </div>
+      <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        <select v-model="ejercicio.tipo" id="tipo" required>
+          <option value="Aerobico">Aeróbico</option>
+          <option value="Resistencia">Resistencia</option>
+          <option value="Flexibilidad">Flexibilidad</option>
+          <option value="Fuerza">Fuerza</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="dificultad">Dificultad:</label>
+        <select v-model="ejercicio.dificultad" id="dificultad" required>
+          <option value="Basico">Básico</option>
+          <option value="Intermedio">Intermedio</option>
+          <option value="Avanzado">Avanzado</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="recomendaciones">Recomendaciones:</label>
+        <input type="text" v-model="ejercicio.recomendaciones" id="recomendaciones" />
+      </div>
+      <div class="form-group">
+        <label for="restricciones">Restricciones:</label>
+        <input type="text" v-model="ejercicio.restricciones" id="restricciones" />
+      </div>
+      <div class="form-group">
+        <label for="estatus">Estatus:</label>
+        <input type="checkbox" v-model="ejercicio.estatus" id="estatus" />
+      </div>
+      <div class="form-footer">
+        <button type="submit" class="btn-guardar">Guardar Ejercicio</button>
+      </div>
     </form>
   </div>
 </template>
@@ -95,24 +88,31 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.ejercicio-form-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  border-radius: 35px;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-h1 {
+.ejercicio-form-wrapper h1 {
+  color: #fff;
   text-align: center;
-  color: #333;
+  font-size: 2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
 }
 
-.form-grid {
+.ejercicio-form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .form-group {
@@ -120,37 +120,69 @@ h1 {
   flex-direction: column;
 }
 
-label {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
+.form-group label {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-input,
-select {
-  width: 100%;
+.form-group input,
+.form-group select,
+.form-group textarea {
   padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f1f1f1;
-  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease, background 0.3s ease;
 }
 
-button {
+.form-group select {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-group select option {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #ff4d4d;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
   margin-top: 20px;
-  padding: 12px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: #e53935;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%;
 }
 
-button:hover {
-  background-color: #d32f2f;
+.btn-guardar {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
+  border: none;
+  padding: 12px 24px;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 130, 0, 0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-guardar:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #f8a545, #f56b00);
 }
 </style>

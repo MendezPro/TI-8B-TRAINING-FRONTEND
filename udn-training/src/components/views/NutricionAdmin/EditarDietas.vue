@@ -1,32 +1,33 @@
 <template>
-    <div class="form-container">
+    <div class="dieta-form-wrapper">
         <h1>Editar Dieta</h1>
-
-        <form @submit.prevent="updateDieta">
+        <form @submit.prevent="submitForm" class="dieta-form">
             <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input v-model="dieta.nombre" id="nombre" type="text" required />
+                <label for="nombre">Nombre:</label>
+                <input id="nombre" type="text" v-model="dieta.nombre" required />
             </div>
-            
+
             <div class="form-group">
-                <label for="objetivo">Objetivo</label>
-                <select v-model="dieta.objetivo" id="objetivo" required>
-                    <option value="Perdida de Peso">Pérdida de Peso</option>
+                <label for="objetivo">Objetivo:</label>
+                <select id="objetivo" v-model="dieta.objetivo" required>
+                    <option value="Perdida de Peso">Perdida de Peso</option>
                     <option value="Aumento de masa muscular">Aumento de masa muscular</option>
                     <option value="Mantenimiento">Mantenimiento</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label for="tipo_ejercicio">Tipo de Ejercicio Recomendado</label>
-                <select v-model="dieta.tipo_ejercicios_recomendados" id="tipo_ejercicio" required>
+                <label for="ejercicio">Tipo de Ejercicio:</label>
+                <select id="ejercicio" v-model="dieta.tipo_ejercicios_recomendados" required>
                     <option value="Cardio">Cardio</option>
                     <option value="Levantamiento de pesas">Levantamiento de pesas</option>
-                    <option value="Ejercicios Tecnicos">Ejercicios Técnicos</option>
+                    <option value="Ejercicios Técnicos">Ejercicios Técnicos</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label for="dias_ejercicio">Días de Ejercicio</label>
-                <select v-model="dieta.dias_ejercicio" id="dias_ejercicio" required>
+                <label for="dias">Días de Ejercicio:</label>
+                <select id="dias" v-model="dieta.dias_ejercicio" required>
                     <option value="1 dia a la semana">1 día a la semana</option>
                     <option value="2 dias a la semana">2 días a la semana</option>
                     <option value="3 dias a la semana">3 días a la semana</option>
@@ -34,22 +35,25 @@
                     <option value="5 dias a la semana">5 días a la semana</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label for="calorias">Calorías Diarias</label>
-                <input v-model="dieta.calorias_diarias" id="calorias" type="number" required />
+                <label for="calorias">Calorías Diarias:</label>
+                <input id="calorias" type="number" v-model="dieta.calorias_diarias" required />
             </div>
-            <div class="form-group">
-                <label for="observaciones">Observaciones</label>
-                <textarea v-model="dieta.observaciones" id="observaciones" rows="4"></textarea>
+
+            <div class="form-group form-full">
+                <label for="observaciones">Observaciones:</label>
+                <textarea id="observaciones" v-model="dieta.observaciones"></textarea>
             </div>
-            <div class="form-group">
-                <label for="estatus">Estatus</label>
-                <select v-model="dieta.estatus" id="estatus" required>
-                    <option :value="true">Activo</option>
-                    <option :value="false">Inactivo</option>
-                </select>
+
+            <div class="form-footer">
+                <div class="estatus-group">
+                    <label for="estatus">Estatus:</label>
+                    <input id="estatus" type="checkbox" v-model="dieta.estatus" />
+                    <span>{{ dieta.estatus ? 'Activo' : 'Inactivo' }}</span>
+                </div>
+                <button type="submit" class="btn-guardar">Editar Dieta</button>
             </div>
-            <button type="submit" class="btn-submit">Actualizar Dieta</button>
         </form>
     </div>
 </template>
@@ -128,84 +132,111 @@ export default {
     }
 };
 </script>
-
 <style scoped>
-.form-container {
+.dieta-form-wrapper {
+    background-image: url('@/assets/frame1.png');
+    background-size: cover;
+    background-position: center;
+    padding: 40px;
+    border-radius: 35px;
     max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 40px auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-h1 {
-    color: #c0392b;
-    font-size: 28px;
+.dieta-form-wrapper h1 {
+    color: #fff;
     text-align: center;
+    font-size: 2rem;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
     margin-bottom: 20px;
 }
 
+.dieta-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
 .form-group {
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
 }
 
-label {
-    font-weight: bold;
-    color: #333;
-    display: block;
-    margin-bottom: 6px;
+.form-group label {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
-input,
-select,
-textarea {
-    width: 100%;
+.form-group input,
+.form-group select,
+.form-group textarea {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fcf5f5;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease, background 0.3s ease;
+}
+.dieta-form select option {
+    background-color: #333; /* Mismo color de fondo para las opciones */
+    color: #fff; /* Texto en blanco */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #ff4d4d;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 textarea {
-    resize: none;
+    resize: vertical;
+    min-height: 80px;
 }
 
-.btn-submit {
-    background-color: #c0392b;
-    color: white;
+/* Abarca la fila completa */
+.form-full {
+    grid-column: 1 / -1;
+}
+
+.form-footer {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.estatus-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.btn-guardar {
+    background: linear-gradient(145deg, #f79f43, #f27e1b);
     border: none;
-    padding: 12px;
-    font-size: 16px;
+    padding: 12px 24px;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 50px;
     cursor: pointer;
-    border-radius: 6px;
-    width: 100%;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 12px rgba(255, 130, 0, 0.3);
+    transition: transform 0.3s ease, background 0.3s ease;
+    margin-top: 10px;
 }
 
-.btn-submit:hover {
-    background-color: #a93226;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color: #e74c3c;
-    outline: none;
-}
-
-@media (max-width: 768px) {
-    .form-container {
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 22px;
-    }
-
-    .btn-submit {
-        font-size: 14px;
-        padding: 10px;
-    }
+.btn-guardar:hover {
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #f8a545, #f56b00);
 }
 </style>

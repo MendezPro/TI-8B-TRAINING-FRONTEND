@@ -1,40 +1,39 @@
 <template>
-    <div class="form-container">
-        <h1>Editar Indicador Nutricional</h1>
-        <form v-if="indicador" @submit.prevent="submitForm">
-            <div class="form-group">
-                <label>Altura (m):</label>
-                <input type="number" step="0.01" v-model="indicador.altura" required />
-            </div>
-            <div class="form-group">
-                <label>Peso (kg):</label>
-                <input type="number" step="0.01" v-model="indicador.peso" required />
-            </div>
-            <div class="form-group">
-                <label>IMC:</label>
-                <input type="number" step="0.01" v-model="indicador.imc" readonly />
-            </div>
-            <div class="form-group">
-                <label>Porcentaje de Grasa:</label>
-                <input type="number" step="0.01" v-model="indicador.porcentaje_grasa" required />
-            </div>
-            <div class="form-group">
-                <label>Nivel de Actividad:</label>
-                <select v-model="indicador.nivel_actividad" required>
-                    <option value="Sedentario">Sedentario</option>
-                    <option value="Ligero">Ligero</option>
-                    <option value="Moderado">Moderado</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Muy_Activo">Muy Activo</option>
-                </select>
-            </div>
-            <button type="submit">Actualizar Indicador</button>
-        </form>
-        <div v-else>
-            Cargando...
+    <div class="indicador-form-wrapper">
+      <h1>Editar Indicador Nutricional</h1>
+      <form @submit.prevent="submitForm" class="indicador-form">
+        <div class="form-group">
+          <label for="altura">Altura (m):</label>
+          <input id="altura" type="number" step="0.01" v-model="indicador.altura" required />
         </div>
+        <div class="form-group">
+          <label for="peso">Peso (kg):</label>
+          <input id="peso" type="number" step="0.01" v-model="indicador.peso" required />
+        </div>
+        <div class="form-group">
+          <label for="imc">IMC:</label>
+          <input id="imc" type="number" step="0.01" v-model="indicador.imc" readonly />
+        </div>
+        <div class="form-group">
+          <label for="porcentaje_grasa">Porcentaje de Grasa:</label>
+          <input id="porcentaje_grasa" type="number" step="0.01" v-model="indicador.porcentaje_grasa" required />
+        </div>
+        <div class="form-group">
+          <label for="nivel_actividad">Nivel de Actividad:</label>
+          <select id="nivel_actividad" v-model="indicador.nivel_actividad" required>
+            <option value="Sedentario">Sedentario</option>
+            <option value="Ligero">Ligero</option>
+            <option value="Moderado">Moderado</option>
+            <option value="Activo">Activo</option>
+            <option value="Muy_Activo">Muy Activo</option>
+          </select>
+        </div>
+        <div class="form-footer">
+          <button type="submit" class="btn-guardar">Actualizar Indicador</button>
+        </div>
+      </form>
     </div>
-</template>
+  </template>
 
 <script>
 import axios from 'axios';
@@ -95,49 +94,101 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.indicador-form-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  border-radius: 35px;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+.indicador-form-wrapper h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 2rem;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  margin-bottom: 20px;
+}
+
+.indicador-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .form-group {
-    margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
-label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
+.form-group label {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-input,
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease, background 0.3s ease;
 }
 
-button {
-    background-color: #388e3c;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    cursor: pointer;
+.form-group select {
+  background-color: #333;
+  color: #fff;
 }
 
-button:hover {
-    background-color: #2c6f29;
+.form-group select option {
+  background-color: #333;
+  color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #ff4d4d;
+  background: rgba(255,255,255,0.2);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-guardar {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
+  border: none;
+  padding: 12px 24px;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255,130,0,0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-guardar:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #f8a545, #f56b00);
 }
 </style>

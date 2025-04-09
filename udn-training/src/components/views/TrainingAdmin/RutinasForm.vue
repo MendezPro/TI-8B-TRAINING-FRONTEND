@@ -1,14 +1,14 @@
 <template>
-  <div class="rutinas-container">
+  <div class="rutina-form-wrapper">
     <h1>Asignar Rutina</h1>
-    <form @submit.prevent="submitRoutine" class="form-grid">
+    <form @submit.prevent="submitRoutine" class="rutina-form">
       <div class="form-group">
         <label for="nombre">Nombre de la Rutina:</label>
-        <input type="text" v-model="rutina.nombre" required />
+        <input id="nombre" type="text" v-model="rutina.nombre" required />
       </div>
       <div class="form-group">
         <label for="user_id">Cliente (ID Usuario):</label>
-        <select v-model="rutina.user_id" required>
+        <select id="user_id" v-model="rutina.user_id" required>
           <option value="" disabled>Selecciona un cliente</option>
           <option v-for="cliente in clientes" :key="cliente.id" :value="cliente.id">
             {{ cliente.nombre_usuario }}
@@ -17,7 +17,7 @@
       </div>
       <div class="form-group">
         <label for="ejercicio_id">Ejercicio:</label>
-        <select v-model="rutina.ejercicio_id" required>
+        <select id="ejercicio_id" v-model="rutina.ejercicio_id" required>
           <option value="" disabled>Selecciona un ejercicio</option>
           <option v-for="ejercicio in ejercicios" :key="ejercicio.id" :value="ejercicio.id">
             {{ ejercicio.nombre }}
@@ -26,41 +26,39 @@
       </div>
       <div class="form-group">
         <label for="objetivo_id">Objetivo:</label>
-        <select v-model="rutina.objetivo_id">
+        <select id="objetivo_id" v-model="rutina.objetivo_id">
           <option value="" disabled>Selecciona un objetivo</option>
           <option v-for="objetivo in objetivos" :key="objetivo.id" :value="objetivo.id">
             {{ objetivo.nombre }}
           </option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group form-full">
         <label for="descripcion">Descripción:</label>
-        <textarea v-model="rutina.descripcion"></textarea>
+        <textarea id="descripcion" v-model="rutina.descripcion"></textarea>
       </div>
       <div class="form-group">
         <label for="duracion">Duración (horas):</label>
-        <input type="number" v-model="rutina.duracion" step="0.1" />
+        <input id="duracion" type="number" v-model="rutina.duracion" step="0.1" />
       </div>
       <div class="form-group">
         <label for="frecuencia">Frecuencia (hora):</label>
-        <input type="time" v-model="rutina.frecuencia" />
+        <input id="frecuencia" type="time" v-model="rutina.frecuencia" />
       </div>
-
       <div class="form-group">
         <label for="fecha_inicio">Fecha de Inicio:</label>
-        <input type="datetime-local" v-model="rutina.fecha_inicio" />
+        <input id="fecha_inicio" type="datetime-local" v-model="rutina.fecha_inicio" />
       </div>
       <div class="form-group">
         <label for="fecha_finalizacion">Fecha de Finalización:</label>
-        <input type="datetime-local" v-model="rutina.fecha_finalizacion" />
+        <input id="fecha_finalizacion" type="datetime-local" v-model="rutina.fecha_finalizacion" />
       </div>
       <div class="form-group full-width">
-        <button type="submit">Asignar Rutina</button>
+        <button type="submit" class="btn-guardar">Asignar Rutina</button>
       </div>
     </form>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 export default {
@@ -141,60 +139,96 @@ export default {
 </script>
 
 <style scoped>
-.rutinas-container {
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.rutina-form-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  border-radius: 35px;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-
-.title {
+.rutina-form-wrapper h1 {
+  color: #fff;
+  text-align: center;
   font-size: 2rem;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
   margin-bottom: 20px;
 }
-
-.form-grid {
+.rutina-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
 }
-
 .form-group label {
+  color: #fff;
+  font-weight: 600;
   margin-bottom: 5px;
 }
-
 .form-group input,
-.form-group textarea,
+.form-group select,
+.form-group textarea {
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease, background 0.3s ease;
+}
 .form-group select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
 }
-
+.form-group select option {
+  background-color: #333;
+  color: #fff;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #ff4d4d;
+  background: rgba(255,255,255,0.2);
+}
 textarea {
-  resize: none;
+  resize: vertical;
+  min-height: 80px;
 }
-
-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
+/* La clase full-width hace que el elemento abarque todas las columnas */
 .full-width {
-  grid-column: span 2;
+  grid-column: 1 / -1;
+}
+.rutina-form .form-group.full-width {
+  grid-column: 1 / -1;
+}
+.form-footer, 
+.full-width {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.btn-guardar {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
+  border: none;
+  padding: 12px 24px;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255,130,0,0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+  margin-top: 10px;
+}
+.btn-guardar:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #f8a545, #f56b00);
 }
 </style>
