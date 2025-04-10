@@ -1,8 +1,8 @@
 <template>
-    <div class="indicador-form-wrapper">
-      <h1>Editar Indicador Nutricional</h1>
-      <form @submit.prevent="submitForm" class="indicador-form">
-        <div class="form-group">
+<div class="indicador-form-wrapper">
+  <h1>Editar Indicador Nutricional</h1>
+  <form @submit.prevent="submitForm" class="indicador-form">
+    <div class="form-group">
           <label for="altura">Altura (m):</label>
           <input id="altura" type="number" step="0.01" v-model="indicador.altura" required />
         </div>
@@ -43,7 +43,13 @@ export default {
     name: 'IndicadorEdit',
     data() {
         return {
-            indicador: null
+          indicador: {
+      altura: 0,
+      peso: 0,
+      imc: 0,
+      porcentaje_grasa: 0,
+      nivel_actividad: ''
+    }
         };
     },
     mounted() {

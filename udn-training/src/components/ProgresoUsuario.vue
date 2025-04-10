@@ -1,197 +1,260 @@
-<!-- filepath: c:\Users\soyme\Desktop\8VO CUATRI\DEVGENIUS\TI-8B-TRAINING-FRONTEND\udn-training\src\components\ProgresoUsuario.vue -->
 <template>
-  <div>
-    <h1>Consulta el nivel de progreso del usuario</h1>
-    <label for="usuario">Seleccionar usuario:</label>
-    <select id="usuario" v-model.number="selectedUser" @change="fetchProgress">
-      <option v-for="user in usuarios" :key="user.id" :value="user.id">
-        {{ user.nombre_usuario }}
-      </option>
-    </select>
-    <label for="mes">Seleccionar mes:</label>
-    <select id="mes" v-model="selectedMonth" @change="fetchProgress">
-      <option v-for="(mes, index) in meses" :key="index" :value="index + 1">
-        {{ mes }}
-      </option>
-    </select>
-    <p v-if="objetivo">Objetivo del usuario: <strong>{{ objetivo }}</strong></p>
-    <canvas ref="progressChart" width="400" height="200"></canvas>
-    <p v-if="!hasData">No hay datos para mostrar en la gráfica.</p>
-    <p v-else>Datos recopilados de acuerdo a su nivel de ejercicios completados.</p>
+  <div class="grafica-wrapper">
+    <div class="grafica-header">
+      <h1 class="grafica-title">
+        Indicadores <span class="highlight">Nutricionales</span>
+      </h1>
+    </div>
+
+    <div class="search-container">
+      <label for="usuario" class="search-label">Seleccionar usuario:</label>
+      <select id="usuario" v-model.number="selectedUser" @change="fetchIndicadores" class="search-select">
+        <option value="" disabled>-- Selecciona un usuario --</option>
+        <option v-for="user in usuarios" :key="user.id" :value="user.id">
+          {{ user.nombre_usuario }}
+        </option>
+      </select>
+      <!-- Opcional: filtro por mes -->
+      <label for="mes" class="search-label">Seleccionar mes (opcional):</label>
+      <select id="mes" v-model="selectedMonth" @change="fetchIndicadores" class="search-select">
+        <option value="">Todos</option>
+        <option v-for="(mes, index) in meses" :key="index" :value="index+1">
+          {{ mes }}
+        </option>
+      </select>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="indicadoresChart"></canvas>
+    </div>
   </div>
 </template>
 
 <script>
-import {
-  Chart,
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-  LineController,
-  PointElement,
-  LineElement,
-  Filler,
-} from 'chart.js';
-import axios from "axios";
-import { io } from "socket.io-client"; // Importa el cliente de Socket.IO
-
-// Registrar los módulos necesarios de Chart.js
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  Title,
-  Tooltip,
-  Legend,
-  LineController,
-  PointElement,
-  LineElement,
-  Filler
-);
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import Chart from 'chart.js/auto';
 
 export default {
-  name: "ProgresoUsuario",
-  data() {
-    return {
-      selectedUser: null,
-      selectedMonth: new Date().getMonth() + 1, // Mes actual
-      usuarios: [],
-      chart: null,
-      hasData: false,
-      objetivo: null, // Nuevo campo para el objetivo del usuario
-      meses: [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-      ],
-      socket: null, // Instancia de Socket.IO
+  name: 'ProgresoUsuario',
+  setup() {
+    const selectedUser = ref(null);
+    // selectedMonth: si se deja vacío, se muestran todos; de lo contrario se filtrará por ese mes (1-12)
+    const selectedMonth = ref('');
+    const usuarios = ref([]);
+    const chartInstance = ref(null);
+    const meses = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+
+    const fetchUsuarios = async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get('http://localhost:8000/api/usuarios/?skip=0&limit=10', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        usuarios.value = response.data;
+      } catch (error) {
+        console.error('Error al obtener los usuarios:', error);
+      }
     };
-  },
-  mounted() {
-  this.fetchUsuarios(); // Llama al método para obtener los usuarios
-  this.setupSocket(); // Configura la conexión de Socket.IO
 
-   // Si hay un usuario seleccionado previamente, carga su progreso
-   const savedUser = localStorage.getItem("selectedUser");
-    if (savedUser) {
-      this.selectedUser = parseInt(savedUser, 10);
-      this.fetchProgress();
-    }
+    const fetchIndicadores = async () => {
+      if (!selectedUser.value) return;
 
-},
-  methods: {
-  async fetchUsuarios() {
-    try {
-      const token = localStorage.getItem('access_token');
-      const response = await axios.get('http://localhost:8000/api/usuarios', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      try {
+        const token = localStorage.getItem('access_token');
+        // Obtenemos todos los indicadores nutricionales.
+        const response = await axios.get('http://localhost:8000/api/indicadores_nutricionales/?skip=0&limit=100', {
+          headers: { Authorization: `Bearer ${token}` },
+        }); console.log("Datos API:", response.data) ;// Verificar datos completos
+        const usuarioSeleccionado = usuarios.value.find(u => u.id === selectedUser.value);
+if (!usuarioSeleccionado) return;
+
+// Filtrar usando el nombre, o asegurarte de que el backend retorne usuario_id
+let indicadores = response.data.filter(ind => 
+  ind.usuario_nombre && ind.usuario_nombre === usuarioSeleccionado.nombre_usuario
+);
+if (selectedMonth.value) {
+  indicadores = indicadores.filter(ind => {
+    const mesRegistro = new Date(ind.fecha_registro).getMonth() + 1;
+    return mesRegistro === Number(selectedMonth.value);
+  });
+}
+
+
+        // Ordenamos los indicadores por fecha de registro ascendente.
+        indicadores.sort((a, b) => new Date(a.fecha_registro) - new Date(b.fecha_registro));
+        // Usamos la fecha de registro como labels y, por ejemplo, los valores de IMC.
+        const labels = indicadores.map(ind => new Date(ind.fecha_registro).toLocaleDateString());
+        const imcData = indicadores.map(ind => ind.imc);
+        updateChart(labels, imcData);
+      } catch (error) {
+        console.error('Error al obtener indicadores nutricionales:', error);
+      }
+    };
+
+    const updateChart = (labels, imcData) => {
+      if (chartInstance.value) {
+        chartInstance.value.destroy();
+      }
+      const ctx = document.getElementById('indicadoresChart').getContext('2d');
+      chartInstance.value = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'IMC',
+              data: imcData,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              fill: false,
+            },
+            // Puedes agregar más datasets para otros indicadores, por ejemplo:
+            // {
+            //   label: 'Peso',
+            //   data: pesoData,
+            //   borderColor: 'rgba(192, 75, 75, 1)',
+            //   backgroundColor: 'rgba(192, 75, 75, 0.2)',
+            //   fill: false,
+            // },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Fecha',
+                color: '#ffffff',
+              },
+              ticks: {
+                color: '#ffffff',
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.2)',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Valor',
+                color: '#ffffff',
+              },
+              ticks: {
+                color: '#ffffff',
+              },
+              grid: {
+                color: 'rgba(255, 255, 255, 0.2)',
+              },
+            },
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: '#ffffff',
+              },
+            },
+          },
         },
       });
-      this.usuarios = response.data;
-    } catch (error) {
-      console.error('Error al obtener los usuarios:', error);
-    }
+    };
+
+    onMounted(() => {
+      fetchUsuarios();
+    });
+
+    return {
+      selectedUser,
+      selectedMonth,
+      usuarios,
+      meses,
+      fetchIndicadores,
+    };
   },
-  async fetchProgress() {
-  if (!this.selectedUser) {
-    this.updateChart(Array(31).fill(0), Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`));
-    return;
-  }
-  try {
-    const token = localStorage.getItem("access_token");
-    const response = await axios.get(
-      `http://localhost:8000/api/ejercicios/progreso/${this.selectedUser}?mes=${this.selectedMonth}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    const progressData = response.data.data || Array(31).fill(0);
-    const labels = Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`);
-    this.objetivo = response.data.objetivo; // Mostrar el objetivo del usuario
-    this.hasData = progressData.some(value => value > 0); // Verificar si hay datos
-    this.updateChart(progressData, labels);
-  } catch (error) {
-    console.error("Error al obtener progreso:", error);
-    this.updateChart(Array(31).fill(0), Array.from({ length: 31 }, (_, i) => `Día ${i + 1}`));
-  }
-},
-updateChart(data, labels) {
-  if (this.chart) this.chart.destroy(); // Destruir la gráfica anterior
-  const ctx = this.$refs.progressChart.getContext("2d");
-  this.chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Progreso",
-          data,
-          borderColor: "rgba(75, 192, 192, 1)",
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-        },
-      ],
-    },
-  });
-},
-setupSocket() {
-  this.socket = io("http://localhost:8000"); // Conectar al servidor de sockets
-
-  // Escuchar eventos de conexión
-  this.socket.on("connect", () => {
-    console.log("Conectado al servidor de sockets"); // Mensaje cuando el cliente se conecta
-  });
-
-  // Escuchar eventos de desconexión
-  this.socket.on("disconnect", () => {
-    console.warn("Socket desconectado. Intentando reconectar..."); // Mensaje cuando el cliente se desconecta
-  });
-
-  // Escuchar eventos de actualización de progreso
-  this.socket.on("update_progress", (data) => {
-    console.log("Evento recibido:", data); // Mensaje cuando se recibe un evento
-    if (data.user_id === this.selectedUser) {
-      this.fetchProgress(); // Actualizar la gráfica si el usuario coincide
-    }
-  });
-},
-},
 };
 </script>
 
 <style scoped>
-/* Cambié la tipografía a 'Montserrat' */
-body, div {
-  font-family: 'Montserrat', sans-serif;
+.grafica-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 35px;
+  align-items: center;
 }
 
-h1 {
+.grafica-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 25px;
+}
+
+.grafica-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
   text-align: center;
-  font-size: 24px;
+}
+
+.grafica-title .highlight {
+  color: #ff914d;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
   margin-bottom: 20px;
 }
 
-label {
-  display: block;
+.search-label {
+  color: #ffffff;
+  font-size: 16px;
   margin-bottom: 10px;
-  font-weight: bold;
 }
 
-select {
-  display: block;
-  margin: 0 auto 20px;
+.search-select {
+  width: 100%;
   padding: 10px;
   font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.search-select:focus {
+  border-color: #ffffff;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  height: 500px;
 }
 
 canvas {
-  max-width: 100%;
-  width: 400px;
-  height: 200px;
-  margin: 0 auto;
-}
-
-p {
-  text-align: center;
-  font-size: 14px;
-  color: #555;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 </style>
