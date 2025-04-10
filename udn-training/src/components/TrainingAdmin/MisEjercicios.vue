@@ -1,106 +1,235 @@
 <template>
-    <div class="mis-ejercicios">
-      <h1>Mis Ejercicios</h1>
-      <table class="ejercicios-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Video</th>
-            <th>Tipo</th>
-            <th>Estatus</th>
-            <th>Dificultad</th>
-            <th>Fecha Registro</th>
-            <th>Recomendaciones</th>
-            <th>Restricciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="ejercicio in ejercicios" :key="ejercicio.id">
-            <td>{{ ejercicio.nombre }}</td>
-            <td>{{ ejercicio.descripcion }}</td>
-            <td>{{ ejercicio.video }}</td>
-            <td>{{ ejercicio.tipo }}</td>
-            <td>{{ ejercicio.estatus ? 'Activo' : 'Inactivo' }}</td>
-            <td>{{ ejercicio.dificultad }}</td>
-            <td>{{ new Date(ejercicio.fecha_registro).toLocaleString() }}</td>
-            <td>{{ ejercicio.recomendaciones }}</td>
-            <td>{{ ejercicio.restricciones }}</td>
-          </tr>
-        </tbody>
-        <tbody v-if="ejercicios.length === 0">
-          <tr>
-            <td colspan="9" style="text-align: center; color: #e74c3c; font-weight: bold;">
-              🚨 Aún no tienes ejercicios asignados.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="indicadores-wrapper">
+    <div class="indicadores-header">
+      <h1 class="indicadores-title">Mis Indicadores</h1>
+      <!-- Botón para agregar un indicador (implementa la funcionalidad según corresponda) -->
+      <button class="btn-agregar-indicador">Agregar Indicador</button>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    name: 'MisEjercicios',
-    data() {
-      return {
-        ejercicios: []
-      };
-    },
-    mounted() {
-      // Obtener el id del usuario logueado desde localStorage
-      const usuario_id = localStorage.getItem("usuario_id");
-      // Llamada al endpoint que filtra los ejercicios según el user_id
-      axios.get(`http://localhost:8000/api/ejercicios/usuario/${usuario_id}`)
-        .then(response => {
-          this.ejercicios = response.data;
-        })
-        .catch(error => {
-          console.error("Error al cargar los ejercicios:", error);
-        });
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .mis-ejercicios {
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Altura</th>
+          <th>Peso</th>
+          <th>IMC</th>
+          <th>Porcentaje Grasa</th>
+          <th>Nivel Actividad</th>
+          <th>Fecha Registro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="indicador in indicadores" :key="indicador.id">
+          <td>{{ indicador.id }}</td>
+          <td>{{ indicador.altura }}</td>
+          <td>{{ indicador.peso }}</td>
+          <td>{{ indicador.imc }}</td>
+          <td>{{ indicador.porcentaje_grasa }}</td>
+          <td>{{ indicador.nivel_actividad }}</td>
+          <td>{{ new Date(indicador.fecha_registro).toLocaleString() }}</td>
+        </tr>
+      </tbody>
+      <tbody v-if="indicadores.length === 0">
+        <tr>
+          <td colspan="7" style="text-align: center; color: #e74c3c; font-weight: bold;">
+            🚨 Aún no tienes indicadores asignados.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+export default {
+  name: 'MisEjercicios', // Se mantiene el nombre para evitar problemas en el ruteo
+  data() {
+    return {
+      indicadores: []
+    };
+  },
+  mounted() {
+    // Se obtiene el id del usuario logueado (guardado en localStorage)
+    const usuario_id = localStorage.getItem("usuario_id");
+    // Realiza la llamada al endpoint que obtiene los indicadores segun el usuario
+    axios.get(`http://localhost:8000/api/indicadores/usuario/${usuario_id}`)
+      .then(response => {
+        this.indicadores = response.data;
+      })
+      .catch(error => {
+        console.error("Error al cargar los indicadores:", error);
+      });
   }
-  
-  .mis-ejercicios h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+};
+</script>
+
+<style scoped>
+/* Estilos generales para el wrapper y cabecera */
+.indicadores-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 35px;
+  align-items: center;
+}
+
+.indicadores-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.indicadores-title {
+  color: #ffffff;
+  font-size: 2.2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Botón para agregar indicador */
+.btn-agregar-indicador {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 26px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255,130,0,0.3);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-agregar-indicador::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #f8a545, #f56b00);
+  border-radius: 50px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-agregar-indicador:hover::before {
+  opacity: 1;
+}
+
+.btn-agregar-indicador:hover {
+  transform: scale(1.05);
+}
+
+/* Buscador (si deseas agregarlo similar al de Dietas) */
+.search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  padding: 12px 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.search-container:hover {
+  box-shadow: 0 6px 25px rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+
+.search-icon {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 16px;
+  width: 100%;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: #ccc;
+  opacity: 0.7;
+}
+
+/* Estilos para la tabla con efecto de transparencia y backdrop */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.18);
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+th {
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+th:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+th.active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+td {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.3s ease;
+}
+
+tr:hover td {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  th, td {
+    font-size: 11px;
+    padding: 8px;
   }
-  
-  .ejercicios-table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  .btn-agregar-indicador {
+    font-size: 10px;
+    padding: 5px 8px;
   }
-  
-  .ejercicios-table th,
-  .ejercicios-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .ejercicios-table th {
-    background-color: #f4f4f4;
-    color: #333;
-  }
-  
-  .ejercicios-table tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  
-  .ejercicios-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  </style>
-  
+}
+</style>
