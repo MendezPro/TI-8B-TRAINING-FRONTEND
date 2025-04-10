@@ -4,99 +4,83 @@
     <h1 class="title">Bienvenido al Dashboard</h1>
     <div class="cards-scroll-container">
       <div class="cards-container">
-        <div v-if="esAdmin" class="card" @click="$router.push('/dietas')">
-          <i class="fas fa-apple-alt"></i>
-          <h2>Historial Dietas</h2>
-          <p>Consulta y añade Dietas.</p>
-        </div>
-        <div v-if="esAdmin" class="card" @click="$router.push('/ejercicios')">
-          <i class="fas fa-dumbbell"></i>
-          <h2>Historial Ejercicios</h2>
-          <p>Consulta y añade Ejercicios.</p>
-        </div>
-        <div class="card" @click="$router.push('/progreso')">
-          <i class="fas fa-chart-line"></i>
-          <h2>Progreso</h2>
-          <p>Monitorea tu avance.</p>
-        </div>
-        <div class="card" @click="$router.push('/expedientes')">
-          <i class="fas fa-file-medical"></i>
-          <h2>Expedientes</h2>
-          <p>Consulta y gestiona expedientes médicos.</p>
-        </div>
-        <div class="card" @click="$router.push('/grafica')">
-          <i class="fas fa-chart-pie"></i>
-          <h2>Presión Arterial</h2>
-          <p>Visualiza datos de salud de manera efectiva.</p>
-        </div>
-        <div class="card" @click="$router.push('/perfil')">
-          <i class="fas fa-user"></i>
-          <h2>Perfil</h2>
-          <p>Gestiona tu información personal y preferencias.</p>
-        </div>
-        <div v-if="esAdmin" class="card error-card" @click="$router.push('/usuarios')">
-          <i class="fas fa-exclamation-triangle"></i>
-          <h2>Usuarios</h2>
-          <p>Accede a la gestión de usuarios.</p>
-        </div>
-        <div v-if="esAdmin" class="card" @click="$router.push('/indicadores')">
-          <i class="fas fa-seedling"></i>  <!-- Vida sana / orgánico -->
-          <h2>Indicadores</h2>
-          <p>Consulta y administra los indicadores nutricionales.</p>
-        </div>
-        <div v-if="esAdmin" class="card" @click="$router.push('/rutinas')">
-          <i class="fas fa-list-alt"></i>
-          <h2>Rutinas</h2>
-          <p>Asigna rutinas con ejercicios.</p>
-        </div>
-        <!-- ✅ MOVIDO AQUÍ -->
-        <div v-if="esAdmin" class="card" @click="$router.push('/programas_saludables')">
-          <i class="fas fa-utensils"></i> <!-- Alimentación general --> 
-          <h2>Programas Saludables</h2>
-          <p>Planifica y asigna dietas.</p>
-        </div>
+        <!-- Tarjetas visibles para usuarios estándar -->
+        <template v-if="!esAdmin">
+          <div class="card" @click="$router.push('/dietas')">
+            <i class="fas fa-apple-alt"></i>
+            <h2>Mis dietas</h2>
+            <p>Consulta tus dietas personalizadas.</p>
+          </div>
+          <div class="card" @click="$router.push('/ejercicios')">
+            <i class="fas fa-dumbbell"></i>
+            <h2>Mis ejercicios</h2>
+            <p>Consulta tus ejercicios personalizados.</p>
+          </div>
+          <div class="card" @click="$router.push('/expedientes')">
+            <i class="fas fa-file-medical"></i>
+            <h2>Mi Expediente Médico</h2>
+            <p>Consulta tu expediente médico.</p>
+          </div>
+        </template>
+
+        <!-- Tarjetas exclusivas para administradores -->
+        <template v-else>
+          <div class="card" @click="$router.push('/progreso')">
+            <i class="fas fa-chart-line"></i>
+            <h2>Progreso</h2>
+            <p>Monitorea tu avance.</p>
+          </div>
+          <div class="card" @click="$router.push('/expedientes')">
+            <i class="fas fa-file-medical"></i>
+            <h2>Expedientes</h2>
+            <p>Consulta y gestiona expedientes médicos.</p>
+          </div>
+          <div class="card" @click="$router.push('/grafica')">
+            <i class="fas fa-chart-pie"></i>
+            <h2>Presión Arterial</h2>
+            <p>Visualiza datos de salud de manera efectiva.</p>
+          </div>
+          <div class="card error-card" @click="$router.push('/usuarios')">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>Usuarios</h2>
+            <p>Accede a la gestión de usuarios.</p>
+          </div>
+          <div class="card" @click="$router.push('/indicadores')">
+            <i class="fas fa-seedling"></i>
+            <h2>Indicadores</h2>
+            <p>Consulta y administra los indicadores nutricionales.</p>
+          </div>
+          <div class="card" @click="$router.push('/rutinas')">
+            <i class="fas fa-list-alt"></i>
+            <h2>Rutinas</h2>
+            <p>Asigna rutinas con ejercicios.</p>
+          </div>
+          <div class="card" @click="$router.push('/programas_saludables')">
+            <i class="fas fa-utensils"></i>
+            <h2>Programas Saludables</h2>
+            <p>Planifica y asigna dietas.</p>
+          </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "DashboardView",
   data() {
     return {
-      esAdmin: false, // 👈 Inicializa la variable
+      esAdmin: false, // Determina si el usuario es administrador
     };
   },
   created() {
-    const rol = localStorage.getItem("rol"); // Retrieve role from localStorage
+    const rol = localStorage.getItem("rol"); // Obtiene el rol del usuario desde localStorage
     if (rol === "Administrador") {
-      this.esAdmin = true; // Set to true if the user is an admin
-    } // 👈 Si el rol es 'admin', mostrará las cards de admin
-  },
-  mounted() {
-    // Insertar el script de Chatbase al cargar el componente
-    if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-      window.chatbase = (...args) => {
-        if (!window.chatbase.q) {
-          window.chatbase.q = [];
-        }
-        window.chatbase.q.push(args);
-      };
-      window.chatbase = new Proxy(window.chatbase, {
-        get(target, prop) {
-          if (prop === "q") return target.q;
-          return (...args) => target(prop, ...args);
-        },
-      });
-
-      const script = document.createElement("script");
-      script.src = "https://www.chatbase.co/embed.min.js";
-      script.id = "TBKXBmpzMfuXHiMXs3nIG";
-      script.domain = "www.chatbase.co";
-      document.body.appendChild(script);
+      this.esAdmin = true; // Si es administrador, habilita las tarjetas de admin
     }
   },
-}
+};
 </script>
 
 <style scoped>
@@ -132,10 +116,10 @@ export default {
 }
 
 .cards-scroll-container {
-  max-height: 100vh; /* Limita la altura máxima del contenedor */
-  overflow-y: auto; /* Agrega scroll vertical si es necesario */
+  max-height: 100vh;
+  overflow-y: auto;
   padding: 10px;
-  z-index: 1;   
+  z-index: 1;
   width: 100%;
 }
 
@@ -178,7 +162,6 @@ export default {
   opacity: 0.8;
 }
 
-/* Estilos específicos para la card de error */
 .error-card {
   background: rgba(255, 0, 0, 0.2);
   color: white;
