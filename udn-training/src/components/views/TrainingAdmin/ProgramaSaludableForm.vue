@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="rutina-form-wrapper">
     <h1>Agregar Nuevo Programa Saludable</h1>
-    <form @submit.prevent="submitForm" class="form-grid">
+    <form @submit.prevent="submitForm" class="rutina-form">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input id="nombre" type="text" v-model="programa.nombre" required />
@@ -24,7 +24,6 @@
       
       <div class="form-group">
         <label for="dieta">Dieta:</label>
-        <!-- Se carga a través del endpoint GET /api/dietas -->
         <select id="dieta" v-model="programa.id_dietas" required>
           <option value="" disabled>Selecciona una dieta</option>
           <option v-for="dieta in dietas" :key="dieta.id" :value="dieta.id">
@@ -59,7 +58,7 @@
       </div>
       
       <div class="form-group full-width">
-        <button type="submit">Guardar Programa</button>
+        <button type="submit" class="btn-guardar">Guardar Programa</button>
       </div>
     </form>
   </div>
@@ -129,79 +128,96 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  max-width: 800px;
+.rutina-form-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  padding: 40px;
+  border-radius: 35px;
+  max-width: 600px;
   margin: 40px auto;
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-
-h1 {
+.rutina-form-wrapper h1 {
+  color: #fff;
   text-align: center;
-  color: #333;
-  margin-bottom: 25px;
+  font-size: 2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
 }
-
-.form-grid {
+.rutina-form {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-
-@media (min-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 .form-group {
   display: flex;
   flex-direction: column;
 }
-
 .form-group label {
+  color: #fff;
   font-weight: 600;
-  margin-bottom: 6px;
-  color: #555;
+  margin-bottom: 5px;
 }
-
 .form-group input,
 .form-group select,
 .form-group textarea {
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 1rem;
   outline: none;
-  transition: border-color 0.3s;
+  transition: border 0.3s ease, background 0.3s ease;
 }
-
+.form-group select {
+  background-color: #333;
+  color: #fff;
+}
+.form-group select option {
+  background-color: #333;
+  color: #fff;
+}
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color:red;
+  border-color: #ff4d4d;
+  background: rgba(255,255,255,0.2);
 }
-
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+/* La clase full-width hace que el elemento abarque todas las columnas */
 .full-width {
-  grid-column: span 2;
-  text-align: center;
+  grid-column: 1 / -1;
 }
-
-button {
-  background-color:red;
-  color: #fff;
-  padding: 12px 20px;
+.rutina-form .form-group.full-width {
+  grid-column: 1 / -1;
+}
+.form-footer, 
+.full-width {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.btn-guardar {
+  background: linear-gradient(145deg, #f79f43, #f27e1b);
   border: none;
-  border-radius: 5px;
+  padding: 12px 24px;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 50px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-  width: 100%;
+  box-shadow: 0 4px 12px rgba(255,130,0,0.3);
+  transition: transform 0.3s ease, background 0.3s ease;
+  margin-top: 10px;
 }
-
-button:hover {
-  background-color:rgb(250, 13, 13);
+.btn-guardar:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #f8a545, #f56b00);
 }
 </style>

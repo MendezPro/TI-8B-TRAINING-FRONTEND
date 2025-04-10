@@ -28,6 +28,11 @@ import IndicadorForm from '@/components/views/TrainingAdmin/IndicadorForm.vue';
 import IndicadorEdit from '@/components/views/TrainingAdmin/IndicadorEdit.vue';
 import GraficaExpedientes from '@/components/GraficaExpedientes.vue';
 import RutinasView from '../components/views/TrainingAdmin/RutinasView.vue'; // Import the new RutinasView
+import ProgramasSaludablesView from '@/components/views/TrainingAdmin/ProgramasSaludablesView.vue'; // Import the new ProgramasSaludablesView
+import ProgramaSaludablesForm from '@/components/views/TrainingAdmin/ProgramaSaludableForm.vue'; // Import the new ProgramasSaludablesForm
+import ProgramaSaludableEdit from '@/components/views/TrainingAdmin/ProgramaSaludableEdit.vue'; // Import the new ProgramasSaludablesEdit
+import RutinasForm from '@/components/views/TrainingAdmin/RutinasForm.vue'; // Import the new RutinasForm
+import RutinasEdit from '@/components/views/TrainingAdmin/RutinaEdit.vue'; // Import the new RutinasEdit
 
 const routes = [
   { path: '/rutinas', name: 'Rutinas', component: RutinasView, meta: { requiresAdmin: true } }, // New route for RutinasView
@@ -58,6 +63,11 @@ const routes = [
   {path: '/indicadores/editar/:id', name: 'IndicadorEdit', component: IndicadorEdit, meta: { requiresAdmin: true }  },
   {path: '/error', name: 'Error', component: ViewError }, 
   {path: '/grafica', name: 'GraficaExpedientes', component: GraficaExpedientes, meta: { requiresAdmin: true } }, // Ruta para la gráfica de expedientes
+  {path: '/programas_saludables', name: 'ProgramasSaludables', component: ProgramasSaludablesView, meta: { requiresAdmin: true } }, // Ruta para Programas Saludables
+  {path: '/programas_saludables/nuevo', name: 'ProgramaSaludablesForm', component: ProgramaSaludablesForm, meta: { requiresAdmin: true } }, // Ruta para Programas Saludables
+  {path: '/programas_saludables/editar/:id', name: 'ProgramaSaludableEdit', component: ProgramaSaludableEdit, meta: { requiresAdmin: true } }, // Ruta para Programas Saludables
+  {path: '/rutinas/nuevo', name: 'RutinasForm', component: RutinasForm, meta: { requiresAdmin: true } }, // Ruta para Rutinas
+  {path: '/rutinas/editar/:id', name: 'RutinasEdit', component: RutinasEdit, meta: { requiresAdmin: true } }, // Ruta para Rutinas
 ];
 
 const router = createRouter({
