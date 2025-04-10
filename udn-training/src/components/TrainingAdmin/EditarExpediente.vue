@@ -42,15 +42,6 @@
         <input id="estatura" type="number" v-model="expediente.estatura" min="0" step="any" />
       </div>
 
-      <div class="form-group">
-        <label for="usuario_id">Usuario:</label>
-        <select id="usuario_id" v-model="expediente.usuario_id" required>
-          <option v-for="user in usuarios" :key="user.id" :value="user.id">
-            {{ user.nombre_usuario }}
-          </option>
-        </select>
-      </div>
-
       <div class="form-footer">
         <button type="submit" class="btn-guardar">Editar Expediente</button>
       </div>
