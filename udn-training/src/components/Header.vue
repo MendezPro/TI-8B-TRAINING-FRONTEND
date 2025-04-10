@@ -7,20 +7,22 @@
       <ul>
         <li><router-link to="/" active-class="active">Inicio</router-link></li>
         <li><router-link to="/dashboard" active-class="active">Dashboard</router-link></li>
-        <template v-if="userRole === 'Administrador'">
-          <li><router-link to="/dietas" active-class="active">Nutrición</router-link></li>
-          <li><router-link to="/ejercicios" active-class="active">Training</router-link></li>
-        </template>
+ 
       </ul>
     </nav>
 
     <div class="auth-buttons">
-      <template v-if="!isLoggedIn">
-        <button class="login-btn" @click="$router.push('/login')">Login</button>
-        <button class="register-btn" @click="$router.push('/register')">Regístrate</button>
+      <template v-if="isLoggedIn">
+        <!-- Botón de perfil con ícono -->
+        <button class="profile-btn" @click="$router.push('/perfil')">
+          <i class="fas fa-user"></i> Perfil
+        </button>
+        <!-- Botón de cerrar sesión -->
+        <button class="logout-btn" @click="logout">Cerrar sesión</button>
       </template>
       <template v-else>
-        <button class="logout-btn" @click="logout">Cerrar sesión</button>
+        <button class="login-btn" @click="$router.push('/login')">Login</button>
+        <button class="register-btn" @click="$router.push('/register')">Regístrate</button>
       </template>
     </div>
   </header>
@@ -36,8 +38,7 @@ export default {
     };
   },
   created() {
-    this.isLoggedIn = !!localStorage.getItem("access_token");
-    this.userRole = localStorage.getItem("rol") || "";
+    this.syncAuthState();
     window.addEventListener('storage', this.syncAuthState);
   },
   beforeUnmount() {
@@ -55,9 +56,6 @@ export default {
     syncAuthState() {
       this.isLoggedIn = !!localStorage.getItem("access_token");
       this.userRole = localStorage.getItem("rol") || "";
-      if (this.isLoggedIn) {
-        location.reload();
-      }
     },
   },
 };
@@ -67,26 +65,24 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 .navbar {
-  width: 100%; /* Asegura que se expanda completamente */
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 30px;
   background: #111;
-  border-radius: 35px 35px 35px 35px; /* para que combine con el footer si deseas */
+  border-radius: 35px;
   font-family: 'Poppins', sans-serif;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease-in-out;
   height: 100px;
-  background-size: cover;
-  /* Elimina max-width y margin */
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
 .navbar .logo img {
   width: 110px;
   transition: transform 0.4s ease-in-out;
-  
 }
 
 .navbar .logo img:hover {
@@ -94,7 +90,6 @@ export default {
 }
 
 .navbar nav ul {
-  
   display: flex;
   list-style: none;
   gap: 20px;
@@ -108,7 +103,6 @@ export default {
   padding: 8px 16px;
   border-radius: 20px;
   transition: background 0.3s, transform 0.2s;
-  
 }
 
 .navbar nav ul li a:hover, .navbar nav ul li a.router-link-exact-active {
@@ -130,6 +124,35 @@ export default {
   font-size: 13px;
   transition: all 0.3s ease-in-out;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Espaciado entre el ícono y el texto */
+}
+
+.profile-btn {
+  background: #ff4d4d; /* Rojo */
+  color: white;
+  box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.4);
+}
+
+.profile-btn i {
+  font-size: 16px; /* Tamaño del ícono */
+}
+
+.profile-btn:hover {
+  background: #d93c3c;
+  transform: scale(1.05);
+}
+
+.logout-btn {
+  background: #ff4d4d;
+  color: white;
+  box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.4);
+}
+
+.logout-btn:hover {
+  background: #d93c3c;
+  transform: scale(1.05);
 }
 
 .login-btn {
@@ -144,13 +167,13 @@ export default {
   transform: scale(1.05);
 }
 
-.register-btn, .logout-btn {
+.register-btn {
   background: #ff4d4d;
   color: white;
   box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.4);
 }
 
-.register-btn:hover, .logout-btn:hover {
+.register-btn:hover {
   background: #d93c3c;
   transform: scale(1.05);
 }
