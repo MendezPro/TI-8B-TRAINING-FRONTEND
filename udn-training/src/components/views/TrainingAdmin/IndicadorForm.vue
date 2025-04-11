@@ -65,7 +65,7 @@ export default {
   },
   mounted() {
     const token = localStorage.getItem('access_token');
-    axios.get('http://localhost:8000/api/usuarios', {
+    axios.get('http://localhost:8000/api/usuarios/', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -90,7 +90,7 @@ export default {
     },
     submitForm() {
       const token = localStorage.getItem('access_token');
-      axios.post('http://localhost:8000/api/indicadores_nutricionales', this.indicador, {
+      axios.post('http://localhost:8000/api/indicadores_nutricionales/', this.indicador, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(() => {

@@ -1,11 +1,12 @@
 <template>
-  <div class="mis-dietas">
-    <h1>Mis Rutinas</h1>
+  <div class="rutinas-wrapper">
+    <div class="rutinas-header">
+      <h1 class="rutinas-title">Mis Rutinas</h1>
+    </div>
     <table>
       <thead>
         <tr>
           <th>Nombre</th>
-          <th>User ID</th>
           <th>Ejercicio ID</th>
           <th>Objetivo ID</th>
           <th>Duración</th>
@@ -18,7 +19,6 @@
       <tbody>
         <tr v-for="rutina in rutinas" :key="rutina.id">
           <td>{{ rutina.nombre }}</td>
-          <td>{{ rutina.user_id }}</td>
           <td>{{ rutina.ejercicio_id }}</td>
           <td>{{ rutina.objetivo_id }}</td>
           <td>{{ rutina.duracion }}</td>
@@ -30,7 +30,7 @@
       </tbody>
       <tbody v-if="rutinas.length === 0">
         <tr>
-          <td colspan="9" style="text-align: center; color: #e74c3c; font-weight: bold;">
+          <td colspan="8" style="text-align: center; color: #e74c3c; font-weight: bold;">
             🚨 Aún no tienes rutinas asignadas.
           </td>
         </tr>
@@ -43,7 +43,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'MisDietas', // Se mantiene el nombre para evitar problemas de ruteo
+  name: 'MisRutinas',
   data() {
     return {
       rutinas: []
@@ -51,41 +51,74 @@ export default {
   },
   mounted() {
     const token = localStorage.getItem('access_token');
-    const usuario_id = localStorage.getItem("usuario_id");
-    // Llamada al endpoint para obtener las rutinas por usuario
-    axios.get(`http://localhost:8000/api/rutinas/usuario/${usuario_id}`, {
+    const usuario_id = localStorage.getItem('usuario_id');
+
+    if (!token || !usuario_id) {
+      console.error("❌ No se encontró el token o el ID de usuario en localStorage.");
+      return;
+    }
+
+    // Realiza la petición al endpoint protegido para obtener las rutinas del usuario
+    axios.get(`http://localhost:8000/api/rutinas/usuario/${usuario_id}?skip=0&limit=10`, {
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     })
-      .then(response => {
+    .then(response => {
+      console.log("✅ Rutinas cargadas:", response.data);
+      if (Array.isArray(response.data)) {
         this.rutinas = response.data;
-      })
-      .catch(error => {
-        console.error("Error al cargar las rutinas:", error);
-      });
+      } else {
+        console.warn("⚠️ La respuesta no tiene el formato esperado:", response.data);
+        this.rutinas = [];
+      }
+    })
+    .catch(error => {
+      console.error("❌ Error al cargar las rutinas:", error);
+    });
   }
 };
 </script>
 
 <style scoped>
-.mis-dietas {
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.18);
+.rutinas-wrapper {
+  background-image: url('@/assets/frame1.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 35px;
+  align-items: center;
 }
 
-/* Estilos para la tabla con transparencia */
+.rutinas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.rutinas-title {
+  color: #ffffff;
+  font-size: 2.2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   overflow: hidden;
 }
 
@@ -110,7 +143,7 @@ th:hover {
 
 td {
   background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   transition: background 0.3s ease;
 }
 
@@ -118,14 +151,6 @@ tr:hover td {
   background: rgba(255, 255, 255, 0.07);
 }
 
-/* Título */
-.mis-dietas h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* Responsivo */
 @media (max-width: 768px) {
   th, td {
     font-size: 11px;

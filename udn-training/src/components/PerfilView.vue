@@ -5,12 +5,12 @@
     <div class="cards-container">
       <div class="card" @click="$router.push('/perfil/misdietas/')">
         <i class="fas fa-apple-alt"></i>
-        <h2>Mis dietas</h2>
+        <h2>Mis Rutinas</h2>
         <p>Consulta tus dietas personalizadas.</p>
       </div>
-      <div class="card" @click="$router.push('/perfil/ejercicios')">
+      <div class="card" @click="$router.push('/perfil/misejercicios')">
         <i class="fas fa-dumbbell"></i>
-        <h2>Mis ejercicios</h2>
+        <h2>Mis Indicadores</h2>
         <p>Consulta tus ejercicios personalizados.</p>
       </div>
       <div class="card" @click="$router.push('/perfil/misdatos')">

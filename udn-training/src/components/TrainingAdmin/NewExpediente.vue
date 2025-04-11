@@ -83,7 +83,7 @@ export default {
     // Obtener el token de autorización
     const token = localStorage.getItem('access_token');
     // Cargar los usuarios desde la API
-    axios.get('http://localhost:8000/api/usuarios', {
+    axios.get('http://localhost:8000/api/usuarios/', {
       headers: {
         Authorization: `Bearer ${token}`
       }

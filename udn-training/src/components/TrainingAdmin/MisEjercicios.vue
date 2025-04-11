@@ -2,8 +2,6 @@
   <div class="indicadores-wrapper">
     <div class="indicadores-header">
       <h1 class="indicadores-title">Mis Indicadores</h1>
-      <!-- Botón para agregar un indicador (implementa la funcionalidad según corresponda) -->
-      <button class="btn-agregar-indicador">Agregar Indicador</button>
     </div>
     <table>
       <thead>
@@ -41,8 +39,9 @@
 
 <script>
 import axios from 'axios';
+
 export default {
-  name: 'MisEjercicios', // Se mantiene el nombre para evitar problemas en el ruteo
+  name: 'MisEjercicios',
   data() {
     return {
       indicadores: []
@@ -51,8 +50,14 @@ export default {
   mounted() {
     // Se obtiene el id del usuario logueado (guardado en localStorage)
     const usuario_id = localStorage.getItem("usuario_id");
-    // Realiza la llamada al endpoint que obtiene los indicadores segun el usuario
-    axios.get(`http://localhost:8000/api/indicadores/usuario/${usuario_id}`)
+    const token = localStorage.getItem("access_token"); // Asegúrate de que el token está guardado
+
+    // Realiza la llamada a la API para obtener los indicadores del usuario
+    axios.get(`http://localhost:8000/api/indicadores_nutricionales/usuario/${usuario_id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
       .then(response => {
         this.indicadores = response.data;
       })
@@ -103,7 +108,7 @@ export default {
   border-radius: 50px;
   padding: 12px 26px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255,130,0,0.3);
+  box-shadow: 0 4px 12px rgba(255, 130, 0, 0.3);
   transition: all 0.3s ease-in-out;
   position: relative;
   z-index: 1;
@@ -140,7 +145,7 @@ export default {
   border-radius: 50px;
   padding: 12px 20px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   width: 100%;
   max-width: 500px;
@@ -148,7 +153,7 @@ export default {
 }
 
 .search-container:hover {
-  box-shadow: 0 6px 25px rgba(255,255,255,0.15);
+  box-shadow: 0 6px 25px rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
 }
 
@@ -183,12 +188,13 @@ table {
   border-radius: 20px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   overflow: hidden;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   text-align: center;
   color: #ffffff;
@@ -213,7 +219,7 @@ th.active {
 
 td {
   background-color: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   transition: background 0.3s ease;
 }
 
@@ -223,10 +229,13 @@ tr:hover td {
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
-  th, td {
+
+  th,
+  td {
     font-size: 11px;
     padding: 8px;
   }
+
   .btn-agregar-indicador {
     font-size: 10px;
     padding: 5px 8px;
